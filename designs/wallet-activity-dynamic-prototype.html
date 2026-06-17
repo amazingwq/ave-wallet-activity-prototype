@@ -1,0 +1,1175 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>钱包动态原型</title>
+    <style>
+      :root {
+        --bg: #eef2f7;
+        --phone: #ffffff;
+        --text: #25282e;
+        --muted: #9297a1;
+        --line: #edf0f4;
+        --blue: #4f7ff0;
+        --blue-soft: #eef4ff;
+        --green: #24b47e;
+        --red: #e35b65;
+        --gold: #e8bd3d;
+        --shadow: 0 24px 70px rgba(21, 30, 45, 0.16);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background:
+          linear-gradient(135deg, rgba(79, 127, 240, 0.08), transparent 36%),
+          linear-gradient(315deg, rgba(36, 180, 126, 0.08), transparent 34%),
+          var(--bg);
+        color: var(--text);
+        font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+      }
+
+      .board {
+        display: flex;
+        gap: 28px;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 34px;
+      }
+
+      .frame {
+        width: 410px;
+      }
+
+      .frame-title {
+        height: 34px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: #5f6673;
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .frame-title span:last-child {
+        color: var(--blue);
+      }
+
+      .phone {
+        position: relative;
+        width: 410px;
+        height: 844px;
+        overflow: hidden;
+        background: var(--phone);
+        border: 1px solid rgba(120, 130, 148, 0.16);
+        border-radius: 34px;
+        box-shadow: var(--shadow);
+      }
+
+      .status {
+        height: 48px;
+        padding: 17px 27px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        font-size: 15px;
+        font-weight: 800;
+      }
+
+      .status-icons {
+        display: inline-flex;
+        gap: 7px;
+        align-items: center;
+        color: #30343b;
+        font-size: 12px;
+      }
+
+      .battery {
+        min-width: 28px;
+        padding: 2px 5px;
+        border-radius: 6px;
+        background: #30343b;
+        color: white;
+        font-size: 11px;
+        text-align: center;
+      }
+
+      .wallet-head {
+        padding: 30px 26px 0;
+      }
+
+      .wallet-line {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .wallet-name {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 22px;
+        font-weight: 650;
+      }
+
+      .chain-pill {
+        height: 40px;
+        display: inline-flex;
+        gap: 8px;
+        align-items: center;
+        padding: 0 13px 0 9px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: #fff;
+        color: #30343b;
+        font-size: 15px;
+        font-weight: 650;
+      }
+
+      .address-line {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 12px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .network-metrics {
+        display: inline-flex;
+        gap: 12px;
+        align-items: center;
+        font-weight: 650;
+      }
+
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: #55bf9e;
+      }
+
+      .asset-total {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 36px;
+        font-size: 42px;
+        line-height: 1;
+        font-weight: 850;
+        letter-spacing: 0;
+      }
+
+      .eye {
+        width: 19px;
+        height: 13px;
+        border: 2px solid #a6abb3;
+        border-radius: 999px / 80%;
+        position: relative;
+      }
+
+      .eye::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 5px;
+        height: 5px;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        background: #a6abb3;
+      }
+
+      .asset-strip {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        margin-top: 34px;
+        overflow: hidden;
+        color: #25282e;
+        font-size: 14px;
+      }
+
+      .action-row {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+        margin-top: 24px;
+      }
+
+      .action {
+        display: grid;
+        justify-items: center;
+        gap: 9px;
+        color: #373a40;
+        font-size: 13px;
+      }
+
+      .action-btn {
+        width: 48px;
+        height: 48px;
+        display: grid;
+        place-items: center;
+        border: 0;
+        border-radius: 50%;
+        background: #f5f6f8;
+        color: #2c3037;
+        font-size: 21px;
+        font-weight: 800;
+      }
+
+      .tabs {
+        height: 58px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        padding: 0 26px 12px;
+        color: #9ba0a8;
+        font-size: 19px;
+        font-weight: 750;
+      }
+
+      .tabs .active {
+        position: relative;
+        color: #25282e;
+      }
+
+      .tabs .active::after {
+        content: "";
+        position: absolute;
+        left: 4px;
+        right: 4px;
+        bottom: -10px;
+        height: 3px;
+        border-radius: 999px;
+        background: var(--blue);
+      }
+
+      .filter-btn {
+        position: relative;
+        width: 30px;
+        height: 30px;
+        display: grid;
+        place-items: center;
+        border: 0;
+        background: transparent;
+        color: #9ba0a8;
+      }
+
+      .filter-btn svg {
+        width: 22px;
+        height: 22px;
+      }
+
+      .filter-count {
+        position: absolute;
+        right: -4px;
+        top: 1px;
+        min-width: 16px;
+        height: 16px;
+        padding: 0 4px;
+        border-radius: 999px;
+        background: var(--blue);
+        color: white;
+        font-size: 10px;
+        line-height: 16px;
+        font-weight: 800;
+      }
+
+      .filter-count[hidden] {
+        display: none;
+      }
+
+      .activity-list {
+        height: 436px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        padding: 2px 24px 88px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+
+      .activity-list::-webkit-scrollbar {
+        display: none;
+      }
+
+      .activity {
+        min-height: 68px;
+        display: grid;
+        grid-template-columns: 38px minmax(0, 1fr) 172px;
+        gap: 8px;
+        align-items: flex-start;
+        padding: 9px 0 8px;
+      }
+
+      .activity[hidden] {
+        display: none !important;
+      }
+
+      .app-icon,
+      .coin {
+        flex: 0 0 auto;
+        display: inline-grid;
+        place-items: center;
+        overflow: hidden;
+        border-radius: 50%;
+        font-weight: 850;
+      }
+
+      .app-icon {
+        width: 34px;
+        height: 34px;
+        margin-top: 2px;
+        background: #eef0f2;
+        color: white;
+        font-size: 14px;
+      }
+
+      .app-icon.type-swap {
+        background: #111418;
+        color: #ffffff;
+      }
+
+      .app-icon.type-swap::before {
+        content: "⇄";
+        font-size: 19px;
+      }
+
+      .app-icon::before {
+        line-height: 1;
+      }
+
+      .app-icon.type-out {
+        background: #2bb386;
+        color: #ffffff;
+      }
+
+      .app-icon.type-out::before {
+        content: "↗";
+        font-size: 22px;
+      }
+
+      .app-icon.type-approve {
+        background: #dde2e8;
+        color: #ffffff;
+      }
+
+      .app-icon.type-approve::before {
+        content: "✓";
+        font-size: 22px;
+      }
+
+      .app-icon.type-in {
+        background: #2f78d4;
+        color: #ffffff;
+      }
+
+      .app-icon.type-in::before {
+        content: "↓";
+        font-size: 21px;
+      }
+
+      .app-icon.type-airdrop {
+        background: #e8ecf2;
+        color: #ffffff;
+      }
+
+      .app-icon.type-airdrop::before {
+        content: "✦";
+        font-size: 20px;
+      }
+
+      .activity-main {
+        min-width: 0;
+      }
+
+      .activity-title {
+        min-height: 20px;
+        overflow: hidden;
+        color: #282b31;
+        font-size: 15px;
+        line-height: 20px;
+        font-weight: 520;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: flex;
+        align-items: baseline;
+        gap: 5px;
+      }
+
+      .activity-title > span:first-child {
+        flex: 0 0 auto;
+      }
+
+      .title-meta {
+        min-width: 0;
+        max-width: 88px;
+        border: 0;
+        padding: 0;
+        background: transparent;
+        color: #8d939d;
+        cursor: pointer;
+        font: inherit;
+        font-size: 10px;
+        line-height: 15px;
+        font-weight: 650;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .title-meta::after {
+        content: "";
+      }
+
+      .title-link {
+        text-decoration: none;
+      }
+
+      .title-link:hover,
+      .title-meta:hover {
+        color: var(--blue);
+      }
+
+      .title-meta.is-static {
+        cursor: default;
+      }
+
+      .title-meta.is-static:hover {
+        color: #8d939d;
+      }
+
+      .activity-sub {
+        display: none;
+        overflow: hidden;
+        color: #9297a1;
+        font-size: 15px;
+        line-height: 24px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .activity-time {
+        color: #9297a1;
+        font-size: 12px;
+        line-height: 18px;
+      }
+
+      .changes {
+        min-width: 0;
+        display: grid;
+        gap: 3px;
+        justify-content: start;
+        padding-top: 2px;
+      }
+
+      .change-line {
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        color: #2b2f36;
+        font-size: 12px;
+        line-height: 17px;
+        white-space: nowrap;
+      }
+
+      .change-line span:last-child {
+        overflow: hidden;
+        max-width: 156px;
+        text-overflow: ellipsis;
+      }
+
+      .change-line.gas {
+        color: #6f7580;
+      }
+
+      .coin {
+        width: 18px;
+        height: 18px;
+        color: white;
+        font-size: 10px;
+      }
+
+      .coin.bnb {
+        background: var(--gold);
+        color: #fff;
+      }
+
+      .coin.nex {
+        background: #101317;
+      }
+
+      .coin.usdc {
+        background: #2e72d2;
+      }
+
+      .coin.usdt {
+        background: #3cae9d;
+      }
+
+      .coin.stock {
+        background: linear-gradient(135deg, #77dac1, #9e8cf3);
+      }
+
+      .coin.clutch {
+        background: linear-gradient(135deg, #48d67f, #ffe05d 54%, #6b8cff);
+      }
+
+      .coin.light {
+        background: linear-gradient(135deg, #f5d9ad, #efe6da);
+        color: #9a6c2e;
+      }
+
+      .coin.gas {
+        background: #e0e3e7;
+        color: #fff;
+      }
+
+      .bottom-nav {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 82px;
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        align-items: center;
+        border-top: 1px solid var(--line);
+        background: #fff;
+        color: #8f949d;
+        font-size: 12px;
+        z-index: 2;
+        box-shadow: 0 -8px 18px rgba(24, 32, 44, 0.05);
+      }
+
+      .nav-item {
+        display: grid;
+        justify-items: center;
+        gap: 5px;
+        font-weight: 700;
+      }
+
+      .nav-icon {
+        width: 28px;
+        height: 28px;
+        display: grid;
+        place-items: center;
+        border-radius: 9px;
+        background: #8f949d;
+        color: #fff;
+        font-size: 15px;
+      }
+
+      .nav-item.active {
+        color: var(--blue);
+      }
+
+      .nav-item.active .nav-icon {
+        background: var(--blue);
+      }
+
+      .home-indicator {
+        position: absolute;
+        left: 50%;
+        bottom: 8px;
+        width: 126px;
+        height: 5px;
+        transform: translateX(-50%);
+        border-radius: 999px;
+        background: #1d1f24;
+        opacity: 0.75;
+      }
+
+      .sheet-overlay {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: flex-end;
+        background: rgba(28, 33, 42, 0.34);
+        z-index: 5;
+      }
+
+      .sheet-overlay[hidden] {
+        display: none;
+      }
+
+      .address-overlay {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: flex-end;
+        background: rgba(28, 33, 42, 0.34);
+        z-index: 6;
+      }
+
+      .address-overlay[hidden] {
+        display: none;
+      }
+
+      .address-sheet {
+        width: 100%;
+        padding: 20px 18px 32px;
+        border-radius: 22px 22px 0 0;
+        background: #fff;
+      }
+
+      .address-head {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        height: 40px;
+        font-size: 19px;
+        font-weight: 850;
+      }
+
+      .address-close {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 36px;
+        height: 36px;
+        border: 0;
+        border-radius: 50%;
+        background: transparent;
+        color: #25282e;
+        font-size: 27px;
+        line-height: 36px;
+      }
+
+      .address-card {
+        margin-top: 18px;
+        padding: 16px;
+        border-radius: 16px;
+        background: #f4f6fa;
+      }
+
+      .address-inner {
+        min-height: 92px;
+        padding: 16px;
+        border-radius: 14px;
+        background: #fff;
+      }
+
+      .address-label {
+        color: #25282e;
+        font-size: 19px;
+        line-height: 26px;
+        font-weight: 750;
+      }
+
+      .address-full {
+        margin-top: 6px;
+        color: #9297a1;
+        font-size: 14px;
+        line-height: 20px;
+        word-break: break-all;
+      }
+
+      .address-explorer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 14px;
+        color: #2d81e8;
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 800;
+      }
+
+      .address-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-top: 28px;
+      }
+
+      .address-actions button {
+        height: 52px;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 850;
+      }
+
+      .address-actions .primary-action {
+        border: 0;
+        background: #2d81f7;
+        color: #fff;
+      }
+
+      .address-actions .ghost-action {
+        border: 1px solid #2d81f7;
+        background: #fff;
+        color: #2d81f7;
+      }
+
+      .sheet {
+        width: 100%;
+        min-height: 296px;
+        padding: 10px 24px 36px;
+        border-radius: 26px 26px 0 0;
+        background: #fff;
+        box-shadow: 0 -20px 44px rgba(20, 30, 45, 0.16);
+      }
+
+      .grabber {
+        width: 42px;
+        height: 5px;
+        margin: 2px auto 16px;
+        border-radius: 999px;
+        background: #dde1e7;
+      }
+
+      .sheet-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 21px;
+      }
+
+      .sheet-head h2 {
+        margin: 0;
+        font-size: 22px;
+        line-height: 1;
+      }
+
+      .close {
+        width: 34px;
+        height: 34px;
+        border: 0;
+        border-radius: 50%;
+        background: #f4f5f7;
+        color: #7e858f;
+        font-size: 20px;
+      }
+
+      .filter-section {
+        margin-bottom: 22px;
+      }
+
+      .filter-search {
+        margin-bottom: 32px;
+      }
+
+      .filter-label {
+        margin-bottom: 10px;
+        color: #7d838e;
+        font-size: 13px;
+        font-weight: 750;
+      }
+
+      .search-box {
+        height: 48px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 0 14px;
+        border: 1px solid #e7ebf1;
+        border-radius: 14px;
+        background: #fff;
+      }
+
+      .search-box svg {
+        width: 18px;
+        height: 18px;
+        color: #b4bac4;
+        flex: 0 0 auto;
+      }
+
+      .search-input {
+        width: 100%;
+        border: 0;
+        padding: 0;
+        background: transparent;
+        color: #2c3139;
+        font-size: 15px;
+        font-weight: 520;
+        outline: none;
+      }
+
+      .search-input::placeholder {
+        color: #b0b6bf;
+      }
+
+      .sheet-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-top: 30px;
+      }
+
+      .secondary,
+      .primary {
+        height: 48px;
+        border: 0;
+        border-radius: 13px;
+        font-size: 16px;
+        font-weight: 800;
+      }
+
+      .secondary {
+        background: #f3f5f8;
+        color: #5e6570;
+      }
+
+      .primary {
+        background: var(--blue);
+        color: #fff;
+      }
+
+      .empty-state {
+        display: grid;
+        place-items: center;
+        min-height: 172px;
+        color: #9297a1;
+        font-size: 15px;
+        font-weight: 700;
+      }
+
+      .empty-state[hidden] {
+        display: none;
+      }
+
+      @media (max-width: 900px) {
+        .board {
+          flex-direction: column;
+          align-items: center;
+          padding: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="board">
+      <section class="frame" aria-label="钱包动态目标态">
+        <div class="frame-title"><span>钱包动态目标态</span><span>动态</span></div>
+        <div class="phone" id="walletPrototype">
+          <div class="status"><span>12:05</span><span class="status-icons">VPN Wi-Fi <span class="battery">83</span></span></div>
+          <header class="wallet-head">
+            <div class="wallet-line">
+              <div class="wallet-name">qqqq <span>⌄</span></div>
+              <div class="chain-pill"><span class="coin bnb">B</span> BSC⌄</div>
+            </div>
+            <div class="address-line">
+              <span>0x4d34...c03c</span>
+              <span class="network-metrics"><span class="dot"></span>880 ms <span>GAS 0.0525 Gwei</span></span>
+            </div>
+            <div class="asset-total">$1.308 <span class="eye"></span></div>
+            <div class="asset-strip">
+              <span><span class="coin bnb">B</span> $1.308</span>
+              <span><span class="coin usdc">U</span> $599.74</span>
+              <span><span class="coin usdt">T</span> $507.18</span>
+            </div>
+            <div class="action-row">
+              <div class="action"><button class="action-btn">↓</button><span>收款</span></div>
+              <div class="action"><button class="action-btn">↑</button><span>转出</span></div>
+              <div class="action"><button class="action-btn">▣</button><span>扫码</span></div>
+              <div class="action"><button class="action-btn">∞</button><span>跨链</span></div>
+            </div>
+          </header>
+
+          <nav class="tabs" aria-label="钱包标签">
+            <span>币种</span>
+            <span>NFT</span>
+            <span>理财</span>
+            <span class="active">动态</span>
+            <span>工具</span>
+            <button class="filter-btn" aria-label="筛选" data-action="open-filter">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M4 5h16l-6 7v5l-4 2v-7L4 5Z" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" />
+              </svg>
+              <span class="filter-count" hidden>0</span>
+            </button>
+          </nav>
+
+	          <section class="activity-list">
+	            <article class="activity" data-type="buy" data-search="买入 okx dex dagswapbyorder nex bnb 0x1111111111111111111111111111111111111111">
+	              <div class="app-icon type-swap"></div>
+	              <div class="activity-main">
+	                <div class="activity-title"><span>买入</span><span class="title-meta is-static">OKX DEX</span></div>
+	                <div class="activity-sub">dagSwapByOrder</div>
+	                <div class="activity-time">05-29 12:31</div>
+	              </div>
+	              <div class="changes">
+	                <div class="change-line"><span class="coin bnb">B</span><span>-0.001 BNB($0.615)</span></div>
+	                <div class="change-line"><span class="coin nex">N</span><span>+18.26万 NEX($0.56)</span></div>
+	                <div class="change-line gas"><span class="coin gas">G</span><span>0.0{4}574BNB($0.0369)</span></div>
+	              </div>
+	            </article>
+
+	            <article class="activity" data-type="sell" data-search="卖出 okx dex dagswapbyorder nex bnb 0x1111111111111111111111111111111111111111">
+	              <div class="app-icon type-swap"></div>
+	              <div class="activity-main">
+	                <div class="activity-title"><span>卖出</span><span class="title-meta is-static">OKX DEX</span></div>
+	                <div class="activity-sub">dagSwapByOrder</div>
+	                <div class="activity-time">05-29 12:20</div>
+	              </div>
+	              <div class="changes">
+	                <div class="change-line"><span class="coin nex">N</span><span>-18.26万 NEX($0.56)</span></div>
+	                <div class="change-line"><span class="coin bnb">B</span><span>+0.00099 BNB($0.61)</span></div>
+	                <div class="change-line gas"><span class="coin gas">G</span><span>0.0{4}418BNB($0.0269)</span></div>
+	              </div>
+	            </article>
+
+	            <article class="activity" data-type="out" data-search="主钱包 0x2558b2e778a5b56bf52c33f341061a39bac054e5 usdc bnb">
+	              <div class="app-icon type-out"></div>
+	              <div class="activity-main">
+	                <div class="activity-title"><span>转出</span><button class="title-meta" data-address-label="主钱包" data-address-full="0x2558b2e778a5b56bf52c33f341061a39bac054e5">至 主钱包</button></div>
+                <div class="activity-sub">0x2558...54e5</div>
+                <div class="activity-time">01-29 02:40</div>
+              </div>
+              <div class="changes">
+                <div class="change-line"><span class="coin usdc">U</span><span>-599.5 USDC($0)</span></div>
+                <div class="change-line gas"><span class="coin gas">G</span><span>0.0{4}290BNB($0.00262)</span></div>
+              </div>
+            </article>
+
+	            <article class="activity" data-type="approve" data-search="usdc approve 0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d">
+              <div class="app-icon type-approve"></div>
+              <div class="activity-main">
+                <div class="activity-title"><span>授权</span><a class="title-meta title-link" href="https://bscscan.com/token/0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d" target="_blank" rel="noreferrer">USDC</a></div>
+                <div class="activity-sub">USDC · 无限授权</div>
+                <div class="activity-time">01-28 23:46</div>
+              </div>
+              <div class="changes">
+                <div class="change-line gas"><span class="coin gas">G</span><span>0.0{4}262BNB($0.0170)</span></div>
+              </div>
+            </article>
+
+	            <article class="activity" data-type="in" data-search="做市钱包 0xf70d9c6a7433b5118cae0d4f2e41e57f8c16dbef usdc">
+	              <div class="app-icon type-in"></div>
+	              <div class="activity-main">
+	                <div class="activity-title"><span>转入</span><button class="title-meta" data-address-label="做市钱包" data-address-full="0xf70d9c6a7433b5118cae0d4f2e41e57f8c16dbef">自 做市钱包</button></div>
+	                <div class="activity-sub">0xf70d...dbef</div>
+	                <div class="activity-time">01-28 23:37</div>
+	              </div>
+              <div class="changes">
+                <div class="change-line"><span class="coin usdc">U</span><span>+599.5 USDC($599.74)</span></div>
+              </div>
+            </article>
+
+	            <article class="activity" data-type="airdrop" data-search="空投 币安股票 0xec5f2a9b72e9c4dbc6e0f2f9358b313d8aed1491">
+              <div class="app-icon type-airdrop"></div>
+              <div class="activity-main">
+                <div class="activity-title"><span>空投</span><button class="title-meta" data-address-label="0xec5f...1491" data-address-full="0xec5f2a9b72e9c4dbc6e0f2f9358b313d8aed1491">自 0xec5f...1491</button></div>
+                <div class="activity-sub">0xec5f...1491</div>
+                <div class="activity-time">06-15 17:49</div>
+              </div>
+              <div class="changes">
+                <div class="change-line"><span class="coin stock">币</span><span>+2 币安股票($0.000102)</span></div>
+              </div>
+            </article>
+            <div class="empty-state" hidden>暂无该类型动态</div>
+          </section>
+
+          <div class="sheet-overlay" data-role="filter-overlay" data-action="close-filter" hidden>
+            <section class="sheet" aria-label="筛选" data-role="filter-sheet">
+              <div class="grabber"></div>
+	              <div class="sheet-head">
+	                <h2>筛选</h2>
+	                <button class="close" aria-label="关闭" data-action="close-filter">×</button>
+	              </div>
+	              <div class="filter-section filter-search">
+	                <div class="filter-label">搜索合约</div>
+	                <label class="search-box">
+	                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+	                    <circle cx="11" cy="11" r="6.5" stroke="currentColor" stroke-width="1.8"></circle>
+	                    <path d="M16 16L21 21" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+	                  </svg>
+	                  <input class="search-input" type="text" placeholder="输入合约" autocomplete="off" spellcheck="false" data-role="contract-search" />
+	                </label>
+	              </div>
+	              <div class="sheet-actions">
+	                <button class="secondary" data-action="reset-filter">重置</button>
+	                <button class="primary" data-action="apply-filter">确认</button>
+	              </div>
+	            </section>
+          </div>
+
+          <div class="address-overlay" data-role="address-overlay" hidden>
+            <section class="address-sheet" aria-label="地址信息">
+              <div class="address-head">
+                <span>地址信息</span>
+                <button class="address-close" aria-label="关闭" data-action="close-address">×</button>
+              </div>
+              <div class="address-card">
+                <div class="address-inner">
+                  <div class="address-label" data-role="address-label">0xdA8...43468</div>
+                  <div class="address-full" data-role="address-full">0xdA80b2e778a5B56bF52C33F341061A39baC43468</div>
+                </div>
+                <a class="address-explorer" data-role="address-explorer" href="https://bscscan.com/address/0xdA80b2e778a5B56bF52C33F341061A39baC43468" target="_blank" rel="noreferrer">
+                  <span>前往区块链浏览器</span>
+                  <span>›</span>
+                </a>
+              </div>
+              <div class="address-actions">
+                <button class="primary-action">添加地址本</button>
+                <button class="ghost-action">添加到观察钱包</button>
+              </div>
+            </section>
+          </div>
+
+          <nav class="bottom-nav" aria-label="底部导航">
+            <div class="nav-item"><span class="nav-icon">⌂</span><span>首页</span></div>
+            <div class="nav-item"><span class="nav-icon">⌁</span><span>行情</span></div>
+            <div class="nav-item"><span class="nav-icon">⇄</span><span>交易</span></div>
+            <div class="nav-item"><span class="nav-icon">◇</span><span>追踪</span></div>
+            <div class="nav-item active"><span class="nav-icon">▣</span><span>钱包</span></div>
+          </nav>
+          <div class="home-indicator"></div>
+        </div>
+      </section>
+
+	    </main>
+    <script>
+      (() => {
+        const root = document.querySelector("#walletPrototype");
+        if (!root) return;
+
+        const overlay = root.querySelector('[data-role="filter-overlay"]');
+	        const addressOverlay = root.querySelector('[data-role="address-overlay"]');
+	        const addressLabel = root.querySelector('[data-role="address-label"]');
+	        const addressFull = root.querySelector('[data-role="address-full"]');
+	        const addressExplorer = root.querySelector('[data-role="address-explorer"]');
+	        const contractInput = root.querySelector('[data-role="contract-search"]');
+	        const activities = Array.from(root.querySelectorAll(".activity-list .activity"));
+	        const countBadge = root.querySelector(".filter-count");
+	        const emptyState = root.querySelector(".empty-state");
+	        const storageKey = "ave-wallet-activity-filter-state";
+	        const defaultState = { contract: "" };
+	        let activeState = { ...defaultState };
+	        let draftState = { ...defaultState };
+
+	        function normalizeText(value) {
+	          return String(value || "").trim().toLowerCase();
+	        }
+
+	        try {
+	          const cachedState = localStorage.getItem(storageKey);
+	          if (cachedState) {
+	            const parsedState = JSON.parse(cachedState);
+	            activeState = {
+	              contract: typeof parsedState?.contract === "string" ? parsedState.contract : "",
+	            };
+	          }
+	        } catch (error) {
+	          activeState = { ...defaultState };
+	        }
+
+	        function syncDraftUI() {
+	          if (contractInput) contractInput.value = draftState.contract;
+	        }
+
+	        function renderFilter(state) {
+	          const query = normalizeText(state?.contract);
+	          let visibleCount = 0;
+
+	          activities.forEach((item) => {
+	            const searchMatched = !query || normalizeText(item.dataset.search).includes(query);
+	            const matched = searchMatched;
+	            item.hidden = !matched;
+	            if (matched) visibleCount += 1;
+	          });
+
+          if (emptyState) emptyState.hidden = visibleCount > 0;
+
+	          if (countBadge) {
+	            const filterCount = Number(Boolean(query));
+	            countBadge.hidden = filterCount === 0;
+	            countBadge.textContent = String(filterCount);
+	          }
+	        }
+
+	        function applyFilter(state) {
+	          activeState = {
+	            contract: String(state?.contract || "").trim(),
+	          };
+	          renderFilter(activeState);
+
+	          try {
+	            localStorage.setItem(storageKey, JSON.stringify(activeState));
+	          } catch (error) {
+	            // Local file previews may disable storage in some browsers.
+	          }
+	        }
+
+	        function openFilter() {
+	          draftState = { ...activeState };
+	          syncDraftUI();
+	          overlay.hidden = false;
+	        }
+
+        function closeFilter() {
+          overlay.hidden = true;
+        }
+
+        function openAddress(button) {
+          const label = button.dataset.addressLabel || button.textContent.trim();
+          const full = button.dataset.addressFull || label;
+          addressLabel.textContent = label;
+          addressFull.textContent = full;
+          addressExplorer.href = `https://bscscan.com/address/${full}`;
+          addressOverlay.hidden = false;
+        }
+
+        function closeAddress() {
+          addressOverlay.hidden = true;
+        }
+
+	        root.addEventListener("click", (event) => {
+	          const addressButton = event.target.closest("[data-address-full]");
+	          if (addressButton && root.contains(addressButton)) {
+	            openAddress(addressButton);
+            return;
+          }
+
+          const actionButton = event.target.closest("button[data-action]");
+          if (actionButton && root.contains(actionButton)) {
+            const action = actionButton.dataset.action;
+	            if (action === "open-filter") openFilter();
+	            if (action === "close-filter") closeFilter();
+	            if (action === "close-address") closeAddress();
+	            if (action === "reset-filter") {
+	              draftState = { ...defaultState };
+	              syncDraftUI();
+	            }
+	            if (action === "apply-filter") {
+	              applyFilter(draftState);
+	              closeFilter();
+	            }
+	          }
+	        });
+
+	        if (contractInput) {
+	          contractInput.addEventListener("input", () => {
+	            draftState.contract = contractInput.value;
+	          });
+
+	          contractInput.addEventListener("keydown", (event) => {
+	            if (event.key === "Enter") {
+	              applyFilter(draftState);
+	              closeFilter();
+	            }
+	          });
+	        }
+
+        overlay.addEventListener("click", (event) => {
+          if (event.target === overlay) closeFilter();
+        });
+
+        addressOverlay.addEventListener("click", (event) => {
+          if (event.target === addressOverlay) closeAddress();
+        });
+
+	        applyFilter(activeState);
+	      })();
+    </script>
+  </body>
+</html>
