@@ -1810,7 +1810,7 @@
       <span class="section-kicker">CREATE + AUTO BACKUP</span>
       <h2>创建无私钥钱包流程</h2>
       <p class="flow-summary">
-        结论：可以实现创建完成后自动备份。创建时由 App 在本机生成钱包材料，完成加密保护后自动写入平台云备份，并在本机生成多链地址；用户不需要看到助记词，也不需要手动选择备份位置。
+        结论：可以实现创建完成后自动备份。首次创建账号后自动创建一个初始无私钥钱包；老用户也可以从“添加钱包”继续新增。创建时由 App 在本机生成钱包材料，完成加密保护后自动写入平台云备份，并在本机生成多链地址；用户不需要看到助记词，也不需要手动选择备份位置。
       </p>
       <div class="doc-callout">
         文档依据：创建流程支持本机生成钱包材料、自动备份、恢复校验与多链地址生成；备份和恢复类操作需要二次安全验证。
@@ -1820,8 +1820,8 @@
         <li class="flow-step start">
           <span class="flow-index">1</span>
           <div class="flow-content">
-            <strong>从“添加钱包”进入创建</strong>
-            <span>用户在钱包首页点击添加钱包，选择“创建无私钥钱包”。导入入口可根据业务上限置灰。</span>
+            <strong>账号创建后进入初始钱包创建</strong>
+            <span>新用户创建账号后自动进入初始无私钥钱包创建；老用户新增钱包时，从钱包首页点击“添加钱包”进入。</span>
           </div>
         </li>
         <li class="flow-step">
@@ -1876,7 +1876,7 @@
       <div class="story-strip" aria-label="创建流程关键页面">
         <div class="story-card">
           <b>入口</b>
-          <span>首页添加钱包，选择创建无私钥钱包。</span>
+          <span>账号创建完成后进入初始钱包创建；老用户可从首页添加钱包进入。</span>
         </div>
         <div class="story-card">
           <b>处理中</b>
@@ -1894,7 +1894,7 @@
       <h2>设计重点</h2>
       <p>这个流程可以按 Binance 截图表达，但产品上建议把“创建”和“备份”合并成一条连续进度，用户只感知结果，不被底层安全模型打断。</p>
       <ul>
-        <li>默认走平台云备份，创建完成即显示已备份。</li>
+        <li>账号创建完成后自动创建初始无私钥钱包，默认走平台云备份。</li>
         <li>创建中不展示助记词，避免把 Keyless 钱包误导成传统助记词钱包。</li>
         <li>失败态只暴露“备份待完成/重试”，不要让用户处理底层恢复材料。</li>
         <li>补充备份渠道可以放到备份管理页，不阻塞首次创建完成。</li>
@@ -1918,7 +1918,7 @@
     ];
 
     const state = {
-      screen: "home",
+      screen: "accountStart",
       overlay: null,
       passkey: { open: false, flow: "" },
       readSeconds: 0,
@@ -1930,6 +1930,9 @@
       savedMnemonic: false,
       converted: false,
       createdWallet: false,
+      accountCreated: false,
+      initialWalletCreated: false,
+      creationMode: "add",
       restoredWallet: false,
       deletedWallet: false,
       creationProgress: 0,
@@ -1942,6 +1945,8 @@
     };
 
     const titles = {
+      accountStart: "创建账号",
+      accountWalletIntro: "创建初始钱包",
       home: "我的钱包",
       manage: "钱包管理",
       settings: "钱包设置",
@@ -1975,6 +1980,28 @@
     };
 
     const notes = {
+      accountStart: {
+        pill: "FIRST RUN",
+        title: "账号后的初始钱包",
+        copy: "首次创建账号后，不应该让用户停在空首页。系统应立即为用户创建一个初始无私钥钱包，完成后再进入钱包首页。",
+        points: [
+          "账号创建和初始钱包创建是一条连续新手路径。",
+          "用户不需要先理解钱包类型，也不需要手动点击添加钱包。",
+          "初始钱包创建完成后默认已开启平台云备份。",
+          "后续新增钱包仍保留在首页的添加钱包入口。"
+        ]
+      },
+      accountWalletIntro: {
+        pill: "INITIAL WALLET",
+        title: "初始分片钱包创建",
+        copy: "账号可用后，继续创建第一个无私钥钱包。产品语言仍叫无私钥钱包，技术上它具备分片恢复能力。",
+        points: [
+          "这里创建的是账号下的第一个钱包，不是额外新增钱包。",
+          "创建前只做一次通行密钥校验，确认本人操作。",
+          "创建、平台云备份、多链地址生成合并为一个进度态。",
+          "完成后直接进入钱包首页。"
+        ]
+      },
       home: {
         pill: "KEYLESS WALLET",
         title: "无私钥钱包入口",
@@ -2278,6 +2305,17 @@
           "进度文案只暴露“创建中/备份中/准备就绪”。"
         ]
       },
+      initialCreateProgress: {
+        pill: "INITIAL BACKUP",
+        title: "初始钱包创建中",
+        copy: "首次账号创建后的钱包创建不需要额外入口。账号完成后直接进入初始钱包创建、自动备份和多链地址生成。",
+        points: [
+          "初始钱包创建是账号注册链路的一部分。",
+          "用户只感知“正在创建钱包”，不需要知道分片细节。",
+          "默认完成平台云备份，避免新用户空钱包或未备份状态。",
+          "完成后直接进入钱包首页。"
+        ]
+      },
       createDone: {
         pill: "READY",
         title: "创建完成",
@@ -2286,6 +2324,16 @@
           "完成后返回首页，新增钱包显示为已自动备份。",
           "不展示助记词，避免和私钥钱包创建混淆。",
           "首次创建链路到这里闭环。"
+        ]
+      },
+      initialCreateDone: {
+        pill: "READY",
+        title: "初始钱包完成",
+        copy: "完成页只告诉用户初始钱包已准备就绪，避免把账号创建后的钱包生成解释成额外新增钱包。",
+        points: [
+          "进入首页后，该初始钱包就是用户默认可用的钱包。",
+          "状态直接显示已完成平台云备份。",
+          "后续新增钱包仍从添加钱包入口进入。"
         ]
       }
     };
@@ -2310,6 +2358,7 @@
 
     function backTarget() {
       const map = {
+        accountWalletIntro: "accountStart",
         manage: "home",
         settings: "manage",
         backup: "settings",
@@ -2318,7 +2367,7 @@
         mnemonic: "verify",
         complete: "home",
         createIntro: "home",
-        createPasskey: "createIntro",
+        createPasskey: state.creationMode === "initial" ? "accountWalletIntro" : "createIntro",
         backupVerify: "backup",
         backupPin: "backup",
         backupQr: "backupPin",
@@ -2480,8 +2529,8 @@
       const flow = state.passkey.flow;
       state.passkey.open = false;
       state.passkey.flow = "";
-      if (flow === "create") {
-        beginWalletCreation();
+      if (flow === "create" || flow === "initialCreate") {
+        beginWalletCreation(flow === "initialCreate" ? "initial" : "add");
         return;
       }
       if (flow === "convert") markVerificationDone("passkey", "verify");
@@ -2630,7 +2679,8 @@
       render();
     }
 
-    function beginWalletCreation() {
+    function beginWalletCreation(mode = "add") {
+      state.creationMode = mode;
       state.overlay = null;
       state.passkey.open = false;
       state.passkey.flow = "";
@@ -2652,7 +2702,12 @@
         const next = checkpoints.find((item) => item.progress > state.creationProgress);
         if (!next) {
           stopCreationTimer();
-          state.createdWallet = true;
+          if (state.creationMode === "initial") {
+            state.accountCreated = true;
+            state.initialWalletCreated = true;
+          } else {
+            state.createdWallet = true;
+          }
           state.screen = "createDone";
           render();
           return;
@@ -2751,9 +2806,10 @@
       showToast(complete ? "二次验证已通过，可以继续操作" : "验证已通过，请继续完成另一项验证");
     }
 
-    function enterCreatePasskey() {
+    function enterCreatePasskey(mode = "add") {
+      state.creationMode = mode;
       go("createPasskey");
-      setTimeout(() => openPasskeyVerification("create"), 80);
+      setTimeout(() => openPasskeyVerification(mode === "initial" ? "initialCreate" : "create"), 80);
     }
 
     function enterMnemonicScreen() {
@@ -2762,11 +2818,17 @@
     }
 
     function shell(content, options = {}) {
-      const canBack = !["home", "complete", "createProgress", "createDone", "backupProgress", "restoreProgress", "restoreDone", "deleteProgress", "deleteDone"].includes(state.screen);
+      const canBack = !["accountStart", "home", "complete", "createProgress", "createDone", "backupProgress", "restoreProgress", "restoreDone", "deleteProgress", "deleteDone"].includes(state.screen);
       const right = options.right || "";
       const title = state.screen === "backupPin" && state.backupFlow.method === "qr"
         ? "设置恢复密码"
-        : titles[state.screen];
+        : state.screen === "createPasskey" && state.creationMode === "initial"
+          ? "创建初始钱包"
+          : state.screen === "createProgress" && state.creationMode === "initial"
+            ? "创建初始钱包"
+            : state.screen === "createDone" && state.creationMode === "initial"
+              ? "初始钱包"
+              : titles[state.screen];
       return `
         <div class="status">
           <span>18:08</span>
@@ -2791,6 +2853,37 @@
       return `<span class="wallet-icon ${cls}" aria-hidden="true"></span>`;
     }
 
+    function accountStart() {
+      return shell(`
+        <div class="create-wallet-hero">
+          <div class="create-visual"></div>
+          <h2 class="screen-title">创建 AVE 账号</h2>
+          <p class="body-copy muted">账号创建完成后，将自动为你创建一个初始无私钥钱包。</p>
+        </div>
+        <div class="bullet">初始钱包创建过程中不会展示助记词。</div>
+        <div class="bullet">创建完成后默认开启平台云备份。</div>
+        <div class="bullet">后续可在钱包首页继续添加或恢复钱包。</div>
+        <div class="bottom-actions">
+          <button class="primary" onclick="state.accountCreated = true; go('accountWalletIntro')">创建账号</button>
+        </div>
+      `);
+    }
+
+    function accountWalletIntro() {
+      return shell(`
+        <div class="create-wallet-hero">
+          <div class="safe-visual"></div>
+          <h2 class="screen-title">创建初始无私钥钱包</h2>
+          <p class="body-copy muted">账号已创建。接下来为账号生成第一个钱包，并自动完成平台云备份。</p>
+        </div>
+        <div class="bullet">这是账号下的初始钱包，不需要从添加钱包入口手动创建。</div>
+        <div class="bullet">普通转账仍由本机完成签名。</div>
+        <div class="bottom-actions">
+          <button class="primary" onclick="enterCreatePasskey('initial')">创建初始钱包</button>
+        </div>
+      `);
+    }
+
     function home() {
       const createdRow = state.createdWallet
         ? `${walletRow("My Wallet 3", "$0", "red", false, "已自动备份")}`
@@ -2798,7 +2891,8 @@
       const restoredRow = state.restoredWallet
         ? `${walletRow("Recovered Wallet", "$0", "blue", false, "已恢复 · 已备份")}`
         : "";
-      const myWallet2Row = state.deletedWallet ? "" : `${walletRow("My Wallet 2", "$0", "", true)}`;
+      const myWallet2Note = state.initialWalletCreated ? "初始钱包 · 已自动备份" : "";
+      const myWallet2Row = state.deletedWallet ? "" : `${walletRow("My Wallet 2", "$0", "", true, myWallet2Note)}`;
       const keylessRows = state.converted
         ? `
           ${walletRow("Wallet1", "$8,342.58", "blue")}
@@ -2877,28 +2971,33 @@
         <div class="bullet">创建过程中不会展示助记词。</div>
         <div class="bullet">普通转账仍由本机完成签名。</div>
         <div class="bottom-actions">
-          <button class="primary" onclick="enterCreatePasskey()">创建钱包</button>
+          <button class="primary" onclick="enterCreatePasskey('add')">创建钱包</button>
         </div>
       `);
     }
 
     function createPasskey() {
+      const intro = state.creationMode === "initial"
+        ? "验证通过后，将继续创建账号下的初始钱包。"
+        : "验证通过后，将继续创建新的无私钥钱包。";
       return shell(`
         <div class="passkey-panel">
           <div>
             <div class="passkey-mark"></div>
             <h2 class="screen-title">通过通行密钥验证</h2>
-            <p class="body-copy muted">设备将提示您通过指纹、人脸或锁屏密码进行验证。</p>
+            <p class="body-copy muted">设备将提示您通过指纹、人脸或锁屏密码进行验证。${intro}</p>
           </div>
         </div>
         <div class="bottom-actions">
-          <button class="primary" onclick="openPasskeyVerification('create')">重新发起验证</button>
+          <button class="primary" onclick="openPasskeyVerification(state.creationMode === 'initial' ? 'initialCreate' : 'create')">重新发起验证</button>
         </div>
       `);
     }
 
     function createProgress() {
-      const labels = ["钱包创建中", "正在加密", "正在备份", "正在生成地址", "即将完成"];
+      const labels = state.creationMode === "initial"
+        ? ["初始钱包创建中", "正在加密", "正在备份", "正在生成地址", "即将完成"]
+        : ["钱包创建中", "正在加密", "正在备份", "正在生成地址", "即将完成"];
       const active = Math.min(state.creationStep, labels.length - 1);
       return shell(`
         <div class="create-progress-wrap">
@@ -2912,14 +3011,19 @@
     }
 
     function createDone() {
+      const title = state.creationMode === "initial" ? "初始钱包已准备就绪！" : "您的钱包已准备就绪！";
+      const copy = state.creationMode === "initial"
+        ? "初始无私钥钱包已安全创建，并已完成平台云备份。"
+        : "钱包已安全创建，并已完成平台云备份。";
+      const button = state.creationMode === "initial" ? "进入我的钱包" : "开始探索";
       return shell(`
         <div class="finished">
           <div class="success-mark"></div>
-          <div class="status-title">您的钱包已准备就绪！</div>
-          <p class="body-copy muted">钱包已安全创建，并已完成平台云备份。</p>
+          <div class="status-title">${title}</div>
+          <p class="body-copy muted">${copy}</p>
         </div>
         <div class="bottom-actions">
-          <button class="primary" onclick="go('home')">开始探索</button>
+          <button class="primary" onclick="go('home')">${button}</button>
         </div>
       `);
     }
@@ -3144,7 +3248,7 @@
         : `
           <div class="wallet-row manage-row">
             ${walletIcon()}
-            <span><span class="row-title">My Wallet 2</span><span class="row-sub">$0</span></span>
+            <span><span class="row-title">My Wallet 2</span><span class="row-sub">${state.initialWalletCreated ? "初始钱包 · 已自动备份" : "$0"}</span></span>
             <button class="edit" onclick="showToast('编辑名称')"></button>
             <button class="menu" onclick="go('settings')"></button>
           </div>
@@ -3509,7 +3613,7 @@
         `;
       }
       if (state.passkey.open) {
-        const createFlow = state.passkey.flow === "create";
+        const createFlow = state.passkey.flow === "create" || state.passkey.flow === "initialCreate";
         return `
           <div class="overlay">
             <div class="sheet">
@@ -3567,7 +3671,13 @@
     }
 
     function renderNotes() {
-      const key = state.screen === "mnemonic" && state.copied ? "copied" : state.screen;
+      const key = state.screen === "mnemonic" && state.copied
+        ? "copied"
+        : state.screen === "createProgress" && state.creationMode === "initial"
+          ? "initialCreateProgress"
+          : state.screen === "createDone" && state.creationMode === "initial"
+            ? "initialCreateDone"
+            : state.screen;
       const note = notes[key] || notes.home;
       document.getElementById("notes").innerHTML = `
         <div class="note-box">
@@ -3581,6 +3691,8 @@
 
     function render() {
       const view = {
+        accountStart,
+        accountWalletIntro,
         home,
         manage,
         settings,
