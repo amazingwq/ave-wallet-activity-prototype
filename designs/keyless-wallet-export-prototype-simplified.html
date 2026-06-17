@@ -221,6 +221,73 @@
       margin-bottom: 20px;
     }
 
+    .account-card {
+      display: grid;
+      grid-template-columns: 42px 1fr auto;
+      align-items: center;
+      gap: 12px;
+      min-height: 62px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+      padding: 10px 12px;
+      margin-bottom: 16px;
+    }
+
+    .account-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: #e8edff;
+      color: var(--blue);
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .account-card.guest .account-avatar {
+      background: #fff4ce;
+      color: #111;
+    }
+
+    .account-card.watch .account-avatar {
+      background: #f2f4f8;
+      color: #5b6472;
+    }
+
+    .account-card strong {
+      display: block;
+      font-size: 15px;
+      line-height: 1.2;
+    }
+
+    .account-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+      margin-top: 3px;
+    }
+
+    .mode-actions {
+      display: grid;
+      gap: 10px;
+      margin: 18px 0 0;
+    }
+
+    .notice-card {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--soft);
+      padding: 13px 14px;
+      margin: 8px 0 14px;
+      color: #5d6674;
+      font-size: 13px;
+      line-height: 1.55;
+      font-weight: 650;
+    }
+
     .section-title {
       display: flex;
       align-items: center;
@@ -1920,6 +1987,8 @@
     const state = {
       screen: "accountStart",
       overlay: null,
+      sessionMode: "loggedOut",
+      hasPasskey: true,
       passkey: { open: false, flow: "" },
       readSeconds: 0,
       riskAccepted: false,
@@ -1933,13 +2002,15 @@
       accountCreated: false,
       initialWalletCreated: false,
       creationMode: "add",
+      creationVerifications: { passkey: false, google: false, email: false },
       restoredWallet: false,
       deletedWallet: false,
       creationProgress: 0,
       creationStep: 0,
       backups: { cloud: true, drive: false, qr: false },
       backupFlow: { method: "", pin: "", confirmPin: "", verifyPin: "", progress: 0, verifications: { passkey: false, google: false, email: false } },
-      restoreFlow: { source: "", pin: "", progress: 0, step: 0, verifications: { passkey: false, google: false, email: false } },
+      restoreFlow: { source: "", pin: "", progress: 0, step: 0, stage: "pull", verifications: { passkey: false, google: false, email: false } },
+      cloudPull: { progress: 0, step: 0 },
       deleteFlow: { acknowledged: false, progress: 0, step: 0, verifications: { passkey: false, google: false, email: false } },
       toast: ""
     };
@@ -1971,6 +2042,8 @@
       restoreScan: "扫描 QR Code",
       restorePin: "解锁备份",
       restoreVerify: "安全验证",
+      restoreCloudPull: "拉取云备份",
+      restoreCloudSuccess: "备份拉取成功",
       restoreProgress: "恢复中",
       restoreDone: "恢复完成",
       deleteIntro: "删除钱包",
@@ -1983,12 +2056,13 @@
       accountStart: {
         pill: "FIRST RUN",
         title: "账号后的初始钱包",
-        copy: "首次创建账号后，不应该让用户停在空首页。系统应立即为用户创建一个初始无私钥钱包，完成后再进入钱包首页。",
+        copy: "首次创建账号后，不应该让用户停在空首页。系统应立即为用户创建一个初始无私钥钱包，完成后再进入钱包首页。未登录用户则只能走本地私钥钱包或观察钱包路径。",
         points: [
           "账号创建和初始钱包创建是一条连续新手路径。",
+          "未登录导入私钥钱包时，不提供平台云备份和平台云恢复。",
+          "观察钱包只读，导入后才可正常使用转账等能力。",
           "用户不需要先理解钱包类型，也不需要手动点击添加钱包。",
-          "初始钱包创建完成后默认已开启平台云备份。",
-          "后续新增钱包仍保留在首页的添加钱包入口。"
+          "初始钱包创建完成后默认已开启平台云备份。"
         ]
       },
       accountWalletIntro: {
@@ -2005,12 +2079,13 @@
       home: {
         pill: "KEYLESS WALLET",
         title: "无私钥钱包入口",
-        copy: "首页只展示钱包状态和核心入口，不把技术解释压进用户主流程。新增钱包从底部进入，转换能力仍从 My Wallet 2 的设置页进入。",
+        copy: "首页需要先表达登录态，再表达钱包类型。已登录账号可以使用无私钥钱包；未登录时只能使用本地私钥钱包或观察钱包。",
         points: [
+          "已登录：展示无私钥钱包、平台云备份和跨设备恢复能力。",
+          "未登录私钥钱包：可正常本地使用，但不支持平台云备份和平台云恢复。",
+          "观察钱包：只读，展示能力受限提示，引导导入后使用。",
           "无私钥钱包和私钥钱包分区展示，转换完成后钱包会移动到私钥钱包区。",
-          "底部主按钮用于添加钱包，右上角管理用于进入已有钱包设置。",
-          "普通转账仍是本地签名，不需要临时组合完整密钥。",
-          "说明信息放在页面旁，方便评审理解，不干扰真实移动端体验。"
+          "普通转账仍是本地签名，不需要临时组合完整密钥。"
         ]
       },
       manage: {
@@ -2119,7 +2194,7 @@
         title: "恢复入口",
         copy: "恢复流程用于换机或重装 App 后把钱包恢复到本设备。用户只需要选择自己可用的备份来源。",
         points: [
-          "平台云备份是推荐默认路径，完成账号验证后自动恢复。",
+          "平台云备份是推荐默认路径，但需要两段验证：先拉取云备份，再恢复钱包。",
           "iCloud / Google Drive 和 QR Code 输入 PIN 后直接进入恢复中。",
           "恢复过程中不会向用户展示私钥或助记词。"
         ]
@@ -2156,12 +2231,32 @@
       },
       restoreVerify: {
         pill: "AUTH",
-        title: "恢复操作凭证",
-        copy: "恢复属于高危操作，文档要求账号验证和独立 2FA 后生成本次操作授权。",
+        title: "条件式安全验证",
+        copy: "恢复属于高危操作。账号已设置通行密钥时，只验证通行密钥；未设置通行密钥时，必须同时完成 Google 验证和邮箱验证。",
         points: [
-          "三种方式按通行密钥、Google 验证、邮箱验证的优先级展示。",
-          "用户只需要完成其中 2 项即可继续恢复。",
-          "验证完成后，只允许继续本次恢复操作。"
+          "有通行密钥：页面只展示通行密钥，完成 1 项即可继续。",
+          "无通行密钥：页面展示 Google 验证和邮箱验证，两项都完成才可继续。",
+          "平台云恢复会进入两次验证：第一次拉取云备份，第二次恢复钱包。"
+        ]
+      },
+      restoreCloudPull: {
+        pill: "PULL CLOUD",
+        title: "拉取平台云备份",
+        copy: "第一次安全验证通过后，只拉取平台云端可恢复数据，不直接恢复钱包。",
+        points: [
+          "这一步用户理解为“找回云端备份”。",
+          "拉取完成后展示成功页，给用户明确反馈。",
+          "不在页面里暴露分片、Share 等内部术语。"
+        ]
+      },
+      restoreCloudSuccess: {
+        pill: "PULLED",
+        title: "云备份已找到",
+        copy: "平台云数据拉取成功后，进入第二次安全验证。第二次验证通过后才恢复钱包到本设备。",
+        points: [
+          "把“拉取备份”和“恢复钱包”拆开，便于用户理解风险。",
+          "第二次验证文案强调本人恢复钱包。",
+          "成功页只说结果，不解释内部组合过程。"
         ]
       },
       restoreProgress: {
@@ -2197,10 +2292,10 @@
       deleteVerify: {
         pill: "AUTH",
         title: "删除操作凭证",
-        copy: "删除和恢复、导出一样属于高危操作。按优先级展示通行密钥、Google 验证、邮箱验证，完成其中 2 项后只允许继续本次删除。",
+        copy: "删除和恢复、导出一样属于高危操作。验证方式按账号安全能力动态决定。",
         points: [
-          "Passkey 仍是优先方式，便于钱包服务独立复核。",
-          "Google 验证和邮箱验证作为独立 2FA 组合补足第二条验证路径。",
+          "有通行密钥：只验证通行密钥。",
+          "无通行密钥：必须同时完成 Google 验证和邮箱验证。",
           "操作授权建议短时间有效，避免删除操作长时间悬挂。"
         ]
       },
@@ -2237,12 +2332,12 @@
       verify: {
         pill: "STRONG AUTH",
         title: "强身份验证",
-        copy: "安全核心保留在身份验证，而不是堆叠弹窗。高风险导出需要账号态和二次验证共同签发操作凭证。",
+        copy: "安全核心保留在身份验证，而不是堆叠弹窗。高风险导出按账号安全能力动态展示验证方式。",
         points: [
-          "页面按安全优先级展示：通行密钥 > Google 验证 > 邮箱验证。",
-          "生产环境只展示用户已设置的 2 项；如果 3 项都已设置，默认取优先级最高的 2 项。",
-          "如果用户设置不足 2 项，先引导补充安全项，不允许继续导出。",
-          "展示的 2 项都通过后，才允许继续本次导出。"
+          "有通行密钥：只展示通行密钥，验证通过即可继续。",
+          "无通行密钥：展示 Google 验证和邮箱验证，必须全部通过。",
+          "如果用户缺少 Google 验证，应先引导绑定，不允许继续导出。",
+          "验证结果只对本次高危操作有效。"
         ]
       },
       mnemonic: {
@@ -2286,13 +2381,13 @@
         ]
       },
       createPasskey: {
-        pill: "PASSKEY",
-        title: "本人操作校验",
-        copy: "创建前做通行密钥验证，确保账号本人触发创建与云备份写入。",
+        pill: "AUTH",
+        title: "创建前验证",
+        copy: "创建前按账号安全能力进行本人验证，确保账号本人触发创建与云备份写入。",
         points: [
-          "可映射为设备生物识别、锁屏密码或 Passkey。",
-          "验证通过后才生成钱包材料并发起平台云备份。",
-          "这是创建场景的轻量强校验，不等于导出助记词的双因子校验。"
+          "有通行密钥：只验证通行密钥。",
+          "无通行密钥：必须同时完成 Google 验证和邮箱验证。",
+          "验证通过后才生成钱包材料并发起平台云备份。"
         ]
       },
       createProgress: {
@@ -2378,7 +2473,7 @@
         restoreDriveFile: "restoreSource",
         restoreScan: "restoreSource",
         restorePin: state.restoreFlow.source === "qr" ? "restoreScan" : "restoreDriveFile",
-        restoreVerify: state.restoreFlow.source === "cloud" ? "restoreSource" : "restorePin",
+        restoreVerify: state.restoreFlow.stage === "recover" && state.restoreFlow.source === "cloud" ? "restoreCloudSuccess" : state.restoreFlow.source === "cloud" ? "restoreSource" : "restorePin",
         restoreDone: "home",
         deleteIntro: "settings",
         deleteVerify: "deleteIntro",
@@ -2497,20 +2592,69 @@
 
     function verificationStateForScreen(screen = state.screen) {
       if (screen === "verify") return state.verifications;
+      if (screen === "createPasskey") return state.creationVerifications;
       if (screen === "backupVerify") return state.backupFlow.verifications;
       if (screen === "restoreVerify") return state.restoreFlow.verifications;
       if (screen === "deleteVerify") return state.deleteFlow.verifications;
       return state.verifications;
     }
 
+    function requiredVerificationTypes() {
+      return state.hasPasskey ? ["passkey"] : ["google", "email"];
+    }
+
     function verificationCountForScreen(screen = state.screen) {
       const target = verificationStateForScreen(screen);
-      return Number(target.passkey) + Number(target.google) + Number(target.email);
+      return requiredVerificationTypes().filter((type) => target[type]).length;
+    }
+
+    function verificationTargetCount() {
+      return requiredVerificationTypes().length;
+    }
+
+    function verificationCompleteForScreen(screen = state.screen) {
+      const target = verificationStateForScreen(screen);
+      return requiredVerificationTypes().every((type) => target[type]);
     }
 
     function markVerificationDone(type, screen = state.screen) {
       const target = verificationStateForScreen(screen);
       target[type] = true;
+    }
+
+    function resetVerificationsForScreen(screen = state.screen) {
+      const target = verificationStateForScreen(screen);
+      target.passkey = false;
+      target.google = false;
+      target.email = false;
+    }
+
+    function verificationRows(flow) {
+      const target = verificationStateForScreen();
+      const rows = {
+        passkey: `
+          <button class="verify-row ${target.passkey ? "done" : ""}" onclick="${target.passkey ? "showToast('通行密钥验证已通过')" : `openPasskeyVerification('${flow}')`}">
+            <span class="verify-icon key"></span>
+            <span class="row-title">通行密钥</span>
+            <span class="chevron"></span>
+          </button>
+        `,
+        google: `
+          <button class="verify-row ${target.google ? "done" : ""}" onclick="${target.google ? "showToast('Google 验证已通过')" : "openOtpVerification('google')"}">
+            <span class="verify-icon otp"></span>
+            <span class="row-title">Google 验证</span>
+            <span class="chevron"></span>
+          </button>
+        `,
+        email: `
+          <button class="verify-row ${target.email ? "done" : ""}" onclick="${target.email ? "showToast('邮箱验证已通过')" : "openOtpVerification('email')"}">
+            <span class="verify-icon otp"></span>
+            <span class="row-title">邮箱验证</span>
+            <span class="chevron"></span>
+          </button>
+        `
+      };
+      return requiredVerificationTypes().map((type) => rows[type]).join("");
     }
 
     function openPasskeyVerification(flow) {
@@ -2549,7 +2693,7 @@
     }
 
     function beginBackupPin() {
-      if (verificationCountForScreen("backupVerify") < 2) return;
+      if (!verificationCompleteForScreen("backupVerify")) return;
       go("backupPin");
     }
 
@@ -2565,6 +2709,7 @@
         pin: "",
         progress: 0,
         step: 0,
+        stage: source === "cloud" ? "pull" : "recover",
         verifications: { passkey: false, google: false, email: false }
       };
       if (source === "cloud") {
@@ -2596,7 +2741,44 @@
       showToast(`${labelMap[type]}已通过`);
     }
 
+    function beginCloudPull() {
+      if (!verificationCompleteForScreen("restoreVerify")) return;
+      state.cloudPull.progress = 14;
+      state.cloudPull.step = 0;
+      state.screen = "restoreCloudPull";
+      state.toast = "";
+      stopRestoreTimer();
+      render();
+      restoreTimer = setInterval(() => {
+        const checkpoints = [
+          { progress: 32, step: 0 },
+          { progress: 56, step: 1 },
+          { progress: 78, step: 2 },
+          { progress: 100, step: 3 }
+        ];
+        const next = checkpoints.find((item) => item.progress > state.cloudPull.progress);
+        if (!next) {
+          stopRestoreTimer();
+          state.screen = "restoreCloudSuccess";
+          resetVerificationsForScreen("restoreVerify");
+          state.restoreFlow.stage = "recover";
+          render();
+          return;
+        }
+        state.cloudPull.progress = next.progress;
+        state.cloudPull.step = next.step;
+        render();
+      }, 720);
+    }
+
+    function continueCloudRestoreVerify() {
+      state.restoreFlow.stage = "recover";
+      resetVerificationsForScreen("restoreVerify");
+      go("restoreVerify");
+    }
+
     function beginRestoreProgress() {
+      if (!verificationCompleteForScreen("restoreVerify") && state.restoreFlow.source === "cloud") return;
       state.restoreFlow.progress = 12;
       state.restoreFlow.step = 0;
       state.screen = "restoreProgress";
@@ -2639,6 +2821,7 @@
     }
 
     function beginDeleteProgress() {
+      if (!verificationCompleteForScreen("deleteVerify")) return;
       state.deleteFlow.progress = 12;
       state.deleteFlow.step = 0;
       state.screen = "deleteProgress";
@@ -2703,6 +2886,7 @@
         if (!next) {
           stopCreationTimer();
           if (state.creationMode === "initial") {
+            state.sessionMode = "loggedIn";
             state.accountCreated = true;
             state.initialWalletCreated = true;
           } else {
@@ -2799,7 +2983,7 @@
       if (state.otp.code.length !== 6) return;
       const type = state.otp.method === "email" ? "email" : "google";
       markVerificationDone(type);
-      const complete = verificationCountForScreen() >= 2;
+      const complete = verificationCompleteForScreen();
       state.otp.open = false;
       state.otp.code = "";
       render();
@@ -2808,8 +2992,11 @@
 
     function enterCreatePasskey(mode = "add") {
       state.creationMode = mode;
+      state.creationVerifications = { passkey: false, google: false, email: false };
       go("createPasskey");
-      setTimeout(() => openPasskeyVerification(mode === "initial" ? "initialCreate" : "create"), 80);
+      if (state.hasPasskey) {
+        setTimeout(() => openPasskeyVerification(mode === "initial" ? "initialCreate" : "create"), 80);
+      }
     }
 
     function enterMnemonicScreen() {
@@ -2818,7 +3005,7 @@
     }
 
     function shell(content, options = {}) {
-      const canBack = !["accountStart", "home", "complete", "createProgress", "createDone", "backupProgress", "restoreProgress", "restoreDone", "deleteProgress", "deleteDone"].includes(state.screen);
+      const canBack = !["accountStart", "home", "complete", "createProgress", "createDone", "backupProgress", "restoreCloudPull", "restoreCloudSuccess", "restoreProgress", "restoreDone", "deleteProgress", "deleteDone"].includes(state.screen);
       const right = options.right || "";
       const title = state.screen === "backupPin" && state.backupFlow.method === "qr"
         ? "设置恢复密码"
@@ -2853,18 +3040,76 @@
       return `<span class="wallet-icon ${cls}" aria-hidden="true"></span>`;
     }
 
+    function enterLoggedInAccount(hasPasskey = true) {
+      state.sessionMode = "loggedIn";
+      state.hasPasskey = hasPasskey;
+      state.accountCreated = true;
+      go("accountWalletIntro");
+    }
+
+    function enterGuestPrivateWallet() {
+      state.sessionMode = "guestPrivate";
+      state.converted = true;
+      state.createdWallet = false;
+      state.initialWalletCreated = false;
+      state.restoredWallet = false;
+      state.deletedWallet = false;
+      go("home");
+    }
+
+    function enterWatchWallet() {
+      state.sessionMode = "watchOnly";
+      state.converted = false;
+      state.createdWallet = false;
+      state.initialWalletCreated = false;
+      state.restoredWallet = false;
+      state.deletedWallet = false;
+      go("home");
+    }
+
+    function accountStatusCard() {
+      if (state.sessionMode === "guestPrivate") {
+        return `
+          <div class="account-card guest">
+            <span class="account-avatar">P</span>
+            <span><strong>未登录 · 私钥钱包</strong><span>本地自管钱包，可正常转账；不支持平台云备份与恢复。</span></span>
+            <button class="small-btn" onclick="go('accountStart')">登录</button>
+          </div>
+        `;
+      }
+      if (state.sessionMode === "watchOnly") {
+        return `
+          <div class="account-card watch">
+            <span class="account-avatar">O</span>
+            <span><strong>观察钱包</strong><span>仅可查看资产，转账、备份和恢复能力受限。</span></span>
+            <button class="small-btn" onclick="enterGuestPrivateWallet()">导入</button>
+          </div>
+        `;
+      }
+      return `
+        <div class="account-card">
+          <span class="account-avatar">A</span>
+          <span><strong>已登录账号</strong><span>可使用无私钥钱包、平台云备份与跨设备恢复。</span></span>
+          <span class="tag">${state.hasPasskey ? "Passkey" : "2FA"}</span>
+        </div>
+      `;
+    }
+
     function accountStart() {
       return shell(`
         <div class="create-wallet-hero">
           <div class="create-visual"></div>
           <h2 class="screen-title">创建 AVE 账号</h2>
-          <p class="body-copy muted">账号创建完成后，将自动为你创建一个初始无私钥钱包。</p>
+          <p class="body-copy muted">登录账号后可以使用无私钥钱包；不登录也可以导入私钥钱包或观察钱包。</p>
         </div>
-        <div class="bullet">初始钱包创建过程中不会展示助记词。</div>
-        <div class="bullet">创建完成后默认开启平台云备份。</div>
-        <div class="bullet">后续可在钱包首页继续添加或恢复钱包。</div>
-        <div class="bottom-actions">
-          <button class="primary" onclick="state.accountCreated = true; go('accountWalletIntro')">创建账号</button>
+        <div class="bullet">登录账号后，将自动创建一个初始无私钥钱包。</div>
+        <div class="bullet">未登录导入私钥钱包时，平台云备份和恢复不可用。</div>
+        <div class="bullet">观察钱包只能查看资产，导入后才可正常使用。</div>
+        <div class="bottom-actions mode-actions">
+          <button class="primary" onclick="enterLoggedInAccount()">登录 / 创建账号</button>
+          <button class="secondary" onclick="enterLoggedInAccount(false)">登录无 Passkey 账号</button>
+          <button class="secondary" onclick="enterGuestPrivateWallet()">暂不登录，导入私钥钱包</button>
+          <button class="secondary" onclick="enterWatchWallet()">观察钱包</button>
         </div>
       `);
     }
@@ -2885,6 +3130,10 @@
     }
 
     function home() {
+      const loggedIn = state.sessionMode === "loggedIn";
+      const guestPrivate = state.sessionMode === "guestPrivate";
+      const watchOnly = state.sessionMode === "watchOnly";
+      const total = guestPrivate ? "$30.93" : watchOnly ? "$30.94" : "$8,342.58";
       const createdRow = state.createdWallet
         ? `${walletRow("My Wallet 3", "$0", "red", false, "已自动备份")}`
         : "";
@@ -2892,15 +3141,17 @@
         ? `${walletRow("Recovered Wallet", "$0", "blue", false, "已恢复 · 已备份")}`
         : "";
       const myWallet2Note = state.initialWalletCreated ? "初始钱包 · 已自动备份" : "";
-      const myWallet2Row = state.deletedWallet ? "" : `${walletRow("My Wallet 2", "$0", "", true, myWallet2Note)}`;
-      const keylessRows = state.converted
-        ? `
+      const myWallet2Row = loggedIn && !state.deletedWallet ? `${walletRow("My Wallet 2", "$0", "", true, myWallet2Note)}` : "";
+      const keylessRows = !loggedIn
+        ? `<div class="notice-card">登录账号后可创建和恢复无私钥钱包，并使用平台云备份能力。</div>`
+        : state.converted
+          ? `
           ${walletRow("Wallet1", "$8,342.58", "blue")}
           ${walletRow("My Wallet 1", "$0", "red")}
           ${createdRow}
           ${restoredRow}
         `
-        : `
+          : `
           ${walletRow("Wallet1", "$8,342.58", "blue")}
           ${walletRow("My Wallet 1", "$0", "red")}
           ${myWallet2Row}
@@ -2908,22 +3159,34 @@
           ${restoredRow}
         `;
 
-      const privateRows = state.converted
+      const watchRows = `
+        ${walletRow("观察钱包", "$30.94", "", false, "部分功能受限，导入后可正常使用")}
+        <div class="notice-card">观察钱包只能查看资产，导入私钥后才可以转账、授权或备份。</div>
+      `;
+      const privateRows = watchOnly
+        ? watchRows
+        : state.converted || guestPrivate
         ? derivedWallets.map(privateWalletRow).join("")
         : `<p class="row-sub">暂无私钥钱包</p>`;
+      const actionButton = loggedIn
+        ? `<button class="primary" onclick="openAddWalletSheet()">添加钱包</button>`
+        : watchOnly
+          ? `<button class="primary" onclick="enterGuestPrivateWallet()">导入私钥钱包</button>`
+          : `<button class="primary" onclick="go('accountStart')">登录账号</button>`;
 
       return shell(`
         <div class="hero-total">
           <div class="search">按钱包名称或地址搜索</div>
+          ${accountStatusCard()}
           <div class="total-label">投资组合</div>
-          <div class="total">$8,342.58</div>
+          <div class="total">${total}</div>
         </div>
         <div class="section-title">无私钥钱包</div>
         ${keylessRows}
         <div class="section-title">私钥钱包</div>
         ${privateRows}
         <div class="bottom-actions">
-          <button class="primary" onclick="openAddWalletSheet()">添加钱包</button>
+          ${actionButton}
         </div>
       `, {
         right: `<button class="right-action" onclick="go('manage')">管理</button>`
@@ -2980,6 +3243,20 @@
       const intro = state.creationMode === "initial"
         ? "验证通过后，将继续创建账号下的初始钱包。"
         : "验证通过后，将继续创建新的无私钥钱包。";
+      if (!state.hasPasskey) {
+        const count = verificationCountForScreen("createPasskey");
+        const target = verificationTargetCount();
+        const complete = verificationCompleteForScreen("createPasskey");
+        return shell(`
+          <h2 class="screen-title">完成安全验证</h2>
+          <p class="body-copy muted">当前账号未设置通行密钥，需要同时完成 Google 验证和邮箱验证。</p>
+          <div class="verify-count">${count}/${target}</div>
+          ${verificationRows("create")}
+          <div class="bottom-actions">
+            <button class="primary" ${complete ? "" : "disabled"} onclick="beginWalletCreation(state.creationMode)">继续创建</button>
+          </div>
+        `);
+      }
       return shell(`
         <div class="passkey-panel">
           <div>
@@ -3113,28 +3390,46 @@
     }
 
     function restoreVerify() {
-      const verifications = state.restoreFlow.verifications;
       const count = verificationCountForScreen("restoreVerify");
-      const complete = count >= 2;
+      const target = verificationTargetCount();
+      const complete = verificationCompleteForScreen("restoreVerify");
+      const isPullStage = state.restoreFlow.source === "cloud" && state.restoreFlow.stage === "pull";
+      const title = isPullStage ? "验证后拉取云备份" : "验证后恢复钱包";
+      const action = isPullStage ? "beginCloudPull()" : "beginRestoreProgress()";
+      const buttonText = isPullStage ? "拉取平台云备份" : "恢复钱包";
       return shell(`
-        <div class="verify-count">${count}/2</div>
-        <button class="verify-row ${verifications.passkey ? "done" : ""}" onclick="${verifications.passkey ? "showToast('通行密钥验证已通过')" : "openPasskeyVerification('restore')"}">
-          <span class="verify-icon key"></span>
-          <span class="row-title">通行密钥</span>
-          <span class="chevron"></span>
-        </button>
-        <button class="verify-row ${verifications.google ? "done" : ""}" onclick="${verifications.google ? "showToast('Google 验证已通过')" : "openOtpVerification('google')"}">
-          <span class="verify-icon otp"></span>
-          <span class="row-title">Google 验证</span>
-          <span class="chevron"></span>
-        </button>
-        <button class="verify-row ${verifications.email ? "done" : ""}" onclick="${verifications.email ? "showToast('邮箱验证已通过')" : "openOtpVerification('email')"}">
-          <span class="verify-icon otp"></span>
-          <span class="row-title">邮箱验证</span>
-          <span class="chevron"></span>
-        </button>
+        <h2 class="screen-title">${title}</h2>
+        <div class="verify-count">${count}/${target}</div>
+        ${verificationRows("restore")}
         <div class="bottom-actions">
-          <button class="primary" ${complete ? "" : "disabled"} onclick="beginRestoreProgress()">开始恢复</button>
+          <button class="primary" ${complete ? "" : "disabled"} onclick="${action}">${buttonText}</button>
+        </div>
+      `);
+    }
+
+    function restoreCloudPull() {
+      const labels = ["正在验证备份", "正在拉取备份", "正在确认钱包", "即将完成"];
+      const active = Math.min(state.cloudPull.step, labels.length - 1);
+      return shell(`
+        <div class="create-progress-wrap">
+          <div class="safe-visual"></div>
+          <div class="progress-dots">
+            ${labels.map((_, index) => `<span class="${index === active ? "active" : ""}"></span>`).join("")}
+          </div>
+          <div class="progress-label">${labels[active]}(${state.cloudPull.progress}%)</div>
+        </div>
+      `);
+    }
+
+    function restoreCloudSuccess() {
+      return shell(`
+        <div class="finished">
+          <div class="success-mark"></div>
+          <div class="status-title">云端备份已找到</div>
+          <p class="body-copy muted">已成功拉取你的平台云备份。为确保是本人恢复钱包，请再次完成安全验证。</p>
+        </div>
+        <div class="bottom-actions">
+          <button class="primary" onclick="continueCloudRestoreVerify()">继续验证</button>
         </div>
       `);
     }
@@ -3189,26 +3484,12 @@
     }
 
     function deleteVerify() {
-      const verifications = state.deleteFlow.verifications;
-      const count = Number(verifications.passkey) + Number(verifications.google) + Number(verifications.email);
-      const complete = count >= 2;
+      const count = verificationCountForScreen("deleteVerify");
+      const target = verificationTargetCount();
+      const complete = verificationCompleteForScreen("deleteVerify");
       return shell(`
-        <div class="verify-count">${count}/2</div>
-        <button class="verify-row ${verifications.passkey ? "done" : ""}" onclick="${verifications.passkey ? "showToast('通行密钥验证已通过')" : "openPasskeyVerification('delete')"}">
-          <span class="verify-icon key"></span>
-          <span class="row-title">通行密钥</span>
-          <span class="chevron"></span>
-        </button>
-        <button class="verify-row ${verifications.google ? "done" : ""}" onclick="${verifications.google ? "showToast('Google 验证已通过')" : "openOtpVerification('google')"}">
-          <span class="verify-icon otp"></span>
-          <span class="row-title">Google 验证</span>
-          <span class="chevron"></span>
-        </button>
-        <button class="verify-row ${verifications.email ? "done" : ""}" onclick="${verifications.email ? "showToast('邮箱验证已通过')" : "openOtpVerification('email')"}">
-          <span class="verify-icon otp"></span>
-          <span class="row-title">邮箱验证</span>
-          <span class="chevron"></span>
-        </button>
+        <div class="verify-count">${count}/${target}</div>
+        ${verificationRows("delete")}
         <div class="bottom-actions">
           <button class="primary" ${complete ? "" : "disabled"} onclick="beginDeleteProgress()">确认删除</button>
         </div>
@@ -3243,6 +3524,26 @@
     }
 
     function manage() {
+      if (state.sessionMode === "guestPrivate") {
+        return shell(`
+          <div class="section-title">私钥钱包</div>
+          ${derivedWallets.map(privateWalletRow).join("")}
+          <div class="notice-card">当前未登录账号，这些钱包只保存在本机。登录后可创建或恢复无私钥钱包。</div>
+          <div class="bottom-actions">
+            <button class="primary" onclick="go('accountStart')">登录账号</button>
+          </div>
+        `);
+      }
+      if (state.sessionMode === "watchOnly") {
+        return shell(`
+          <div class="section-title">观察钱包</div>
+          ${walletRow("观察钱包", "$30.94", "", false, "部分功能受限，导入后可正常使用")}
+          <div class="notice-card">观察钱包不能转账、备份或恢复。导入私钥后可正常使用。</div>
+          <div class="bottom-actions">
+            <button class="primary" onclick="enterGuestPrivateWallet()">导入私钥钱包</button>
+          </div>
+        `);
+      }
       const wallet2Row = state.deletedWallet
         ? ""
         : `
@@ -3494,25 +3795,12 @@
 
     function verify() {
       const count = verificationCountForScreen("verify");
-      const complete = count >= 2;
+      const target = verificationTargetCount();
+      const complete = verificationCompleteForScreen("verify");
       return shell(`
         ${stepper(1)}
-        <div class="verify-count">${count}/2</div>
-        <button class="verify-row ${state.verifications.passkey ? "done" : ""}" onclick="${state.verifications.passkey ? "showToast('通行密钥验证已通过')" : "openPasskeyVerification('convert')"}">
-          <span class="verify-icon key"></span>
-          <span class="row-title">通行密钥</span>
-          <span class="chevron"></span>
-        </button>
-        <button class="verify-row ${state.verifications.google ? "done" : ""}" onclick="${state.verifications.google ? "showToast('Google 验证已通过')" : "openOtpVerification('google')"}">
-          <span class="verify-icon otp"></span>
-          <span class="row-title">Google 验证</span>
-          <span class="chevron"></span>
-        </button>
-        <button class="verify-row ${state.verifications.email ? "done" : ""}" onclick="${state.verifications.email ? "showToast('邮箱验证已通过')" : "openOtpVerification('email')"}">
-          <span class="verify-icon otp"></span>
-          <span class="row-title">邮箱验证</span>
-          <span class="chevron"></span>
-        </button>
+        <div class="verify-count">${count}/${target}</div>
+        ${verificationRows("convert")}
         <div class="bottom-actions">
           <button class="primary" ${complete ? "" : "disabled"} onclick="enterMnemonicScreen()">继续</button>
         </div>
@@ -3632,7 +3920,7 @@
           </div>
         `;
       }
-      if (["verify", "backupVerify", "restoreVerify", "deleteVerify"].includes(state.screen) && state.otp.open) {
+      if (["createPasskey", "verify", "backupVerify", "restoreVerify", "deleteVerify"].includes(state.screen) && state.otp.open) {
         const emailActive = state.otp.method === "email";
         return `
           <div class="overlay">
@@ -3717,6 +4005,8 @@
         restoreScan,
         restorePin,
         restoreVerify,
+        restoreCloudPull,
+        restoreCloudSuccess,
         restoreProgress,
         restoreDone,
         deleteIntro,
