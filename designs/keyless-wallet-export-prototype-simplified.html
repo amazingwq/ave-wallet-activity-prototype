@@ -11,9 +11,11 @@
       --text: #16181d;
       --muted: #7f858f;
       --line: #eef0f4;
-      --soft: #f7f8fa;
-      --accent: #f4c432;
-      --accent-strong: #d99d00;
+      --soft: #f6f7f9;
+      --accent: #3f7df6;
+      --accent-strong: #2f6fed;
+      --warning: #f4c432;
+      --warning-strong: #d99d00;
       --success: #2bbf85;
       --danger: #f05264;
       --ink: #1f2430;
@@ -21,6 +23,7 @@
       --radius: 8px;
       --shadow: 0 22px 64px rgba(18, 24, 40, 0.12);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      font-size: 14px;
     }
 
     * {
@@ -64,7 +67,7 @@
     }
 
     .phone {
-      width: min(390px, 100%);
+      width: min(384px, 100%);
       height: min(844px, calc(100vh - 48px));
       min-height: 720px;
       background: var(--panel);
@@ -83,12 +86,12 @@
     }
 
     .status {
-      height: 38px;
+      height: 34px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 24px;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
       color: #111;
       flex: 0 0 auto;
@@ -155,37 +158,45 @@
     }
 
     .nav {
-      min-height: 52px;
+      min-height: 48px;
       display: grid;
-      grid-template-columns: 48px 1fr 70px;
+      grid-template-columns: 42px 1fr 62px;
       align-items: center;
-      padding: 0 14px;
+      padding: 0 16px;
       flex: 0 0 auto;
     }
 
     .nav h1 {
       margin: 0;
       text-align: center;
-      font-size: 20px;
+      font-size: 19px;
       line-height: 1.15;
       letter-spacing: 0;
+      font-weight: 780;
     }
 
     .nav .right-action {
       justify-self: end;
       color: var(--accent-strong);
-      font-weight: 800;
-      font-size: 15px;
+      font-weight: 740;
+      font-size: 14px;
     }
 
     .icon-btn {
-      width: 38px;
-      height: 38px;
+      width: 34px;
+      height: 34px;
       border-radius: 50%;
       display: grid;
       place-items: center;
-      font-size: 22px;
+      font-size: 24px;
       line-height: 1;
+    }
+
+    .icon-btn.trash-mini::before {
+      content: "";
+      width: 22px;
+      height: 22px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='%239aa0aa' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 6h18'/%3E%3Cpath d='M8 6V4h8v2'/%3E%3Cpath d='M19 6l-1 14H6L5 6'/%3E%3Cpath d='M10 11v5'/%3E%3Cpath d='M14 11v5'/%3E%3C/svg%3E") center / contain no-repeat;
     }
 
     .icon-btn:hover {
@@ -195,7 +206,7 @@
     .content {
       flex: 1 1 auto;
       overflow-y: auto;
-      padding: 14px 18px 96px;
+      padding: 10px 18px 118px;
       scrollbar-width: none;
     }
 
@@ -204,7 +215,7 @@
     }
 
     .hero-total {
-      padding: 6px 0 20px;
+      padding: 4px 0 18px;
       border-bottom: 1px solid var(--line);
     }
 
@@ -212,13 +223,421 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      height: 46px;
+      height: 42px;
       background: var(--soft);
       color: var(--muted);
-      border-radius: var(--radius);
+      border-radius: 9px;
       padding: 0 14px;
-      font-size: 14px;
+      font-size: 13px;
       margin-bottom: 20px;
+    }
+
+    .search::before,
+    .search-pill::before {
+      content: "";
+      width: 18px;
+      height: 18px;
+      border: 3px solid #1a1d23;
+      border-radius: 50%;
+      opacity: 0.72;
+      box-shadow: 8px 8px 0 -6px #1a1d23;
+      transform: rotate(-18deg);
+      flex: 0 0 auto;
+    }
+
+    .ave-topbar {
+      display: grid;
+      grid-template-columns: 38px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .ave-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #6ee7d8, #5a6ff5 52%, #7d4df2);
+      color: #fff;
+      font-weight: 900;
+      font-size: 16px;
+    }
+
+    .search-pill {
+      height: 38px;
+      border-radius: 999px;
+      background: #f1f2f4;
+      color: #9aa0aa;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 12px;
+      font-size: 13px;
+      min-width: 0;
+    }
+
+    .top-icons {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .scan-mini,
+    .bell-mini {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      position: relative;
+      display: inline-grid;
+      place-items: center;
+    }
+
+    .scan-mini::before,
+    .scan-mini::after {
+      content: "";
+      position: absolute;
+      inset: 8px;
+      border: 2.5px solid #1b1e25;
+      border-radius: 4px;
+      clip-path: polygon(0 0, 42% 0, 42% 16%, 16% 16%, 16% 42%, 0 42%, 0 0, 58% 0, 100% 0, 100% 42%, 84% 42%, 84% 16%, 58% 16%);
+    }
+
+    .scan-mini::after {
+      transform: rotate(180deg);
+    }
+
+    .bell-mini::before {
+      content: "";
+      width: 15px;
+      height: 17px;
+      border: 2.5px solid #1b1e25;
+      border-radius: 12px 12px 8px 8px;
+      border-bottom-width: 4px;
+    }
+
+    .bell-mini::after {
+      content: "99";
+      position: absolute;
+      right: 0;
+      top: 0;
+      min-width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      background: #ff405b;
+      color: #fff;
+      font-size: 9px;
+      font-weight: 900;
+      display: grid;
+      place-items: center;
+      padding: 0 3px;
+    }
+
+    .home-wallet-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 6px;
+      font-size: 19px;
+      font-weight: 720;
+    }
+
+    .chain-select {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      position: relative;
+      flex: 0 0 auto;
+      background: #111827;
+    }
+
+    .chain-select::before,
+    .chain-select::after {
+      content: "";
+      position: absolute;
+      left: 7px;
+      right: 7px;
+      height: 3px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #47e2b2, #8b5cf6);
+      transform: skewX(-18deg);
+    }
+
+    .chain-select::before {
+      top: 8px;
+      box-shadow: 0 6px 0 #6d8cff;
+    }
+
+    .chain-select::after {
+      bottom: 7px;
+      background: linear-gradient(90deg, #8b5cf6, #47e2b2);
+    }
+
+    .chain-select.bsc::before,
+    .chain-select.bsc::after {
+      left: 8px;
+      right: 8px;
+      height: 4px;
+      background: #f6c744;
+      transform: rotate(45deg);
+      box-shadow: none;
+    }
+
+    .chain-select.bsc::before {
+      top: 8px;
+    }
+
+    .chain-select.bsc::after {
+      bottom: 8px;
+    }
+
+    .wallet-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      min-width: 0;
+      color: var(--text);
+      font: inherit;
+      font-weight: 760;
+      line-height: 1.1;
+    }
+
+    .wallet-switch i {
+      width: 0;
+      height: 0;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 5px solid #20242b;
+      margin-top: 2px;
+      flex: 0 0 auto;
+    }
+
+    .status-pill {
+      min-height: 24px;
+      padding: 0 9px;
+      border-radius: 999px;
+      background: #f0f2ff;
+      color: #6c62d7;
+      display: inline-flex;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .status-pill.evm {
+      background: #ffecec;
+      color: #f25d5d;
+    }
+
+    .asset-hero {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: start;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .asset-actions {
+      display: inline-grid;
+      grid-template-columns: repeat(2, 54px);
+      gap: 10px;
+    }
+
+    .round-action {
+      display: grid;
+      gap: 5px;
+      justify-items: center;
+      color: #4b5058;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .round-action i {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: #f3f4f6;
+      display: grid;
+      place-items: center;
+      position: relative;
+    }
+
+    .round-action.receive i::before {
+      content: "";
+      position: absolute;
+      inset: 12px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24' fill='none' stroke='%2359606b' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3v10'/%3E%3Cpath d='m8 9 4 4 4-4'/%3E%3Cpath d='M5 17v2a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-2'/%3E%3C/svg%3E") center / contain no-repeat;
+    }
+
+    .round-action.receive i::after {
+      content: none;
+    }
+
+    .round-action.invite i::before {
+      content: "";
+      position: absolute;
+      inset: 12px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24' fill='none' stroke='%2359606b' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='8' width='18' height='13' rx='2'/%3E%3Cpath d='M12 8v13'/%3E%3Cpath d='M3 12h18'/%3E%3Cpath d='M12 8c-1.8 0-4-.9-4-2.8A2.2 2.2 0 0 1 12 4c0 1.5 0 4 0 4Z'/%3E%3Cpath d='M12 8c1.8 0 4-.9 4-2.8A2.2 2.2 0 0 0 12 4c0 1.5 0 4 0 4Z'/%3E%3C/svg%3E") center / contain no-repeat;
+    }
+
+    .round-action.invite i::after {
+      content: none;
+    }
+
+    .market-banner {
+      height: 82px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #2c8cff, #2263e8);
+      color: #fff;
+      padding: 14px 16px;
+      display: grid;
+      align-content: center;
+      gap: 6px;
+      margin: 14px 0 12px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .market-banner::after {
+      content: "";
+      position: absolute;
+      right: -24px;
+      top: -18px;
+      width: 126px;
+      height: 126px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.18);
+    }
+
+    .market-banner strong {
+      font-size: 20px;
+      line-height: 1.1;
+    }
+
+    .market-banner span {
+      font-size: 12px;
+      opacity: 0.86;
+      font-weight: 750;
+    }
+
+    .ticker-strip {
+      display: flex;
+      gap: 14px;
+      white-space: nowrap;
+      overflow: hidden;
+      font-size: 14px;
+      font-weight: 800;
+      margin: 2px 0 16px;
+    }
+
+    .ticker-strip b {
+      color: #f05264;
+    }
+
+    .market-tabs {
+      display: flex;
+      gap: 22px;
+      overflow: hidden;
+      white-space: nowrap;
+      margin: 12px 0 12px;
+      color: #8b929d;
+      font-size: 16px;
+      font-weight: 760;
+    }
+
+    .market-tabs span {
+      position: relative;
+      padding-bottom: 8px;
+    }
+
+    .market-tabs .active {
+      color: #1b1e25;
+      font-weight: 820;
+    }
+
+    .market-tabs .active::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 3px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+
+    .token-filter {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 12px;
+      color: #9aa0aa;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .token-search {
+      justify-self: end;
+      min-width: 128px;
+      height: 28px;
+      border-radius: 999px;
+      background: #f3f4f6;
+      color: #a0a6af;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+
+    .token-row {
+      display: grid;
+      grid-template-columns: 38px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 10px;
+      min-height: 58px;
+      border-bottom: 1px solid #f0f2f5;
+    }
+
+    .token-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #6275ff, #20c997);
+    }
+
+    .token-icon.green {
+      background: linear-gradient(135deg, #17b890, #2dd4bf);
+    }
+
+    .token-row strong {
+      display: block;
+      font-size: 15px;
+      line-height: 1.2;
+    }
+
+    .token-row small {
+      display: block;
+      color: #8b929d;
+      font-size: 11px;
+      margin-top: 3px;
+    }
+
+    .token-value {
+      text-align: right;
+      font-size: 14px;
+      font-weight: 760;
+    }
+
+    .token-value small {
+      color: var(--muted);
+      font-weight: 650;
     }
 
     .account-card {
@@ -292,9 +711,9 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin: 18px 0 10px;
+      margin: 16px 0 8px;
       font-size: 18px;
-      font-weight: 800;
+      font-weight: 760;
     }
 
     .total-label {
@@ -305,7 +724,7 @@
     }
 
     .total {
-      font-size: 40px;
+      font-size: 38px;
       font-weight: 900;
       letter-spacing: 0;
     }
@@ -318,13 +737,13 @@
       display: grid;
       align-items: center;
       gap: 12px;
-      min-height: 64px;
+      min-height: 58px;
       text-align: left;
     }
 
     .wallet-row {
-      grid-template-columns: 46px 1fr auto;
-      padding: 8px 0;
+      grid-template-columns: 42px minmax(0, 1fr) auto;
+      padding: 7px 0;
     }
 
     .manage-row {
@@ -333,7 +752,7 @@
 
     .setting-row {
       grid-template-columns: 44px 1fr auto;
-      min-height: 66px;
+      min-height: 60px;
       border-top: 1px solid var(--line);
     }
 
@@ -344,20 +763,20 @@
     .backup-row,
     .verify-row {
       grid-template-columns: 44px 1fr auto;
-      min-height: 68px;
+      min-height: 62px;
       background: var(--panel);
       border: 1px solid var(--line);
       border-radius: var(--radius);
-      padding: 10px 12px;
-      margin-bottom: 10px;
+      padding: 9px 11px;
+      margin-bottom: 9px;
     }
 
     .wallet-icon,
     .line-icon,
     .shield-icon,
     .trash-icon {
-      width: 40px;
-      height: 40px;
+      width: 36px;
+      height: 36px;
       border-radius: 8px;
       display: grid;
       place-items: center;
@@ -399,6 +818,11 @@
     .wallet-icon.red {
       background: #ffe9e6;
       color: #ff6f52;
+    }
+
+    .wallet-icon.bsc {
+      background: #fff2c2;
+      color: #1d2028;
     }
 
     .line-icon {
@@ -454,23 +878,26 @@
 
     .row-title {
       display: block;
-      font-size: 17px;
-      font-weight: 780;
+      font-size: 16px;
+      font-weight: 720;
       line-height: 1.2;
     }
 
     .row-sub {
       display: block;
       color: var(--muted);
-      margin-top: 4px;
-      font-size: 13px;
+      margin-top: 3px;
+      font-size: 12px;
       line-height: 1.3;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .wallet-amount {
       color: #111;
-      font-size: 15px;
-      font-weight: 850;
+      font-size: 13px;
+      font-weight: 780;
       white-space: nowrap;
     }
 
@@ -490,11 +917,11 @@
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      height: 24px;
-      padding: 0 8px;
+      height: 22px;
+      padding: 0 7px;
       border-radius: 7px;
-      font-size: 12px;
-      font-weight: 800;
+      font-size: 11px;
+      font-weight: 760;
       background: #eaf8f2;
       color: var(--success);
       white-space: nowrap;
@@ -505,13 +932,20 @@
       color: #c99000;
     }
 
+    .tag.recover {
+      background: #eef4ff;
+      color: var(--accent);
+    }
+
     .small-btn {
-      min-width: 66px;
-      height: 36px;
+      min-width: 60px;
+      height: 32px;
       border-radius: var(--radius);
       background: var(--accent);
-      font-weight: 850;
-      padding: 0 14px;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 760;
+      padding: 0 12px;
     }
 
     .chevron {
@@ -587,14 +1021,14 @@
 
     .wallet-head h2 {
       margin: 0;
-      font-size: 22px;
+      font-size: 20px;
       letter-spacing: 0;
     }
 
     .backup-hero,
     .convert-hero {
       text-align: center;
-      padding: 8px 0 20px;
+      padding: 6px 0 16px;
     }
 
     .backup-summary {
@@ -620,6 +1054,38 @@
       font-weight: 700;
     }
 
+    .backup-status-check {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: inline-grid;
+      place-items: center;
+      color: var(--success);
+      font-weight: 900;
+      font-size: 20px;
+    }
+
+    .backup-tips {
+      margin-top: 18px;
+      padding-top: 4px;
+    }
+
+    .risk-checks {
+      display: grid;
+      gap: 6px;
+      margin: 12px 0 4px;
+    }
+
+    .risk-checks .confirm-line {
+      margin: 0;
+      padding: 9px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .risk-checks .confirm-line:last-child {
+      border-bottom: 0;
+    }
+
     .pin-form {
       display: grid;
       gap: 12px;
@@ -628,22 +1094,22 @@
 
     .pin-input {
       width: 100%;
-      height: 52px;
+      height: 48px;
       border: 1px solid #dfe3ea;
       border-radius: var(--radius);
       background: #fff;
       padding: 0 14px;
       color: var(--text);
       font: inherit;
-      font-size: 18px;
-      font-weight: 850;
+      font-size: 16px;
+      font-weight: 720;
       letter-spacing: 0;
       outline: none;
     }
 
     .pin-input:focus {
-      border-color: #111;
-      box-shadow: 0 0 0 2px rgba(17, 17, 17, 0.08);
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(63, 125, 246, 0.12);
     }
 
     .backup-progress {
@@ -785,11 +1251,12 @@
     }
 
     .safe-visual {
-      width: 88px;
-      height: 88px;
+      width: 78px;
+      height: 78px;
       margin: 8px auto 14px;
-      border: 4px solid #111;
-      border-radius: 18px;
+      border: 1px solid #dff4ec;
+      border-radius: 24px;
+      background: #f4fbf8;
       position: relative;
     }
 
@@ -798,35 +1265,35 @@
       position: absolute;
       width: 42px;
       height: 42px;
-      border: 4px solid #111;
+      border: 0;
       border-radius: 50%;
       left: 50%;
       top: 50%;
       transform: translate(-50%, -50%);
-      background: #fff;
+      background: var(--success);
     }
 
     .safe-visual::after {
       content: "";
       position: absolute;
-      width: 36px;
-      height: 36px;
-      right: -18px;
-      bottom: -16px;
-      border-radius: 50%;
-      background: var(--success);
-      box-shadow: inset 0 0 0 4px #fff;
+      width: 20px;
+      height: 12px;
+      left: 50%;
+      top: 50%;
+      border-left: 5px solid #fff;
+      border-bottom: 5px solid #fff;
+      transform: translate(-45%, -60%) rotate(-45deg);
     }
 
     .status-title {
-      font-size: 22px;
-      font-weight: 900;
-      margin-top: 8px;
+      font-size: 21px;
+      font-weight: 780;
+      margin-top: 6px;
     }
 
     .notice-icon {
-      width: 92px;
-      height: 92px;
+      width: 78px;
+      height: 78px;
       margin: 8px auto 30px;
       border: 5px solid #111;
       border-radius: 50%;
@@ -858,14 +1325,14 @@
     }
 
     .screen-title {
-      font-size: 19px;
-      font-weight: 900;
-      margin: 0 0 14px;
+      font-size: 18px;
+      font-weight: 780;
+      margin: 0 0 12px;
     }
 
     .body-copy {
-      font-size: 15px;
-      line-height: 1.62;
+      font-size: 14px;
+      line-height: 1.58;
       color: #20242b;
       margin: 0 0 14px;
     }
@@ -874,8 +1341,8 @@
       display: grid;
       grid-template-columns: 13px 1fr;
       gap: 9px;
-      margin: 14px 0;
-      font-size: 15px;
+      margin: 12px 0;
+      font-size: 14px;
       line-height: 1.5;
     }
 
@@ -917,7 +1384,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      padding: 14px 18px 20px;
+      padding: 12px 18px 18px;
       background: linear-gradient(180deg, rgba(255, 255, 255, 0), #fff 22%);
       display: grid;
       gap: 12px;
@@ -930,20 +1397,22 @@
     .primary,
     .secondary {
       width: 100%;
-      min-height: 50px;
+      min-height: 46px;
       border-radius: var(--radius);
-      font-weight: 900;
-      font-size: 16px;
-      padding: 0 18px;
+      font-weight: 760;
+      font-size: 15px;
+      padding: 0 16px;
     }
 
     .primary {
       background: var(--accent);
+      color: #fff;
+      box-shadow: 0 8px 18px rgba(63, 125, 246, 0.18);
     }
 
     .primary:hover,
     .small-btn:hover {
-      background: #ffd641;
+      background: var(--accent-strong);
     }
 
     .secondary {
@@ -1004,8 +1473,8 @@
 
     .check-list {
       display: grid;
-      gap: 16px;
-      margin: 22px 0;
+      gap: 14px;
+      margin: 18px 0;
     }
 
     .check-item {
@@ -1013,7 +1482,7 @@
       grid-template-columns: 28px 1fr;
       gap: 12px;
       align-items: start;
-      font-size: 15px;
+      font-size: 14px;
       line-height: 1.45;
     }
 
@@ -1026,6 +1495,7 @@
       place-items: center;
       margin-top: 1px;
       background: #fff;
+      pointer-events: none;
     }
 
     .check-item input,
@@ -1063,8 +1533,8 @@
     .sheet {
       width: 100%;
       background: #fff;
-      border-radius: 24px 24px 0 0;
-      padding: 14px 18px 20px;
+      border-radius: 20px 20px 0 0;
+      padding: 12px 18px 18px;
       animation: rise 180ms ease-out;
     }
 
@@ -1082,28 +1552,28 @@
     }
 
     .warning-round {
-      width: 72px;
-      height: 72px;
+      width: 64px;
+      height: 64px;
       border-radius: 50%;
       background: #fff7dd;
-      border: 4px solid var(--accent-strong);
+      border: 4px solid var(--warning-strong);
       margin: 0 auto 14px;
       display: grid;
       place-items: center;
-      color: var(--accent-strong);
-      font-size: 42px;
+      color: var(--warning-strong);
+      font-size: 36px;
       font-weight: 900;
     }
 
     .sheet h2 {
       text-align: center;
-      font-size: 22px;
+      font-size: 20px;
       margin: 0 0 12px;
     }
 
     .sheet p {
       margin: 0 0 18px;
-      font-size: 15px;
+      font-size: 14px;
       line-height: 1.55;
     }
 
@@ -1168,8 +1638,8 @@
     }
 
     .otp-input:focus {
-      border-color: #111;
-      box-shadow: 0 0 0 2px rgba(17, 17, 17, 0.08);
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(63, 125, 246, 0.12);
     }
 
     .sheet-actions {
@@ -1183,6 +1653,26 @@
       grid-template-columns: 1fr;
     }
 
+    .dialog {
+      width: min(310px, calc(100% - 40px));
+      margin: auto;
+      border-radius: 18px;
+      background: #fff;
+      padding: 22px;
+      box-shadow: 0 18px 46px rgba(20, 24, 32, 0.18);
+      display: grid;
+      gap: 12px;
+      text-align: center;
+    }
+
+    .dialog p {
+      margin: 0 0 4px;
+      font-size: 15px;
+      line-height: 1.55;
+      font-weight: 650;
+      color: var(--text);
+    }
+
     .confirm-line {
       display: grid;
       grid-template-columns: 28px 1fr;
@@ -1193,10 +1683,10 @@
     }
 
     .verify-count {
-      font-size: 40px;
+      font-size: 34px;
       color: var(--accent-strong);
       font-weight: 900;
-      margin: 18px 0;
+      margin: 14px 0;
     }
 
     .verify-row.done {
@@ -1254,15 +1744,15 @@
 
     .create-wallet-hero {
       text-align: center;
-      padding: 34px 8px 18px;
+      padding: 20px 8px 16px;
     }
 
     .create-visual {
-      width: 118px;
-      height: 90px;
+      width: 100px;
+      height: 76px;
       border: 4px solid #111;
       border-radius: 18px;
-      margin: 0 auto 28px;
+      margin: 0 auto 22px;
       position: relative;
       background: #fffdfa;
     }
@@ -1270,10 +1760,10 @@
     .create-visual::before {
       content: "";
       position: absolute;
-      left: 30px;
-      top: 22px;
-      width: 54px;
-      height: 54px;
+      left: 25px;
+      top: 18px;
+      width: 46px;
+      height: 46px;
       border-radius: 50%;
       background: var(--accent);
       box-shadow: inset 0 0 0 4px #111;
@@ -1284,8 +1774,8 @@
       position: absolute;
       right: -15px;
       bottom: -18px;
-      width: 48px;
-      height: 56px;
+      width: 40px;
+      height: 48px;
       border: 4px solid #111;
       border-radius: 16px 16px 22px 22px;
       background: #fff;
@@ -1294,16 +1784,16 @@
 
     .create-option {
       width: 100%;
-      min-height: 92px;
+      min-height: 76px;
       display: grid;
-      grid-template-columns: 46px 1fr auto;
+      grid-template-columns: 42px minmax(0, 1fr) auto;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
       text-align: left;
       border: 1px solid var(--line);
       border-radius: 14px;
-      padding: 14px;
-      margin-bottom: 12px;
+      padding: 12px;
+      margin-bottom: 10px;
       background: #fff;
     }
 
@@ -1333,7 +1823,7 @@
     }
 
     .passkey-panel {
-      min-height: 310px;
+      min-height: 280px;
       display: grid;
       place-items: center;
       text-align: center;
@@ -1341,11 +1831,12 @@
     }
 
     .passkey-mark {
-      width: 104px;
-      height: 104px;
+      width: 88px;
+      height: 88px;
       margin: 0 auto 18px;
-      border: 4px solid #111;
+      border: 0;
       border-radius: 50%;
+      background: #eef6ff;
       position: relative;
     }
 
@@ -1353,24 +1844,26 @@
       content: "";
       position: absolute;
       left: 50%;
-      top: 28px;
-      width: 28px;
-      height: 28px;
-      border: 4px solid #111;
-      border-radius: 50%;
+      top: 19px;
+      width: 42px;
+      height: 48px;
+      border: 4px solid #3f7df6;
+      border-radius: 16px 16px 22px 22px;
       transform: translateX(-50%);
+      clip-path: polygon(0 0, 100% 0, 100% 66%, 50% 100%, 0 66%);
     }
 
     .passkey-mark::after {
       content: "";
       position: absolute;
-      left: 24px;
-      bottom: 22px;
-      width: 48px;
-      height: 24px;
-      border: 4px solid #111;
-      border-bottom: 0;
-      border-radius: 48px 48px 0 0;
+      left: 50%;
+      top: 37px;
+      width: 20px;
+      height: 20px;
+      border: 3px solid #3f7df6;
+      border-radius: 50%;
+      transform: translateX(-50%);
+      box-shadow: inset 0 -9px 0 -7px #3f7df6;
     }
 
     .create-progress-wrap {
@@ -1379,7 +1872,7 @@
       align-content: center;
       justify-items: center;
       text-align: center;
-      padding: 34px 8px 120px;
+      padding: 24px 8px 110px;
     }
 
     .progress-dots {
@@ -1403,17 +1896,17 @@
 
     .progress-label {
       color: var(--muted);
-      font-size: 16px;
-      font-weight: 760;
+      font-size: 14px;
+      font-weight: 700;
     }
 
     .success-mark {
-      width: 92px;
-      height: 92px;
+      width: 78px;
+      height: 78px;
       border-radius: 50%;
       border: 4px solid rgba(43, 191, 133, 0.4);
       background: var(--success);
-      margin: 74px auto 28px;
+      margin: 54px auto 24px;
       display: grid;
       place-items: center;
     }
@@ -1502,6 +1995,235 @@
       margin: 14px 0;
     }
 
+    .account-hero {
+      display: grid;
+      grid-template-columns: 58px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 12px 0 18px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 10px;
+    }
+
+    .account-hero .ave-avatar {
+      width: 54px;
+      height: 54px;
+      font-size: 22px;
+    }
+
+    .account-hero h2 {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.25;
+    }
+
+    .account-level {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 0 10px;
+      margin-top: 7px;
+      border-radius: 999px;
+      background: #f4f5f7;
+      color: #8b929d;
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .account-row,
+    .detail-row {
+      width: 100%;
+      min-height: 60px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .account-row strong,
+    .detail-row strong {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .account-row span,
+    .detail-row span {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 620;
+    }
+
+    .section-label {
+      color: #b1b6bf;
+      font-size: 15px;
+      font-weight: 760;
+      margin: 26px 0 8px;
+    }
+
+    .login-hero {
+      min-height: 250px;
+      display: grid;
+      align-content: center;
+      gap: 18px;
+    }
+
+    .login-brand {
+      display: grid;
+      grid-template-columns: 54px 1fr;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .login-brand h2 {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.25;
+    }
+
+    .wallet-detail-head {
+      display: grid;
+      grid-template-columns: 46px 1fr auto;
+      gap: 14px;
+      align-items: center;
+      padding: 12px 0;
+    }
+
+    .wallet-detail-head h2 {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.2;
+    }
+
+    .detail-address {
+      min-height: 66px;
+      border-radius: 8px;
+      background: var(--soft);
+      color: #252932;
+      padding: 13px 14px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 12px;
+      word-break: break-all;
+      font-size: 14px;
+      line-height: 1.45;
+      font-weight: 650;
+      margin: 4px 0 20px;
+    }
+
+    .copy-mini {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      position: relative;
+      flex: 0 0 auto;
+    }
+
+    .copy-mini::before,
+    .copy-mini::after {
+      content: "";
+      position: absolute;
+      width: 13px;
+      height: 15px;
+      border: 2px solid #9ba2ad;
+      border-radius: 4px;
+    }
+
+    .copy-mini::before {
+      left: 9px;
+      top: 6px;
+    }
+
+    .copy-mini::after {
+      left: 5px;
+      top: 10px;
+      background: var(--soft);
+    }
+
+    .detail-row.danger strong {
+      color: var(--danger);
+    }
+
+    .manage-list-row {
+      min-height: 66px;
+      display: grid;
+      grid-template-columns: 38px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      width: 100%;
+    }
+
+    .manage-list-row.recoverable {
+      margin: 4px 0 0;
+      padding: 8px 10px;
+      border: 1px solid #e5e8ef;
+      border-radius: 10px;
+      background: #f6f7f9;
+      opacity: 0.96;
+    }
+
+    .manage-list-row.recoverable .wallet-icon {
+      filter: grayscale(1);
+      opacity: 0.68;
+    }
+
+    .manage-list-row.recoverable .row-title {
+      color: #5f6876;
+    }
+
+    .manage-list-row.recoverable .row-sub {
+      color: #8e95a1;
+    }
+
+    .manage-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .selected-check {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: grid;
+      place-items: center;
+    }
+
+    .selected-check::after {
+      content: "";
+      width: 10px;
+      height: 6px;
+      border-left: 3px solid #fff;
+      border-bottom: 3px solid #fff;
+      transform: rotate(-45deg) translate(1px, -1px);
+    }
+
+    .add-wallet-entry {
+      width: 100%;
+      min-height: 86px;
+      display: grid;
+      grid-template-columns: 44px minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      text-align: left;
+      border-bottom: 1px solid var(--line);
+      padding: 12px 0;
+    }
+
+    .add-wallet-entry .row-title {
+      font-size: 17px;
+    }
+
+    .add-wallet-entry .row-sub {
+      font-size: 13px;
+      color: #9aa0aa;
+    }
+
     .toast {
       position: absolute;
       left: 20px;
@@ -1531,7 +2253,7 @@
     }
 
     .finished .safe-visual::after {
-      background: var(--accent);
+      background: transparent;
     }
 
     .reference-panel {
@@ -1788,6 +2510,1080 @@
       padding-left: 4px;
     }
 
+    /* 100% browser zoom tuning: make the prototype read like the prior 80% zoom view. */
+    .status {
+      height: 30px;
+      font-size: 11px;
+      padding: 0 22px;
+    }
+
+    .nav {
+      min-height: 44px;
+      grid-template-columns: 38px 1fr 58px;
+      padding: 0 14px;
+    }
+
+    .nav h1 {
+      font-size: 17px;
+      font-weight: 760;
+    }
+
+    .nav .right-action {
+      font-size: 13px;
+      font-weight: 720;
+    }
+
+    .icon-btn {
+      width: 30px;
+      height: 30px;
+      font-size: 21px;
+    }
+
+    .content {
+      padding: 8px 18px 104px;
+    }
+
+    .ave-topbar {
+      grid-template-columns: 34px minmax(0, 1fr) auto;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .ave-avatar {
+      width: 34px;
+      height: 34px;
+      font-size: 14px;
+    }
+
+    .search-pill {
+      height: 34px;
+      font-size: 12px;
+      padding: 0 11px;
+      gap: 8px;
+    }
+
+    .search::before,
+    .search-pill::before {
+      width: 16px;
+      height: 16px;
+      border-width: 2.5px;
+    }
+
+    .scan-mini,
+    .bell-mini {
+      width: 29px;
+      height: 29px;
+    }
+
+    .home-wallet-line {
+      font-size: 17px;
+      gap: 7px;
+      margin-bottom: 5px;
+    }
+
+    .home-wallet-line .wallet-icon {
+      width: 25px;
+      height: 25px;
+    }
+
+    .status-pill,
+    .tag {
+      min-height: 20px;
+      padding: 0 8px;
+      font-size: 10px;
+      font-weight: 850;
+    }
+
+    .asset-hero {
+      margin-bottom: 10px;
+    }
+
+    .asset-actions {
+      grid-template-columns: repeat(2, 48px);
+      gap: 8px;
+    }
+
+    .round-action {
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 680;
+    }
+
+    .round-action i {
+      width: 44px;
+      height: 44px;
+    }
+
+    .round-action.receive i::before,
+    .round-action.invite i::before {
+      inset: 11px;
+    }
+
+    .total {
+      font-size: 32px;
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+
+    .market-banner {
+      height: 72px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+    }
+
+    .market-banner strong {
+      font-size: 18px;
+    }
+
+    .market-banner span {
+      font-size: 12px;
+    }
+
+    .ticker-strip {
+      font-size: 13px;
+      gap: 14px;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      margin: 16px 0 8px;
+      font-size: 16px;
+      font-weight: 740;
+    }
+
+    .wallet-row,
+    .manage-list-row {
+      min-height: 52px;
+      grid-template-columns: 36px minmax(0, 1fr) auto;
+      gap: 10px;
+      padding: 7px 0;
+    }
+
+    .wallet-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 9px;
+    }
+
+    .wallet-icon::before {
+      inset: 9px 7px 8px 7px;
+      border-width: 2px;
+      border-radius: 4px;
+    }
+
+    .wallet-icon::after {
+      width: 7px;
+      height: 7px;
+      right: 7px;
+      top: 11px;
+    }
+
+    .row-title {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .row-sub {
+      font-size: 11px;
+      line-height: 1.35;
+    }
+
+    .wallet-amount {
+      font-size: 12px;
+      font-weight: 760;
+    }
+
+    .bottom-actions {
+      padding: 10px 18px 14px;
+      gap: 10px;
+    }
+
+    .primary,
+    .secondary {
+      min-height: 44px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 740;
+      padding: 0 14px;
+    }
+
+    .screen-title {
+      font-size: 17px;
+      font-weight: 760;
+    }
+
+    .body-copy,
+    .bullet,
+    .risk-commit,
+    .check-item {
+      font-size: 13px;
+    }
+
+    .create-wallet-hero {
+      padding: 12px 0 16px;
+    }
+
+    .create-visual {
+      width: 88px;
+      height: 66px;
+      margin-bottom: 18px;
+    }
+
+    .step-label {
+      font-size: 11px;
+    }
+
+    .verify-row,
+    .detail-row,
+    .account-row {
+      min-height: 54px;
+    }
+
+    .detail-row strong,
+    .account-row strong {
+      font-size: 14px;
+    }
+
+    .detail-address,
+    .address-card {
+      font-size: 13px;
+      padding: 13px 14px;
+      border-radius: 9px;
+    }
+
+    .sheet {
+      border-radius: 18px 18px 0 0;
+      padding: 10px 18px 16px;
+    }
+
+    .sheet h2 {
+      font-size: 18px;
+    }
+
+    .sheet p {
+      font-size: 13px;
+    }
+
+    .create-option,
+    .add-wallet-entry {
+      min-height: 72px;
+      gap: 12px;
+      padding: 14px;
+    }
+
+    .pin-input,
+    .otp-input {
+      height: 44px;
+      font-size: 14px;
+    }
+
+    .note-box,
+    .create-note {
+      font-size: 12px;
+    }
+
+    /* Final 100% zoom compact pass. */
+    .content {
+      padding: 6px 18px 94px;
+    }
+
+    .total {
+      font-size: 30px;
+    }
+
+    .asset-actions {
+      grid-template-columns: repeat(2, 44px);
+    }
+
+    .round-action i {
+      width: 40px;
+      height: 40px;
+    }
+
+    .market-banner {
+      height: 68px;
+    }
+
+    .wallet-row,
+    .manage-list-row {
+      min-height: 49px;
+      padding: 6px 0;
+    }
+
+    .wallet-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+    }
+
+    .row-title {
+      font-size: 13px;
+    }
+
+    .row-sub,
+    .wallet-amount {
+      font-size: 10.5px;
+    }
+
+    .bottom-actions {
+      padding: 9px 18px 12px;
+      gap: 8px;
+    }
+
+    .primary,
+    .secondary {
+      min-height: 41px;
+      font-size: 13px;
+      border-radius: 8px;
+    }
+
+    .screen-title {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    .body-copy,
+    .bullet,
+    .risk-commit,
+    .check-item {
+      font-size: 12.5px;
+    }
+
+    .risk-notes .bullet {
+      font-size: 12.5px;
+      margin: 8px 0;
+    }
+
+    .create-wallet-hero {
+      padding: 8px 0 12px;
+    }
+
+    .create-visual {
+      width: 76px;
+      height: 58px;
+      margin-bottom: 14px;
+    }
+
+    .safe-visual {
+      width: 62px;
+      height: 62px;
+      border-radius: 20px;
+      margin: 4px auto 10px;
+    }
+
+    .safe-visual::before {
+      width: 34px;
+      height: 34px;
+    }
+
+    .safe-visual::after {
+      width: 16px;
+      height: 10px;
+      border-left-width: 4px;
+      border-bottom-width: 4px;
+    }
+
+    .warning-round {
+      width: 52px;
+      height: 52px;
+      border-width: 3px;
+      font-size: 30px;
+      margin-bottom: 12px;
+    }
+
+    .status-title {
+      font-size: 18px;
+      margin-top: 4px;
+    }
+
+    .stepper {
+      padding: 18px 8px 22px;
+    }
+
+    .stepper::before {
+      left: 40px;
+      right: 40px;
+      top: 27px;
+    }
+
+    .step {
+      font-size: 11px;
+    }
+
+    .step::before {
+      width: 14px;
+      height: 14px;
+      margin-bottom: 7px;
+      border-width: 3px;
+    }
+
+    .verify-count {
+      font-size: 26px;
+      margin: 9px 0 13px;
+    }
+
+    .verify-row,
+    .detail-row,
+    .account-row {
+      min-height: 50px;
+    }
+
+    .verify-icon {
+      width: 26px;
+      height: 26px;
+      border-width: 2.5px;
+    }
+
+    .confirm-line {
+      grid-template-columns: 24px 1fr;
+      gap: 10px;
+      font-size: 12.5px;
+      margin: 12px 0;
+    }
+
+    .box {
+      width: 20px;
+      height: 20px;
+      border-radius: 6px;
+    }
+
+    .small-btn {
+      min-width: 54px;
+      height: 28px;
+      font-size: 12px;
+      padding: 0 10px;
+    }
+
+    .backup-summary {
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+
+    .backup-summary .row-title {
+      font-size: 14px;
+    }
+
+    .qr-card {
+      width: min(226px, 100%);
+      padding: 14px;
+      margin: 14px auto;
+    }
+
+    .pin-form {
+      gap: 10px;
+      margin: 14px 0;
+    }
+
+    .pin-input,
+    .otp-input {
+      height: 41px;
+      font-size: 13px;
+    }
+
+    /* App-like grouped settings and exception previews. */
+    .app-list {
+      margin: 6px -18px 0;
+      border-top: 1px solid #eef0f4;
+      border-bottom: 1px solid #eef0f4;
+      background: #fff;
+    }
+
+    .app-list + .app-list {
+      margin-top: 12px;
+    }
+
+    .app-row {
+      width: 100%;
+      min-height: 52px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 12px;
+      padding: 0 18px;
+      text-align: left;
+      border-bottom: 1px solid #eef0f4;
+      background: #fff;
+    }
+
+    .app-row:last-child {
+      border-bottom: 0;
+    }
+
+    .app-row strong {
+      min-width: 0;
+      font-size: 14px;
+      font-weight: 720;
+      line-height: 1.2;
+    }
+
+    .app-row span {
+      color: #8a919d;
+      font-size: 12px;
+      font-weight: 650;
+      white-space: nowrap;
+    }
+
+    .app-row .tag {
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    .account-profile {
+      width: 100%;
+      min-height: 92px;
+      display: grid;
+      grid-template-columns: 52px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 0 18px;
+      text-align: left;
+      border-bottom: 1px solid #eef0f4;
+      margin-bottom: 8px;
+    }
+
+    .account-profile .ave-avatar {
+      width: 52px;
+      height: 52px;
+      font-size: 20px;
+    }
+
+    .account-profile h2 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.22;
+      font-weight: 780;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .account-profile .account-level {
+      min-height: 22px;
+      margin-top: 8px;
+      padding: 0 10px;
+      font-size: 11px;
+    }
+
+    .account-info-profile {
+      min-height: 98px;
+      margin-top: 10px;
+    }
+
+    .section-label.app {
+      margin: 20px 0 8px;
+      color: #a9afb9;
+      font-size: 13px;
+      font-weight: 760;
+    }
+
+    .manage-screen .search {
+      height: 36px;
+      margin: 2px 0 14px;
+      border-radius: 9px;
+      font-size: 12px;
+    }
+
+    .manage-screen .section-title {
+      margin: 14px 0 6px;
+      font-size: 15px;
+      font-weight: 780;
+    }
+
+    .manage-screen .manage-list-row,
+    .manage-screen .wallet-row {
+      min-height: 54px;
+      padding: 8px 0;
+      border-bottom: 1px solid #eef0f4;
+    }
+
+    .manage-screen .manage-list-row.recoverable {
+      min-height: 54px;
+      margin: 5px 0 0;
+      padding: 9px 10px;
+      border: 1px solid #e5e8ef;
+      border-radius: 9px;
+      background: #f7f8fa;
+    }
+
+    .manage-screen .selected-check {
+      width: 22px;
+      height: 22px;
+    }
+
+    .manage-screen .selected-check::after {
+      width: 9px;
+      height: 5px;
+      border-left-width: 3px;
+      border-bottom-width: 3px;
+    }
+
+    .manage-screen .manage-actions {
+      gap: 8px;
+    }
+
+    .manage-screen .edit,
+    .manage-screen .menu {
+      width: 28px;
+      height: 28px;
+    }
+
+    /* Final App visual tightening for account and wallet management pages. */
+    .account-page {
+      min-height: calc(100% - 10px);
+      display: block;
+    }
+
+    .account-page .account-profile {
+      margin: 8px -18px 0;
+      min-height: 106px;
+      padding: 18px;
+      border-bottom: 8px solid #f6f7fa;
+      grid-template-columns: 56px minmax(0, 1fr) 20px;
+    }
+
+    .account-page .account-profile .ave-avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 20px;
+      font-size: 20px;
+    }
+
+    .account-page .account-profile h2 {
+      font-size: 18px;
+      font-weight: 760;
+    }
+
+    .account-page .account-level {
+      width: fit-content;
+      min-height: 22px;
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      background: #f3f4f7;
+      color: #8c94a0;
+      font-size: 11px;
+      font-weight: 760;
+    }
+
+    .account-page .app-list {
+      margin: 0 -18px;
+      border-top: 0;
+      border-bottom: 8px solid #f6f7fa;
+      background: #fff;
+    }
+
+    .account-page .app-list + .app-list {
+      margin-top: 0;
+    }
+
+    .account-page .app-row {
+      min-height: 58px;
+      padding: 0 18px;
+    }
+
+    .account-page .app-row strong {
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .account-page .app-row span {
+      font-size: 13px;
+      color: #8d94a0;
+    }
+
+    .account-info-page .account-profile {
+      min-height: 120px;
+      border-bottom: 8px solid #f6f7fa;
+    }
+
+    .account-info-page .section-label.app {
+      margin: 24px 0 10px;
+      color: #a6adb8;
+      font-size: 13px;
+    }
+
+    .auth-page {
+      min-height: calc(100% - 10px);
+      display: flex;
+      flex-direction: column;
+      padding-top: 8px;
+    }
+
+    .auth-hero {
+      padding: 16px 0 18px;
+      border-bottom: 8px solid #f6f7fa;
+    }
+
+    .auth-hero .ave-avatar {
+      width: 58px;
+      height: 58px;
+      border-radius: 20px;
+      font-size: 22px;
+      margin-bottom: 14px;
+    }
+
+    .auth-title {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.25;
+      font-weight: 820;
+      color: var(--text);
+    }
+
+    .auth-sub {
+      margin: 8px 0 0;
+      color: #828a96;
+      font-size: 13px;
+      line-height: 1.45;
+      font-weight: 600;
+    }
+
+    .auth-form {
+      display: grid;
+      gap: 13px;
+      padding: 18px 0 0;
+    }
+
+    .auth-field {
+      display: grid;
+      gap: 7px;
+    }
+
+    .auth-field label {
+      color: #20242b;
+      font-size: 13px;
+      font-weight: 740;
+    }
+
+    .auth-input,
+    .auth-code-btn {
+      height: 44px;
+      border-radius: 10px;
+      border: 1px solid #e0e4eb;
+      background: #fff;
+      padding: 0 12px;
+      color: var(--text);
+      font: inherit;
+      font-size: 14px;
+      font-weight: 650;
+      outline: none;
+    }
+
+    .auth-input::placeholder {
+      color: #b2b8c2;
+    }
+
+    .auth-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(63, 125, 246, 0.12);
+    }
+
+    .auth-code-line {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 96px;
+      gap: 8px;
+    }
+
+    .auth-code-btn {
+      padding: 0 10px;
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 760;
+      text-align: center;
+      background: #f8fbff;
+    }
+
+    .auth-links {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 28px;
+      margin-top: -3px;
+    }
+
+    .text-link {
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 760;
+    }
+
+    .auth-check {
+      display: grid;
+      grid-template-columns: 22px minmax(0, 1fr);
+      align-items: flex-start;
+      gap: 8px;
+      margin-top: 2px;
+      color: #6f7784;
+      font-size: 12px;
+      line-height: 1.45;
+      font-weight: 620;
+    }
+
+    .auth-check input {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--accent);
+    }
+
+    .auth-bottom-note {
+      margin-top: 14px;
+      color: #9098a5;
+      font-size: 12px;
+      line-height: 1.45;
+      font-weight: 620;
+    }
+
+    .bottom-actions .text-link {
+      justify-self: center;
+      min-height: 26px;
+      padding: 0 8px;
+    }
+
+    .manage-screen {
+      margin: 0 -12px;
+    }
+
+    .manage-screen .search {
+      margin: 0 0 14px;
+      height: 40px;
+      border-radius: 10px;
+      padding-left: 36px;
+    }
+
+    .manage-screen .section-title {
+      margin: 15px 0 5px;
+      padding: 0 0;
+      font-size: 16px;
+      font-weight: 760;
+    }
+
+    .manage-screen .manage-list-row,
+    .manage-screen .wallet-row {
+      min-height: 58px;
+      padding: 8px 0;
+      border-bottom: 1px solid #eef0f4;
+      background: #fff;
+      border-radius: 0;
+    }
+
+    .manage-screen .manage-list-row.recoverable {
+      margin: 0;
+      padding: 8px 0;
+      border: 0;
+      border-bottom: 1px solid #eef0f4;
+      border-radius: 0;
+      background: #fff;
+      opacity: 1;
+    }
+
+    .manage-screen .manage-list-row.recoverable .row-title,
+    .manage-screen .manage-list-row.recoverable .row-sub {
+      color: #8d94a0;
+    }
+
+    .manage-screen .manage-list-row.recoverable .wallet-icon {
+      filter: grayscale(1);
+      opacity: 0.52;
+    }
+
+    .tag.recover {
+      min-height: 22px;
+      padding: 0 9px;
+      background: #edf4ff;
+      color: #3377ff;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .pin-hint {
+      min-height: 20px;
+      color: var(--danger);
+      font-size: 12px;
+      font-weight: 650;
+      margin: -5px 0 8px;
+    }
+
+    .inline-alert {
+      min-height: 42px;
+      display: grid;
+      grid-template-columns: 24px 1fr;
+      align-items: center;
+      gap: 10px;
+      border-radius: 9px;
+      background: #fff8e6;
+      color: #8a6100;
+      padding: 10px 12px;
+      margin: 10px 0 12px;
+      font-size: 12px;
+      font-weight: 680;
+      line-height: 1.45;
+    }
+
+    .inline-alert::before {
+      content: "!";
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: #f5c440;
+      color: #fff;
+      font-weight: 900;
+    }
+
+    .home-empty-wallet {
+      width: 100%;
+      min-height: 82px;
+      display: grid;
+      gap: 5px;
+      text-align: left;
+      margin: 10px 0 12px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: #f7f9fd;
+      border: 1px solid #edf0f5;
+      color: var(--text);
+    }
+
+    .home-empty-wallet strong {
+      font-size: 15px;
+      line-height: 1.3;
+      font-weight: 780;
+    }
+
+    .home-empty-wallet span {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+      font-weight: 620;
+    }
+
+    .segmented {
+      height: 36px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 4px;
+      border-radius: 10px;
+      background: #f1f3f7;
+      padding: 4px;
+      margin: 4px 0 14px;
+    }
+
+    .segmented button {
+      border-radius: 8px;
+      color: #7d8591;
+      font-size: 13px;
+      font-weight: 760;
+    }
+
+    .segmented button.active {
+      background: #fff;
+      color: var(--text);
+      box-shadow: 0 1px 4px rgba(23, 31, 45, 0.08);
+    }
+
+    .import-page .body-copy {
+      margin-bottom: 10px;
+    }
+
+    .import-box {
+      position: relative;
+      min-height: 178px;
+      border: 1px solid #e7eaf0;
+      border-radius: 11px;
+      background: #fff;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+
+    .import-box textarea {
+      width: 100%;
+      min-height: 178px;
+      resize: none;
+      border: 0;
+      outline: none;
+      padding: 14px 14px 54px;
+      color: var(--text);
+      font: inherit;
+      font-size: 13px;
+      line-height: 1.55;
+      background: transparent;
+    }
+
+    .paste-btn {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      min-width: 76px;
+      height: 34px;
+      border-radius: 8px;
+      background: #f6f7fa;
+      color: #3c4654;
+      font-size: 13px;
+      font-weight: 730;
+    }
+
+    .import-warning {
+      display: grid;
+      gap: 4px;
+      padding: 11px 12px;
+      border-radius: 10px;
+      background: #fff8e6;
+      color: #775900;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .import-warning strong {
+      color: #5f4700;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .empty-line {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 650;
+      padding: 8px 0 12px;
+    }
+
+    .error-dialog .warning-round {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 4px;
+      font-size: 26px;
+    }
+
+    .error-dialog h2 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.3;
+      font-weight: 820;
+    }
+
+    .error-dialog p {
+      color: #5c6470;
+      font-size: 13px;
+      font-weight: 620;
+    }
+
+    .note-actions {
+      display: grid;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .note-action {
+      width: 100%;
+      min-height: 34px;
+      border-radius: 9px;
+      background: #eef4ff;
+      color: #2f6fed;
+      font-size: 12px;
+      font-weight: 780;
+      padding: 0 10px;
+    }
+
     @media (max-width: 520px) {
       body {
         padding: 0;
@@ -1814,26 +3610,7 @@
       }
 
       .create-flow-section {
-        display: block;
-        width: 100%;
-        margin: 0;
-        padding: 22px 16px 28px;
-        background: #f5f6f8;
-      }
-
-      .create-flow-card,
-      .create-note {
-        border-radius: 18px;
-        box-shadow: none;
-      }
-
-      .create-note {
-        position: static;
-        margin-top: 16px;
-      }
-
-      .story-strip {
-        grid-template-columns: 1fr;
+        display: none;
       }
     }
 
@@ -1872,86 +3649,86 @@
     <aside id="notes" class="reference-panel" aria-label="页面说明"></aside>
   </div>
 
-  <section class="create-flow-section" aria-label="创建无私钥钱包并自动备份流程">
+  <section class="create-flow-section" aria-label="分片钱包总业务流程">
     <div class="create-flow-card">
-      <span class="section-kicker">CREATE + AUTO BACKUP</span>
-      <h2>创建无私钥钱包流程</h2>
+      <span class="section-kicker">KEYLESS WALLET FLOW</span>
+      <h2>分片钱包总业务流程</h2>
       <p class="flow-summary">
-        结论：可以实现创建完成后自动备份。首次创建账号后自动创建一个初始无私钥钱包；老用户也可以从“添加钱包”继续新增。创建时由 App 在本机生成钱包材料，完成加密保护后自动写入平台云备份，并在本机生成多链地址；用户不需要看到助记词，也不需要手动选择备份位置。
+        结论：未登录用户可以直接导入私钥钱包或添加观察钱包；登录/创建账号后，若账号下还没有无私钥钱包，则自动创建一个初始无私钥钱包并完成平台云备份。导入的私钥钱包不会被登录流程覆盖，登录后仍展示在私钥钱包分区。
       </p>
       <div class="doc-callout">
-        文档依据：创建流程支持本机生成钱包材料、自动备份、恢复校验与多链地址生成；备份和恢复类操作需要二次安全验证。
+        安全规则：有通行密钥时，高风险操作只验证通行密钥；没有通行密钥时，必须完成 Google 验证和邮箱验证。平台云恢复需要两次验证；iCloud / QR 恢复输入 PIN 或恢复密码后直接恢复。
       </div>
 
       <ol class="flow-diagram">
         <li class="flow-step start">
           <span class="flow-index">1</span>
           <div class="flow-content">
-            <strong>账号创建后进入初始钱包创建</strong>
-            <span>新用户创建账号后自动进入初始无私钥钱包创建；老用户新增钱包时，从钱包首页点击“添加钱包”进入。</span>
+            <strong>未登录首页</strong>
+            <span>首页保持资产/行情页结构，点击钱包名称进入钱包管理；不在首页底部直接放创建/导入按钮。</span>
           </div>
         </li>
         <li class="flow-step">
           <span class="flow-index">2</span>
           <div class="flow-content">
-            <strong>通过通行密钥验证</strong>
-            <span>创建前确认账号本人操作，可用设备生物识别、锁屏密码或通行密钥完成。</span>
+            <strong>钱包管理分流</strong>
+            <span>未登录时提供三条入口：登录/创建 Ave 账号、导入私钥钱包、添加观察钱包。</span>
           </div>
         </li>
         <li class="flow-step">
           <span class="flow-index">3</span>
           <div class="flow-content">
-            <strong>本机生成钱包材料</strong>
-            <span>用于创建多链地址和后续恢复能力，过程不向用户展示助记词。</span>
+            <strong>私钥导入路径</strong>
+            <span>助记词或私钥导入后，本机可直接使用。用户之后登录账号，私钥钱包仍保留在私钥钱包分区。</span>
           </div>
         </li>
         <li class="flow-step">
           <span class="flow-index">4</span>
           <div class="flow-content">
-            <strong>建立安全恢复能力</strong>
-            <span>系统会把恢复能力拆散保管，任一单点都不能独立恢复钱包。</span>
+            <strong>账号登录 / 创建</strong>
+            <span>账号已存在且有无私钥钱包时进入钱包首页；首次创建账号或账号下没有钱包时，自动进入初始无私钥钱包创建。</span>
             <div class="share-grid">
-              <span class="share-chip secure">本设备<br>日常使用</span>
-              <span class="share-chip cloud">平台云<br>恢复备份</span>
-              <span class="share-chip">服务端<br>安全校验</span>
+              <span class="share-chip secure">本机私钥钱包<br>可并存</span>
+              <span class="share-chip cloud">无私钥钱包<br>账号管理</span>
+              <span class="share-chip">观察钱包<br>只读查看</span>
             </div>
           </div>
         </li>
         <li class="flow-step">
           <span class="flow-index">5</span>
           <div class="flow-content">
-            <strong>自动完成平台云备份</strong>
-            <span>默认完成加密备份；失败时提示稍后重试，不让用户处理底层材料。</span>
+            <strong>初始无私钥钱包创建</strong>
+            <span>创建时完成本人验证、本机生成钱包材料、平台云自动备份和多链地址生成；用户不需要看到助记词。</span>
           </div>
         </li>
         <li class="flow-step">
           <span class="flow-index">6</span>
           <div class="flow-content">
-            <strong>生成多链地址</strong>
-            <span>常规转账继续由本机签名，用户感知与普通钱包一致。</span>
+            <strong>钱包管理完整状态</strong>
+            <span>无私钥钱包、可恢复钱包、私钥钱包、观察钱包按分区展示。可恢复钱包由后端记录后以灰色样式并入无私钥钱包列表。</span>
           </div>
         </li>
         <li class="flow-step success">
           <span class="flow-index">7</span>
           <div class="flow-content">
-            <strong>创建完成，钱包已自动备份</strong>
-            <span>用户看到“钱包已准备就绪”，可进入 DApp 探索；iCloud、QR 等可作为额外备份入口，不是默认必选项。</span>
+            <strong>钱包详情与第一批主流程</strong>
+            <span>备份管理、转私钥钱包、删除钱包、恢复钱包和安全自动签名都从钱包管理或钱包详情进入，并补齐取消、失败、重试、完成状态。</span>
           </div>
         </li>
       </ol>
 
       <div class="story-strip" aria-label="创建流程关键页面">
         <div class="story-card">
-          <b>入口</b>
-          <span>账号创建完成后进入初始钱包创建；老用户可从首页添加钱包进入。</span>
+          <b>未登录</b>
+          <span>可导入私钥或观察钱包，也可登录/创建账号。</span>
         </div>
         <div class="story-card">
-          <b>处理中</b>
-          <span>创建钱包、自动备份、生成地址合并为进度态。</span>
+          <b>已登录</b>
+          <span>没有初始钱包时自动创建；已有钱包时进入首页。</span>
         </div>
         <div class="story-card">
-          <b>完成</b>
-          <span>提示钱包已准备就绪，进入钱包使用。</span>
+          <b>并存</b>
+          <span>私钥钱包、无私钥钱包、观察钱包可在列表中同时存在。</span>
         </div>
       </div>
     </div>
@@ -1959,12 +3736,12 @@
     <aside class="create-note" aria-label="创建流程设计说明">
       <span class="section-kicker">DESIGN NOTE</span>
       <h2>设计重点</h2>
-      <p>这个流程可以按 Binance 截图表达，但产品上建议把“创建”和“备份”合并成一条连续进度，用户只感知结果，不被底层安全模型打断。</p>
+      <p>这个原型不是单个功能页，而是把登录态、钱包类型和高风险验证串成一条业务主线，方便拆分交付时开发仍能理解全局范围。</p>
       <ul>
-        <li>账号创建完成后自动创建初始无私钥钱包，默认走平台云备份。</li>
-        <li>创建中不展示助记词，避免把 Keyless 钱包误导成传统助记词钱包。</li>
-        <li>失败态只暴露“备份待完成/重试”，不要让用户处理底层恢复材料。</li>
-        <li>补充备份渠道可以放到备份管理页，不阻塞首次创建完成。</li>
+        <li>第一批可先交付恢复、删除、备份管理、转私钥钱包和自动签名入口。</li>
+        <li>恢复入口不在添加钱包里单独展示，而是在钱包列表中展示可恢复项。</li>
+        <li>私钥导入是未登录也可用的本机路径，登录后不能丢失。</li>
+        <li>所有高风险流程统一复用安全验证规则，减少重复设计和开发歧义。</li>
       </ul>
     </aside>
   </section>
@@ -1984,23 +3761,42 @@
       { name: "My Wallet 2 - SUI", amount: "$0", address: "0xd50852...2791ca", cls: "red" }
     ];
 
+    const keylessWalletsBase = [
+      { name: "Wallet1", amount: "$8,342.58", cls: "blue" },
+      { name: "My Wallet 1", amount: "$0", cls: "red" },
+      { name: "My Wallet 2", amount: "$0", cls: "" }
+    ];
+
     const state = {
       screen: "accountStart",
       overlay: null,
       sessionMode: "loggedOut",
       hasPasskey: true,
+      passkeyReturn: "accountInfo",
       passkey: { open: false, flow: "" },
       readSeconds: 0,
       riskAccepted: false,
+      riskChecks: { recovery: false, custody: false, irreversible: false },
       confirmIrreversible: false,
       verifications: { passkey: false, google: false, email: false },
       otp: { open: false, method: "email", sent: false, code: "" },
+      loginForm: { account: "", password: "" },
+      registerForm: { account: "", code: "", password: "", confirmPassword: "", sent: false, agreed: false },
       copied: false,
       savedMnemonic: false,
       converted: false,
+      convertedWallets: [],
+      activeKeylessWallet: "My Wallet 2",
+      lastConvertedWallet: "My Wallet 2",
+      lastDeletedWallet: "",
+      deletedWallets: [],
+      restoredKeylessWallets: [],
+      importedPrivateWallet: false,
+      watchWalletAdded: false,
       createdWallet: false,
       accountCreated: false,
       initialWalletCreated: false,
+      recoverableWalletRestored: false,
       creationMode: "add",
       creationVerifications: { passkey: false, google: false, email: false },
       restoredWallet: false,
@@ -2008,28 +3804,44 @@
       creationProgress: 0,
       creationStep: 0,
       backups: { cloud: true, drive: false, qr: false },
-      backupFlow: { method: "", pin: "", confirmPin: "", verifyPin: "", progress: 0, verifications: { passkey: false, google: false, email: false } },
-      restoreFlow: { source: "", pin: "", progress: 0, step: 0, stage: "pull", verifications: { passkey: false, google: false, email: false } },
+      backupsByWallet: {
+        "Wallet1": { cloud: true, drive: true, qr: false },
+        "My Wallet 1": { cloud: true, drive: false, qr: false },
+        "My Wallet 2": { cloud: true, drive: false, qr: false }
+      },
+      backupFlow: { method: "", walletName: "", pin: "", confirmPin: "", verifyPin: "", progress: 0, verifications: { passkey: false, google: false, email: false } },
+      restoreFlow: { source: "", walletName: "", pin: "", progress: 0, step: 0, stage: "pull", verifications: { passkey: false, google: false, email: false } },
       cloudPull: { progress: 0, step: 0 },
       deleteFlow: { acknowledged: false, progress: 0, step: 0, verifications: { passkey: false, google: false, email: false } },
+      agentEnabled: false,
+      agentEnabledWallets: [],
+      agentFlow: { action: "enable", walletName: "", verifications: { passkey: false, google: false, email: false } },
+      importFlow: { input: "", type: "mnemonic" },
+      exception: { title: "", message: "", primaryText: "", primaryAction: "", secondaryText: "", secondaryAction: "" },
       toast: ""
     };
 
     const titles = {
-      accountStart: "创建账号",
+      accountStart: "登录 Ave 账号",
+      register: "注册 Ave 账号",
       accountWalletIntro: "创建初始钱包",
+      accountCenter: "个人中心",
+      accountInfo: "账号信息",
+      passkeyManage: "通行密钥",
       home: "我的钱包",
       manage: "钱包管理",
-      settings: "钱包设置",
+      settings: "钱包详情",
       backup: "备份管理",
       convertIntro: "转换钱包",
       verify: "安全验证要求",
       mnemonic: "导出助记词",
       complete: "我的钱包",
-      createIntro: "币安钱包",
+      createIntro: "创建钱包",
+      importWallet: "导入钱包",
+      importSuccess: "导入完成",
       createPasskey: "通过通行密钥验证",
-      createProgress: "币安钱包",
-      createDone: "币安钱包",
+      createProgress: "创建钱包",
+      createDone: "创建完成",
       backupVerify: "设置备份",
       backupPin: "设置备份 PIN",
       backupProgress: "备份中",
@@ -2042,27 +3854,40 @@
       restoreScan: "扫描 QR Code",
       restorePin: "解锁备份",
       restoreVerify: "安全验证",
-      restoreCloudPull: "拉取云备份",
+      restoreCloudPull: "查找云备份",
       restoreCloudSuccess: "备份拉取成功",
       restoreProgress: "恢复中",
       restoreDone: "恢复完成",
       deleteIntro: "删除钱包",
       deleteVerify: "安全验证",
       deleteProgress: "删除中",
-      deleteDone: "删除完成"
+      deleteDone: "删除完成",
+      agentAutoTrade: "安全自动签名",
+      agentVerify: "安全验证",
+      agentDone: "设置完成"
     };
 
     const notes = {
       accountStart: {
-        pill: "FIRST RUN",
-        title: "账号后的初始钱包",
-        copy: "首次创建账号后，不应该让用户停在空首页。系统应立即为用户创建一个初始无私钥钱包，完成后再进入钱包首页。未登录用户则只能走本地私钥钱包或观察钱包路径。",
+        pill: "LOGIN",
+        title: "账号登录入口",
+        copy: "登录页用于区分已有账号登录和新账号注册。已有账号登录后进入当前账号钱包首页；新账号注册后才进入初始无私钥钱包创建流程。",
         points: [
-          "账号创建和初始钱包创建是一条连续新手路径。",
-          "未登录导入私钥钱包时，不提供平台云备份和平台云恢复。",
-          "观察钱包只读，导入后才可正常使用转账等能力。",
-          "用户不需要先理解钱包类型，也不需要手动点击添加钱包。",
-          "初始钱包创建完成后默认已开启平台云备份。"
+          "登录需要邮箱/手机号和登录密码。",
+          "登录按钮为底部大按钮，注册入口为小按钮，避免和主路径抢层级。",
+          "已有账号登录默认进入首页，不触发初始钱包创建。",
+          "未登录用户仍可从钱包管理导入私钥钱包或添加观察钱包。"
+        ]
+      },
+      register: {
+        pill: "REGISTER",
+        title: "注册后的连续创建",
+        copy: "注册成功后，应立即进入初始无私钥钱包创建。用户感知是一条连续路径：注册账号、验证本人、创建钱包、自动完成平台云备份。",
+        points: [
+          "注册需要邮箱/手机号、验证码、登录密码和确认密码。",
+          "注册页按钮强调“注册并创建钱包”，让用户理解下一步不是空首页。",
+          "注册成功后进入初始无私钥钱包创建页，沿用现有创建与自动备份流程。",
+          "创建完成后进入首页，钱包已在无私钥钱包分区可见。"
         ]
       },
       accountWalletIntro: {
@@ -2071,31 +3896,85 @@
         copy: "账号可用后，继续创建第一个无私钥钱包。产品语言仍叫无私钥钱包，技术上它具备分片恢复能力。",
         points: [
           "这里创建的是账号下的第一个钱包，不是额外新增钱包。",
-          "创建前只做一次通行密钥校验，确认本人操作。",
+          "初始创建阶段用户尚未绑定通行密钥，因此注册后直接进入创建流程。",
           "创建、平台云备份、多链地址生成合并为一个进度态。",
           "完成后直接进入钱包首页。"
         ]
       },
+      accountCenter: {
+        pill: "ACCOUNT",
+        title: "登录态入口",
+        copy: "个人中心用于表达用户是否已创建 Ave 账号，以及从账号信息进入安全能力设置。首次创建账号后，会自动进入初始无私钥钱包创建流程。",
+        points: [
+          "未创建账号时展示创建/登录账号，账号创建成功后自动生成初始无私钥钱包。",
+          "已登录时展示邮箱账号和退出登录。",
+          "账号信息页承载通行密钥状态，不混入钱包级操作。"
+        ]
+      },
+      accountInfo: {
+        pill: "SECURITY",
+        title: "账号安全状态",
+        copy: "账号安全页用于展示通行密钥是否已绑定，决定后续高风险操作的验证方式。",
+        points: [
+          "已绑定通行密钥：高风险操作只验证通行密钥。",
+          "未绑定通行密钥：高风险操作要求 Google 验证和邮箱验证。",
+          "邮箱作为账号身份信息展示，不作为普通钱包设置。"
+        ]
+      },
+      passkeyManage: {
+        pill: "PASSKEY",
+        title: "通行密钥管理",
+        copy: "通行密钥是优先级最高的安全验证方式，用于简化高风险操作验证。",
+        points: [
+          "未创建时展示创建按钮。",
+          "已创建时展示设备名、创建时间和删除入口。",
+          "创建或删除通行密钥会影响后续验证方式。"
+        ]
+      },
       home: {
         pill: "KEYLESS WALLET",
-        title: "无私钥钱包入口",
-        copy: "首页需要先表达登录态，再表达钱包类型。已登录账号可以使用无私钥钱包；未登录时只能使用本地私钥钱包或观察钱包。",
+        title: "首页钱包入口",
+        copy: "首页按 Ave App 的资产页表达：链选择在钱包名前，点击钱包名进入钱包管理；首页不放创建/导入钱包底部按钮，避免把资产页变成管理页。",
         points: [
-          "已登录：展示无私钥钱包、平台云备份和跨设备恢复能力。",
-          "未登录私钥钱包：可正常本地使用，但不支持平台云备份和平台云恢复。",
-          "观察钱包：只读，展示能力受限提示，引导导入后使用。",
-          "无私钥钱包和私钥钱包分区展示，转换完成后钱包会移动到私钥钱包区。",
-          "普通转账仍是本地签名，不需要临时组合完整密钥。"
+          "链选择是独立控件，点击只切换网络，不进入钱包管理。",
+          "钱包名称点击后进入钱包管理页，管理页再承载添加、恢复、设置等低频操作。",
+          "未创建钱包时首页保持资产页结构，可从钱包管理或个人中心进入创建流程。",
+          "观察钱包只读，导入后可正常使用。"
         ]
       },
       manage: {
         pill: "MANAGE",
         title: "钱包管理",
-        copy: "管理页承担进入设置、改名、排序等操作。这里保留 Binance 类似的管理入口，不提前暴露复杂恢复逻辑。",
+        copy: "管理页承担钱包创建、导入、设置、改名、排序和恢复入口。未登录时仍可导入私钥或添加观察钱包；登录后会展示账号下无私钥钱包，本机私钥钱包也保留在私钥钱包区。",
         points: [
-          "My Wallet 2 是当前演示的无私钥钱包。",
-          "用户从管理页进入单个钱包设置。",
-          "转换是钱包级操作，不需要让用户理解每条链的私钥。"
+          "未登录：展示登录/创建账号、导入私钥钱包、添加观察钱包三个入口。",
+          "已导入私钥但未登录：只展示本机私钥钱包，底部引导登录账号。",
+          "登录后首次使用：自动进入初始无私钥钱包创建，不让用户停在空钱包列表。",
+          "可恢复钱包并入无私钥钱包列表，不再单独分区。",
+          "导入私钥钱包与无私钥钱包是两个分区，登录后可以并存。",
+          "转私钥钱包是钱包级操作：只移除被转换的钱包，并在私钥钱包区新增对应多链地址。"
+        ]
+      },
+      importWallet: {
+        pill: "IMPORT",
+        title: "私钥钱包导入",
+        copy: "未登录也可以导入私钥钱包在本机使用。导入成功后进入钱包管理页；如果用户之后登录账号，本机私钥钱包继续保留，同时账号可创建无私钥钱包。",
+        points: [
+          "支持助记词或私钥导入。",
+          "导入路径不触发平台云备份，避免让用户误以为平台可恢复私钥钱包。",
+          "导入异常需要明确提示重新检查助记词或私钥。",
+          "导入后若用户登录账号，钱包列表中应同时展示私钥钱包和无私钥钱包分区。"
+        ]
+      },
+      importSuccess: {
+        pill: "IMPORTED",
+        title: "导入后的去向",
+        copy: "导入完成后不回首页，进入钱包管理页更利于开发理解钱包类型和登录状态的关系。",
+        points: [
+          "未登录导入成功：钱包在本机可用，底部展示登录账号入口。",
+          "已登录导入成功：钱包进入私钥钱包分区。",
+          "登录不会吞掉本机导入的钱包，两种钱包类型可并存。",
+          "私钥钱包不展示备份管理和平台云恢复入口。"
         ]
       },
       settings: {
@@ -2111,12 +3990,42 @@
       backup: {
         pill: "BACKUP",
         title: "Keyless 备份",
-        copy: "转换前，用户依然处于无私钥钱包模式，可以通过多渠道备份提高恢复能力。这里展示的是恢复备份渠道，不是导出助记词。",
+        copy: "转换前，用户依然处于无私钥钱包模式，可以通过多渠道备份提高恢复能力。备份管理页按渠道展示状态，避免在页面中间塞解释卡片。",
         points: [
-          "平台云备份是主恢复能力，默认开启并置顶展示。",
+          "已备份渠道展示日期和绿色完成状态。",
+          "未备份渠道只展示未备份文案和备份按钮。",
           "iCloud / Google Drive 与 QR Code 是额外冗余备份。",
-          "服务端安全校验能力不作为用户可选备份方式展示。",
           "转换成私钥钱包后，这类恢复能力会关闭。"
+        ]
+      },
+      agentAutoTrade: {
+        pill: "AGENT",
+        title: "安全自动签名",
+        copy: "技术文档支持 Agent 自动交易：启用后在授权范围内由安全环境完成签名。产品上应把它当高风险授权处理，入口放在钱包详情。",
+        points: [
+          "启用时按统一安全规则验证：有通行密钥只验证通行密钥；无通行密钥验证 Google + 邮箱。",
+          "页面展示限额、有效期和可随时关闭，不展示内部密钥材料。",
+          "关闭前先做确认弹窗，再按同一安全规则完成本人验证。",
+          "单私钥钱包暂不展示该入口，避免误导开发。"
+        ]
+      },
+      agentVerify: {
+        pill: "VERIFY",
+        title: "启用自动签名验证",
+        copy: "启用自动签名会改变交易授权边界，因此需要高风险级别的本人验证。",
+        points: [
+          "有通行密钥时不展示 0/1 计数。",
+          "没有通行密钥时展示 0/2，并要求 Google 与邮箱都通过。",
+          "验证通过后才可进入启用完成态。"
+        ]
+      },
+      agentDone: {
+        pill: "DONE",
+        title: "自动签名完成态",
+        copy: "完成态只反馈结果，并回到钱包详情继续查看状态。",
+        points: [
+          "完成后钱包详情中的状态变为已开启。",
+          "关闭从同一入口进入，降低分散入口带来的理解成本。"
         ]
       },
       backupVerify: {
@@ -2135,7 +4044,7 @@
         copy: "iCloud/Google Drive 使用备份 PIN；QR Code 使用恢复密码。两者都由用户自己保管，用于保护对应备份。",
         points: [
           "PIN / 恢复密码不上传平台，平台无法找回。",
-          "建议至少 6 位，支持字母数字组合。",
+          "原型演示不限制输入格式，实际开发可按安全策略校验。",
           "忘记后，该备份渠道不可用，只能依赖其他备份渠道恢复。"
         ]
       },
@@ -2191,9 +4100,10 @@
       },
       restoreSource: {
         pill: "RECOVER",
-        title: "恢复入口",
-        copy: "恢复流程用于换机或重装 App 后把钱包恢复到本设备。用户只需要选择自己可用的备份来源。",
+        title: "列表内恢复入口",
+        copy: "恢复流程不再作为添加钱包里的独立入口。后端识别到可恢复钱包后，在钱包管理列表中展示灰色可恢复项，点击后再选择可用备份来源。",
         points: [
+          "入口位置：钱包管理列表中的灰色可恢复钱包。",
           "平台云备份是推荐默认路径，但需要两段验证：先拉取云备份，再恢复钱包。",
           "iCloud / Google Drive 和 QR Code 输入 PIN 后直接进入恢复中。",
           "恢复过程中不会向用户展示私钥或助记词。"
@@ -2246,7 +4156,7 @@
         points: [
           "这一步用户理解为“找回云端备份”。",
           "拉取完成后展示成功页，给用户明确反馈。",
-          "不在页面里暴露分片、Share 等内部术语。"
+          "不在页面里暴露内部实现术语。"
         ]
       },
       restoreCloudSuccess: {
@@ -2265,7 +4175,7 @@
         copy: "App 完成备份校验后，将钱包恢复到当前设备，并重新生成本机可用的钱包数据。",
         points: [
           "恢复过程分步完成，避免一次操作暴露过多敏感信息。",
-          "服务端只参与安全校验，不向用户展示助记词。",
+          "恢复过程只展示账号验证和恢复结果，不向用户展示助记词。",
           "恢复完成后，多链地址重新出现在本设备。"
         ]
       },
@@ -2453,7 +4363,11 @@
 
     function backTarget() {
       const map = {
+        register: "accountStart",
         accountWalletIntro: "accountStart",
+        accountCenter: "home",
+        accountInfo: "accountCenter",
+        passkeyManage: state.passkeyReturn || "accountInfo",
         manage: "home",
         settings: "manage",
         backup: "settings",
@@ -2462,6 +4376,8 @@
         mnemonic: "verify",
         complete: "home",
         createIntro: "home",
+        importWallet: "manage",
+        importSuccess: "manage",
         createPasskey: state.creationMode === "initial" ? "accountWalletIntro" : "createIntro",
         backupVerify: "backup",
         backupPin: "backup",
@@ -2469,7 +4385,7 @@
         backupQrScan: "backupQr",
         backupQrVerify: "backupQrScan",
         backupDone: "backup",
-        restoreSource: "home",
+        restoreSource: "manage",
         restoreDriveFile: "restoreSource",
         restoreScan: "restoreSource",
         restorePin: state.restoreFlow.source === "qr" ? "restoreScan" : "restoreDriveFile",
@@ -2477,7 +4393,10 @@
         restoreDone: "home",
         deleteIntro: "settings",
         deleteVerify: "deleteIntro",
-        deleteDone: "home"
+        deleteDone: "home",
+        agentAutoTrade: "settings",
+        agentVerify: "agentAutoTrade",
+        agentDone: "settings"
       };
       return map[state.screen] || "home";
     }
@@ -2516,13 +4435,240 @@
       deleteTimer = null;
     }
 
+    function exceptionConfig(kind) {
+      const retryCreate = state.creationMode === "initial" ? "beginWalletCreation('initial')" : "enterCreatePasskey('add')";
+      const backCreate = state.creationMode === "initial" ? "go('accountWalletIntro')" : "go('createIntro')";
+      const map = {
+        createCancelled: {
+          title: "验证已取消",
+          message: "钱包尚未创建，平台云备份也不会开始。请重新完成验证后继续。",
+          primaryText: "重新验证",
+          primaryAction: retryCreate,
+          secondaryText: "返回",
+          secondaryAction: backCreate
+        },
+        createFailed: {
+          title: "创建未完成",
+          message: "当前网络或设备验证中断，钱包没有创建成功。请稍后重试。",
+          primaryText: "重新创建",
+          primaryAction: "retryWalletCreation()",
+          secondaryText: "返回钱包管理",
+          secondaryAction: "go('manage')"
+        },
+        backupFailed: {
+          title: "备份未完成",
+          message: "当前备份渠道没有保存成功，备份状态不会更新。请检查网络或存储权限后重试。",
+          primaryText: "重新备份",
+          primaryAction: "retryCurrentBackup()",
+          secondaryText: "返回备份管理",
+          secondaryAction: "go('backup')"
+        },
+        backupQrFailed: {
+          title: "二维码验证失败",
+          message: "未能识别刚保存的备份二维码。请确认二维码完整可见后重新扫描。",
+          primaryText: "重新扫码",
+          primaryAction: "go('backupQrScan')",
+          secondaryText: "返回备份管理",
+          secondaryAction: "go('backup')"
+        },
+        restoreCloudFailed: {
+          title: "未找到可用备份",
+          message: "平台云备份暂时无法拉取，钱包不会恢复到当前设备。请检查账号和网络后重试。",
+          primaryText: "重新拉取",
+          primaryAction: "retryCloudRestore()",
+          secondaryText: "更换恢复方式",
+          secondaryAction: "go('restoreSource')"
+        },
+        restorePinFailed: {
+          title: "解锁失败",
+          message: "PIN 或恢复密码不正确，该备份暂时无法用于恢复。请重新输入或更换恢复方式。",
+          primaryText: "重新输入",
+          primaryAction: "go('restorePin')",
+          secondaryText: "更换恢复方式",
+          secondaryAction: "go('restoreSource')"
+        },
+        restoreFailed: {
+          title: "恢复未完成",
+          message: "钱包没有恢复到当前设备，列表状态不会变化。请重试或更换备份来源。",
+          primaryText: "重新恢复",
+          primaryAction: "retryRestoreProgress()",
+          secondaryText: "更换恢复方式",
+          secondaryAction: "go('restoreSource')"
+        },
+        deleteFailed: {
+          title: "删除未完成",
+          message: "钱包仍保留在当前设备，30 天恢复期不会开始。请重新验证后再试。",
+          primaryText: "重新删除",
+          primaryAction: "retryDeleteProgress()",
+          secondaryText: "返回钱包详情",
+          secondaryAction: "go('settings')"
+        },
+        convertInterrupted: {
+          title: "转换未完成",
+          message: "在保存助记词并完成确认前，钱包仍保持无私钥钱包状态。",
+          primaryText: "继续转换",
+          primaryAction: "go('convertIntro')",
+          secondaryText: "返回钱包详情",
+          secondaryAction: "go('settings')"
+        },
+        mnemonicNotSaved: {
+          title: "助记词未确认保存",
+          message: "如果未确认保存，钱包不会切换为私钥钱包。请先安全保存助记词。",
+          primaryText: "继续保存",
+          primaryAction: "go('mnemonic')",
+          secondaryText: "返回上一步",
+          secondaryAction: "go('verify')"
+        },
+        importFailed: {
+          title: "导入失败",
+          message: "助记词或私钥格式不正确，钱包不会添加到列表。请检查后重新导入。",
+          primaryText: "重新导入",
+          primaryAction: "go('importWallet')",
+          secondaryText: "返回钱包管理",
+          secondaryAction: "go('manage')"
+        },
+        agentFailed: {
+          title: "设置未生效",
+          message: "自动签名状态没有变化，请重新完成安全验证后再试。",
+          primaryText: "重新验证",
+          primaryAction: "go('agentVerify')",
+          secondaryText: "返回钱包详情",
+          secondaryAction: "go('settings')"
+        },
+        otpExpired: {
+          title: "验证码已失效",
+          message: "请重新获取验证码。未完成全部验证前，本次操作不会继续。",
+          primaryText: "重新发送",
+          primaryAction: "sendEmailCode()",
+          secondaryText: "稍后再试",
+          secondaryAction: "closeFlowException()"
+        }
+      };
+      return map[kind] || map.createFailed;
+    }
+
+    function openFlowException(kind) {
+      state.exception = exceptionConfig(kind);
+      state.overlay = "flowException";
+      state.toast = "";
+      render();
+    }
+
+    function closeFlowException() {
+      state.overlay = null;
+      state.exception = { title: "", message: "", primaryText: "", primaryAction: "", secondaryText: "", secondaryAction: "" };
+      render();
+    }
+
+    function runExceptionAction(action) {
+      const fn = new Function(action);
+      closeFlowException();
+      fn();
+    }
+
+    function retryCurrentBackup() {
+      const method = state.backupFlow.method || "drive";
+      if (method === "cloud") {
+        startCloudBackupFlow();
+        return;
+      }
+      if (method === "qr") {
+        go("backupQr");
+        return;
+      }
+      if (!backupPinValid()) {
+        startBackupFlow(method);
+        return;
+      }
+      submitBackupPin();
+    }
+
+    function retryWalletCreation() {
+      beginWalletCreation(state.creationMode || "add");
+    }
+
+    function retryCloudRestore() {
+      if (state.restoreFlow.source !== "cloud") {
+        startRestoreFlow("cloud");
+        return;
+      }
+      if (!verificationCompleteForScreen("restoreVerify")) {
+        go("restoreVerify");
+        return;
+      }
+      beginCloudPull();
+    }
+
+    function retryRestoreProgress() {
+      if (!state.restoreFlow.source) {
+        go("restoreSource");
+        return;
+      }
+      if (state.restoreFlow.source === "cloud" && !verificationCompleteForScreen("restoreVerify")) {
+        go("restoreVerify");
+        return;
+      }
+      beginRestoreProgress();
+    }
+
+    function retryDeleteProgress() {
+      if (!verificationCompleteForScreen("deleteVerify")) {
+        go("deleteVerify");
+        return;
+      }
+      beginDeleteProgress();
+    }
+
+    function handleBack() {
+      if (["convertIntro", "verify", "mnemonic"].includes(state.screen)) {
+        openFlowException("convertInterrupted");
+        return;
+      }
+      if (state.screen === "agentVerify") {
+        openFlowException("agentFailed");
+        return;
+      }
+      go(backTarget());
+    }
+
     function backupMethodName(method = state.backupFlow.method) {
+      if (method === "cloud") return "平台云备份";
       return method === "qr" ? "QR Code" : "iCloud / Google Drive";
+    }
+
+    function startCloudBackupFlow() {
+      state.backupFlow = {
+        method: "cloud",
+        walletName: activeKeylessWalletName(),
+        pin: "",
+        confirmPin: "",
+        verifyPin: "",
+        progress: 14,
+        verifications: { passkey: false, google: false, email: false }
+      };
+      state.screen = "backupProgress";
+      state.toast = "";
+      stopBackupTimer();
+      render();
+      backupTimer = setInterval(() => {
+        const next = state.backupFlow.progress + 24;
+        if (next >= 100) {
+          stopBackupTimer();
+          state.backupFlow.progress = 100;
+          markBackupDone("cloud", state.backupFlow.walletName);
+          state.screen = "backupDone";
+          render();
+          return;
+        }
+        state.backupFlow.progress = next;
+        render();
+      }, 650);
     }
 
     function startBackupFlow(method) {
       state.backupFlow = {
         method,
+        walletName: activeKeylessWalletName(),
         pin: "",
         confirmPin: "",
         verifyPin: "",
@@ -2533,18 +4679,16 @@
     }
 
     function updateBackupPin(field, value) {
-      state.backupFlow[field] = value.replace(/\s/g, "").slice(0, 16);
+      state.backupFlow[field] = value;
       const button = document.querySelector("[data-action='backup-pin-next']");
       if (button) button.disabled = !backupPinValid();
     }
 
     function backupPinValid() {
-      const { pin, confirmPin } = state.backupFlow;
-      return pin.length >= 6 && pin === confirmPin;
+      return true;
     }
 
     function submitBackupPin() {
-      if (!backupPinValid()) return;
       if (state.backupFlow.method === "qr") {
         go("backupQr");
         return;
@@ -2559,7 +4703,7 @@
         if (next >= 100) {
           stopBackupTimer();
           state.backupFlow.progress = 100;
-          state.backups.drive = true;
+          markBackupDone("drive", state.backupFlow.walletName);
           state.screen = "backupDone";
           render();
           return;
@@ -2575,18 +4719,17 @@
     }
 
     function updateBackupVerifyPin(value) {
-      state.backupFlow.verifyPin = value.replace(/\s/g, "").slice(0, 16);
+      state.backupFlow.verifyPin = value;
       const button = document.querySelector("[data-action='backup-verify-pin-next']");
       if (button) button.disabled = !backupVerifyPinValid();
     }
 
     function backupVerifyPinValid() {
-      return state.backupFlow.verifyPin.length >= 6 && state.backupFlow.verifyPin === state.backupFlow.pin;
+      return true;
     }
 
     function completeQrBackup() {
-      if (!backupVerifyPinValid()) return;
-      state.backups.qr = true;
+      markBackupDone("qr", state.backupFlow.walletName);
       go("backupDone");
     }
 
@@ -2596,6 +4739,7 @@
       if (screen === "backupVerify") return state.backupFlow.verifications;
       if (screen === "restoreVerify") return state.restoreFlow.verifications;
       if (screen === "deleteVerify") return state.deleteFlow.verifications;
+      if (screen === "agentVerify") return state.agentFlow.verifications;
       return state.verifications;
     }
 
@@ -2610,6 +4754,12 @@
 
     function verificationTargetCount() {
       return requiredVerificationTypes().length;
+    }
+
+    function verificationCounter(screen = state.screen) {
+      const target = verificationTargetCount();
+      if (target <= 1) return "";
+      return `<div class="verify-count">${verificationCountForScreen(screen)}/${target}</div>`;
     }
 
     function verificationCompleteForScreen(screen = state.screen) {
@@ -2664,8 +4814,29 @@
     }
 
     function closePasskeyVerification() {
+      const flow = state.passkey.flow;
       state.passkey.open = false;
       state.passkey.flow = "";
+      if (flow === "create" || flow === "initialCreate") {
+        openFlowException("createCancelled");
+        return;
+      }
+      if (flow === "convert") {
+        openFlowException("convertInterrupted");
+        return;
+      }
+      if (flow === "restore") {
+        openFlowException(state.restoreFlow.stage === "pull" ? "restoreCloudFailed" : "restoreFailed");
+        return;
+      }
+      if (flow === "delete") {
+        openFlowException("deleteFailed");
+        return;
+      }
+      if (flow === "agent") {
+        openFlowException("agentFailed");
+        return;
+      }
       render();
     }
 
@@ -2673,6 +4844,12 @@
       const flow = state.passkey.flow;
       state.passkey.open = false;
       state.passkey.flow = "";
+      if (flow === "bindPasskey") {
+        state.hasPasskey = true;
+        render();
+        showToast("通行密钥已创建");
+        return;
+      }
       if (flow === "create" || flow === "initialCreate") {
         beginWalletCreation(flow === "initialCreate" ? "initial" : "add");
         return;
@@ -2681,6 +4858,7 @@
       if (flow === "backup") markVerificationDone("passkey", "backupVerify");
       if (flow === "restore") markVerificationDone("passkey", "restoreVerify");
       if (flow === "delete") markVerificationDone("passkey", "deleteVerify");
+      if (flow === "agent") markVerificationDone("passkey", "agentVerify");
       render();
       showToast("通行密钥验证已通过");
     }
@@ -2703,12 +4881,35 @@
       return "iCloud / Google Drive";
     }
 
+    function recoverableWalletName() {
+      return recoverableWallets()[0]?.name || "Wallet 1407";
+    }
+
+    function beginRecoverableWalletRestore(name = recoverableWalletName()) {
+      state.restoreFlow = {
+        source: "",
+        pin: "",
+        progress: 0,
+        step: 0,
+        stage: "pull",
+        walletName: name,
+        verifications: { passkey: false, google: false, email: false }
+      };
+      go("restoreSource");
+    }
+
+    function restoreWalletName() {
+      return state.restoreFlow.walletName || recoverableWalletName();
+    }
+
     function startRestoreFlow(source) {
+      const walletName = restoreWalletName();
       state.restoreFlow = {
         source,
         pin: "",
         progress: 0,
         step: 0,
+        walletName,
         stage: source === "cloud" ? "pull" : "recover",
         verifications: { passkey: false, google: false, email: false }
       };
@@ -2720,17 +4921,16 @@
     }
 
     function updateRestorePin(value) {
-      state.restoreFlow.pin = value.replace(/\s/g, "").slice(0, 16);
+      state.restoreFlow.pin = value;
       const button = document.querySelector("[data-action='restore-pin-next']");
       if (button) button.disabled = !restorePinValid();
     }
 
     function restorePinValid() {
-      return state.restoreFlow.pin.length >= 6;
+      return true;
     }
 
     function submitRestorePin() {
-      if (!restorePinValid()) return;
       beginRestoreProgress();
     }
 
@@ -2796,7 +4996,24 @@
         const next = checkpoints.find((item) => item.progress > state.restoreFlow.progress);
         if (!next) {
           stopRestoreTimer();
+          const walletName = restoreWalletName();
           state.restoredWallet = true;
+          if (state.deletedWallets.includes(walletName)) {
+            state.deletedWallets = state.deletedWallets.filter((name) => name !== walletName);
+            state.deletedWallet = state.deletedWallets.length > 0;
+          }
+          if (walletName === "Wallet 1407") {
+            state.recoverableWalletRestored = true;
+          }
+          if (!allKeylessWallets().some((wallet) => wallet.name === walletName)) {
+            state.restoredKeylessWallets.push(walletName);
+          }
+          state.activeKeylessWallet = walletName;
+          const backups = backupStatusFor(walletName);
+          backups.cloud = backups.cloud || state.restoreFlow.source === "cloud";
+          backups.drive = backups.drive || state.restoreFlow.source === "drive";
+          backups.qr = backups.qr || state.restoreFlow.source === "qr";
+          state.backups = backups;
           state.screen = "restoreDone";
           render();
           return;
@@ -2811,6 +5028,54 @@
       state.deleteFlow.acknowledged = checked;
       const button = document.querySelector("[data-action='delete-next']");
       if (button) button.disabled = !checked;
+    }
+
+    function setRiskCheck(key, checked) {
+      state.riskChecks[key] = checked;
+      state.riskAccepted = Object.values(state.riskChecks).every(Boolean);
+      render();
+    }
+
+    function resetConvertFlow() {
+      state.riskChecks = { recovery: false, custody: false, irreversible: false };
+      state.riskAccepted = false;
+      state.verifications = { passkey: false, google: false, email: false };
+      state.savedMnemonic = false;
+      state.copied = false;
+      go("convertIntro");
+    }
+
+    function beginAgentEnable() {
+      state.agentFlow.action = "enable";
+      state.agentFlow.walletName = activeKeylessWalletName();
+      state.agentFlow.verifications = { passkey: false, google: false, email: false };
+      go("agentVerify");
+    }
+
+    function completeAgentAuth() {
+      if (!verificationCompleteForScreen("agentVerify")) return;
+      const walletName = state.agentFlow.walletName || activeKeylessWalletName();
+      setAgentEnabledForWallet(walletName, state.agentFlow.action === "enable");
+      go("agentDone");
+    }
+
+    function requestAgentDisable() {
+      state.overlay = "agentDisableConfirm";
+      state.toast = "";
+      render();
+    }
+
+    function closeAgentDisableConfirm() {
+      state.overlay = null;
+      render();
+    }
+
+    function confirmAgentDisable() {
+      state.agentFlow.action = "disable";
+      state.agentFlow.walletName = activeKeylessWalletName();
+      state.agentFlow.verifications = { passkey: false, google: false, email: false };
+      state.overlay = null;
+      go("agentVerify");
     }
 
     function completeDeleteAuth(type) {
@@ -2839,7 +5104,14 @@
         const next = checkpoints.find((item) => item.progress > state.deleteFlow.progress);
         if (!next) {
           stopDeleteTimer();
-          state.deletedWallet = true;
+          const walletName = activeKeylessWalletName();
+          if (!state.deletedWallets.includes(walletName)) {
+            state.deletedWallets.push(walletName);
+          }
+          state.lastDeletedWallet = walletName;
+          state.deletedWallet = state.deletedWallets.length > 0;
+          setAgentEnabledForWallet(walletName, false);
+          selectNextAvailableKeyless();
           state.screen = "deleteDone";
           render();
           return;
@@ -2854,12 +5126,30 @@
       state.overlay = "addWallet";
       state.toast = "";
       render();
-      setTimeout(() => showToast("为确保个人资产安全，请不要截屏。"), 60);
+    }
+
+    function openChainSheet() {
+      state.overlay = "chainSelect";
+      state.toast = "";
+      render();
+    }
+
+    function selectChain(name) {
+      state.overlay = null;
+      render();
+      showToast(`已切换至 ${name}`);
     }
 
     function closeAddWalletSheet() {
       state.overlay = null;
       render();
+    }
+
+    function openImportWalletSheet() {
+      state.overlay = null;
+      state.toast = "";
+      state.importFlow = { input: "", type: "mnemonic" };
+      go("importWallet");
     }
 
     function beginWalletCreation(mode = "add") {
@@ -2960,9 +5250,13 @@
     }
 
     function closeOtpVerification() {
+      const activeScreen = state.screen;
       state.otp.open = false;
       state.otp.code = "";
       render();
+      if (["createPasskey", "verify", "restoreVerify", "deleteVerify", "agentVerify"].includes(activeScreen)) {
+        showToast("验证已取消，当前操作未继续。");
+      }
     }
 
     function sendEmailCode() {
@@ -2972,15 +5266,14 @@
     }
 
     function updateOtpCode(value) {
-      state.otp.code = value.replace(/\D/g, "").slice(0, 6);
+      state.otp.code = value;
       const input = document.querySelector("[data-otp-code]");
       if (input) input.value = state.otp.code;
       const confirm = document.querySelector("[data-otp-confirm]");
-      if (confirm) confirm.disabled = state.otp.code.length !== 6;
+      if (confirm) confirm.disabled = false;
     }
 
     function completeOtpVerification() {
-      if (state.otp.code.length !== 6) return;
       const type = state.otp.method === "email" ? "email" : "google";
       markVerificationDone(type);
       const complete = verificationCompleteForScreen();
@@ -2993,6 +5286,10 @@
     function enterCreatePasskey(mode = "add") {
       state.creationMode = mode;
       state.creationVerifications = { passkey: false, google: false, email: false };
+      if (mode === "initial") {
+        beginWalletCreation("initial");
+        return;
+      }
       go("createPasskey");
       if (state.hasPasskey) {
         setTimeout(() => openPasskeyVerification(mode === "initial" ? "initialCreate" : "create"), 80);
@@ -3009,13 +5306,24 @@
       const right = options.right || "";
       const title = state.screen === "backupPin" && state.backupFlow.method === "qr"
         ? "设置恢复密码"
+        : state.screen === "backup"
+          ? activeKeylessWalletName()
         : state.screen === "createPasskey" && state.creationMode === "initial"
           ? "创建初始钱包"
           : state.screen === "createProgress" && state.creationMode === "initial"
             ? "创建初始钱包"
             : state.screen === "createDone" && state.creationMode === "initial"
-              ? "初始钱包"
+              ? "创建完成"
               : titles[state.screen];
+      const nav = options.hideNav
+        ? ""
+        : `
+          <div class="nav">
+            ${canBack ? `<button class="icon-btn" onclick="handleBack()" aria-label="返回">‹</button>` : `<span></span>`}
+            <h1>${title}</h1>
+            ${right}
+          </div>
+        `;
       return `
         <div class="status">
           <span>18:08</span>
@@ -3025,11 +5333,7 @@
             <span class="battery">42</span>
           </span>
         </div>
-        <div class="nav">
-          ${canBack ? `<button class="icon-btn" onclick="go('${backTarget()}')" aria-label="返回">‹</button>` : `<span></span>`}
-          <h1>${title}</h1>
-          ${right}
-        </div>
+        ${nav}
         <section class="content">${content}</section>
         ${renderOverlay()}
         ${state.toast ? `<div class="toast">${state.toast}</div>` : ""}
@@ -3040,26 +5344,230 @@
       return `<span class="wallet-icon ${cls}" aria-hidden="true"></span>`;
     }
 
+    function walletDeleted(name) {
+      return state.deletedWallets.includes(name);
+    }
+
+    function walletConverted(name) {
+      return state.convertedWallets.includes(name);
+    }
+
+    function restoredKeylessWalletObjects() {
+      return state.restoredKeylessWallets.map((name, index) => ({
+        name,
+        amount: "$0",
+        cls: index % 2 ? "red" : "blue"
+      }));
+    }
+
+    function allKeylessWallets() {
+      return [...keylessWalletsBase, ...restoredKeylessWalletObjects()];
+    }
+
+    function activeKeylessWallet() {
+      return allKeylessWallets().find((wallet) =>
+        wallet.name === state.activeKeylessWallet
+        && !walletConverted(wallet.name)
+        && !walletDeleted(wallet.name)
+      )
+        || remainingKeylessWallets()[0]
+        || keylessWalletsBase[2];
+    }
+
+    function activeKeylessWalletName() {
+      return activeKeylessWallet().name;
+    }
+
+    function remainingKeylessWallets() {
+      return allKeylessWallets().filter((wallet) => !walletConverted(wallet.name) && !walletDeleted(wallet.name));
+    }
+
+    function recoverableWallets() {
+      const preset = state.recoverableWalletRestored ? [] : [{ name: "Wallet 1407", source: "平台云备份可用" }];
+      const deleted = state.deletedWallets.map((name) => ({ name, source: "剩余 30 天" }));
+      return [...deleted, ...preset];
+    }
+
+    function backupStatusFor(walletName = activeKeylessWalletName()) {
+      if (!state.backupsByWallet[walletName]) {
+        state.backupsByWallet[walletName] = { cloud: true, drive: false, qr: false };
+      }
+      return state.backupsByWallet[walletName];
+    }
+
+    function markBackupDone(method, walletName = activeKeylessWalletName()) {
+      const backups = backupStatusFor(walletName);
+      backups[method] = true;
+      state.backups = backups;
+    }
+
+    function isAgentEnabled(walletName = activeKeylessWalletName()) {
+      return state.agentEnabledWallets.includes(walletName);
+    }
+
+    function setAgentEnabledForWallet(walletName, enabled) {
+      state.agentEnabledWallets = enabled
+        ? Array.from(new Set([...state.agentEnabledWallets, walletName]))
+        : state.agentEnabledWallets.filter((name) => name !== walletName);
+      state.agentEnabled = isAgentEnabled(walletName);
+    }
+
+    function selectNextAvailableKeyless() {
+      const nextWallet = remainingKeylessWallets()[0];
+      if (nextWallet) {
+        state.activeKeylessWallet = nextWallet.name;
+      }
+      return nextWallet;
+    }
+
+    function selectKeylessWallet(name) {
+      state.activeKeylessWallet = name;
+      state.agentEnabled = isAgentEnabled(name);
+      state.backups = backupStatusFor(name);
+      go("settings");
+    }
+
+    function derivedWalletsFor(walletName = activeKeylessWalletName()) {
+      return derivedWallets.map((wallet) => ({
+        ...wallet,
+        name: wallet.name.replace("My Wallet 2", walletName)
+      }));
+    }
+
+    function convertedPrivateWalletRows() {
+      return state.convertedWallets
+        .flatMap((walletName) => derivedWalletsFor(walletName))
+        .map(privateWalletRow)
+        .join("");
+    }
+
+    function completeConversion() {
+      const walletName = activeKeylessWalletName();
+      if (!state.convertedWallets.includes(walletName)) {
+        state.convertedWallets.push(walletName);
+      }
+      state.lastConvertedWallet = walletName;
+      state.converted = state.convertedWallets.length > 0;
+      setAgentEnabledForWallet(walletName, false);
+      selectNextAvailableKeyless();
+      go("complete");
+    }
+
+    function accountCredentialLooksValid(value) {
+      return true;
+    }
+
+    function passwordLooksValid(value) {
+      return true;
+    }
+
+    function updateLoginForm(field, value) {
+      state.loginForm[field] = value;
+      const button = document.querySelector("[data-action='login-submit']");
+      if (button) button.disabled = !loginFormValid();
+    }
+
+    function loginFormValid() {
+      return accountCredentialLooksValid(state.loginForm.account) && passwordLooksValid(state.loginForm.password);
+    }
+
+    function fillLoginSample() {
+      state.loginForm.account = "m17381569076@gmail.com";
+      state.loginForm.password = "ave123456";
+      render();
+    }
+
+    function completeLogin() {
+      if (!loginFormValid()) return;
+      state.sessionMode = "loggedIn";
+      state.accountCreated = true;
+      state.hasPasskey = true;
+      state.initialWalletCreated = true;
+      if (!remainingKeylessWallets().length) {
+        state.convertedWallets = [];
+        state.deletedWallets = [];
+      }
+      selectNextAvailableKeyless();
+      go("home");
+    }
+
+    function updateRegisterForm(field, value) {
+      state.registerForm[field] = value;
+      const button = document.querySelector("[data-action='register-submit']");
+      if (button) button.disabled = !registerFormValid();
+    }
+
+    function toggleRegisterAgreement(checked) {
+      state.registerForm.agreed = checked;
+      const button = document.querySelector("[data-action='register-submit']");
+      if (button) button.disabled = !registerFormValid();
+    }
+
+    function sendRegisterCode() {
+      state.registerForm.sent = true;
+      render();
+      showToast("验证码已发送");
+    }
+
+    function registerFormValid() {
+      return true;
+    }
+
+    function fillRegisterSample() {
+      state.registerForm.account = "m17381569076@gmail.com";
+      state.registerForm.code = "demo";
+      state.registerForm.password = "ave123456";
+      state.registerForm.confirmPassword = "ave123456";
+      state.registerForm.sent = true;
+      state.registerForm.agreed = true;
+      render();
+    }
+
+    function completeRegister() {
+      if (!registerFormValid()) return;
+      state.sessionMode = "loggedIn";
+      state.accountCreated = true;
+      state.hasPasskey = false;
+      state.initialWalletCreated = false;
+      state.activeKeylessWallet = "My Wallet 2";
+      state.creationMode = "initial";
+      state.creationVerifications = { passkey: false, google: false, email: false };
+      go("accountWalletIntro");
+      setTimeout(() => showToast("注册成功，继续创建初始钱包"), 80);
+    }
+
     function enterLoggedInAccount(hasPasskey = true) {
       state.sessionMode = "loggedIn";
       state.hasPasskey = hasPasskey;
       state.accountCreated = true;
-      go("accountWalletIntro");
+      state.initialWalletCreated = true;
+      selectNextAvailableKeyless();
+      go("home");
     }
 
     function enterGuestPrivateWallet() {
       state.sessionMode = "guestPrivate";
-      state.converted = true;
+      state.importedPrivateWallet = true;
+      state.converted = false;
+      state.convertedWallets = [];
+      state.deletedWallets = [];
+      state.restoredKeylessWallets = [];
+      state.agentEnabledWallets = [];
       state.createdWallet = false;
       state.initialWalletCreated = false;
       state.restoredWallet = false;
       state.deletedWallet = false;
-      go("home");
+      go("importSuccess");
     }
 
     function enterWatchWallet() {
       state.sessionMode = "watchOnly";
+      state.watchWalletAdded = true;
       state.converted = false;
+      state.convertedWallets = [];
+      state.deletedWallets = [];
+      state.restoredKeylessWallets = [];
+      state.agentEnabledWallets = [];
       state.createdWallet = false;
       state.initialWalletCreated = false;
       state.restoredWallet = false;
@@ -3067,49 +5575,224 @@
       go("home");
     }
 
-    function accountStatusCard() {
-      if (state.sessionMode === "guestPrivate") {
-        return `
-          <div class="account-card guest">
-            <span class="account-avatar">P</span>
-            <span><strong>未登录 · 私钥钱包</strong><span>本地自管钱包，可正常转账；不支持平台云备份与恢复。</span></span>
-            <button class="small-btn" onclick="go('accountStart')">登录</button>
-          </div>
-        `;
+    function setImportType(type) {
+      state.importFlow.type = type;
+      render();
+    }
+
+    function updateImportInput(value) {
+      state.importFlow.input = value;
+      const button = document.querySelector("[data-action='import-wallet']");
+      if (button) button.disabled = !importInputValid();
+    }
+
+    function importInputValid() {
+      return true;
+    }
+
+    function pasteImportSample() {
+      state.importFlow.input = state.importFlow.type === "privateKey"
+        ? "0x7d8f9a4b3c2d1e0f7d8f9a4b3c2d1e0f7d8f9a4b3c2d1e0f7d8f9a4b3c2d1e0f"
+        : "silver planet matrix future rocket harbor cactus winter velvet signal orbit castle";
+      render();
+    }
+
+    function completePrivateImport() {
+      if (!importInputValid()) return;
+      if (/error|错误|失败/i.test(state.importFlow.input)) {
+        openFlowException("importFailed");
+        return;
       }
-      if (state.sessionMode === "watchOnly") {
-        return `
-          <div class="account-card watch">
-            <span class="account-avatar">O</span>
-            <span><strong>观察钱包</strong><span>仅可查看资产，转账、备份和恢复能力受限。</span></span>
-            <button class="small-btn" onclick="enterGuestPrivateWallet()">导入</button>
-          </div>
-        `;
+      state.importedPrivateWallet = true;
+      if (state.sessionMode !== "loggedIn") {
+        state.sessionMode = "guestPrivate";
       }
-      return `
-        <div class="account-card">
-          <span class="account-avatar">A</span>
-          <span><strong>已登录账号</strong><span>可使用无私钥钱包、平台云备份与跨设备恢复。</span></span>
-          <span class="tag">${state.hasPasskey ? "Passkey" : "2FA"}</span>
+      go("importSuccess");
+    }
+
+    function openPasskeyManage(returnTo = "accountInfo") {
+      state.passkeyReturn = returnTo;
+      go("passkeyManage");
+    }
+
+    function accountCenter() {
+      if (state.sessionMode !== "loggedIn") {
+        return shell(`
+          <div class="account-page">
+            <div class="account-profile">
+              <span class="ave-avatar">A</span>
+              <span><h2>欢迎来到 Ave.ai</h2></span>
+              <span></span>
+            </div>
+            <div class="app-list">
+              <button class="app-row" onclick="showToast('邀请好友')"><strong>邀请好友</strong><span class="chevron"></span></button>
+            </div>
+            <div class="app-list">
+              <button class="app-row" onclick="showToast('语言切换')"><strong>语言切换</strong><span>简体中文</span></button>
+              <button class="app-row" onclick="showToast('红涨绿跌')"><strong>红涨绿跌</strong><span>关闭</span></button>
+              <button class="app-row" onclick="showToast('悬浮窗口')"><strong>悬浮窗口</strong><span class="chevron"></span></button>
+              <button class="app-row" onclick="showToast('链节点管理')"><strong>链节点管理</strong><span class="chevron"></span></button>
+            </div>
+          </div>
+          <div class="bottom-actions">
+            <button class="primary" onclick="go('accountStart')">登录 Ave 账号</button>
+          </div>
+        `);
+      }
+      return shell(`
+        <div class="account-page">
+          <button class="account-profile" onclick="go('accountInfo')">
+            <span class="ave-avatar">A</span>
+            <span><h2>m17...076@gmail.com</h2><span class="account-level">普通</span></span>
+            <span class="chevron"></span>
+          </button>
+          <div class="app-list">
+            <button class="app-row" onclick="showToast('邀请好友')"><strong>邀请好友</strong><span class="chevron"></span></button>
+          </div>
+          <div class="app-list">
+            <button class="app-row" onclick="showToast('语言切换')"><strong>语言切换</strong><span>简体中文</span></button>
+            <button class="app-row" onclick="showToast('红涨绿跌')"><strong>红涨绿跌</strong><span>关闭</span></button>
+            <button class="app-row" onclick="showToast('悬浮窗口')"><strong>悬浮窗口</strong><span class="chevron"></span></button>
+            <button class="app-row" onclick="showToast('链节点管理')"><strong>链节点管理</strong><span class="chevron"></span></button>
+            <button class="app-row" onclick="showToast('通知管理')"><strong>通知管理</strong><span class="chevron"></span></button>
+            <button class="app-row" onclick="showToast('黑名单管理')"><strong>黑名单管理</strong><span class="chevron"></span></button>
+          </div>
         </div>
-      `;
+        <div class="bottom-actions">
+          <button class="secondary" onclick="state.sessionMode='loggedOut'; go('accountStart')">退出登录</button>
+        </div>
+      `);
+    }
+
+    function accountInfo() {
+      return shell(`
+        <div class="account-page account-info-page">
+          <div class="account-profile account-info-profile">
+            <span class="ave-avatar">A</span>
+            <span><h2>m17...076@gmail.com</h2></span>
+            <span></span>
+          </div>
+          <div class="app-list">
+            <div class="app-row">
+              <strong>邮箱</strong>
+              <span>m17...076@gmail.com</span>
+            </div>
+          </div>
+          <div class="section-label app">账户安全</div>
+          <div class="app-list">
+            <button class="app-row" onclick="openPasskeyManage('accountInfo')">
+              <strong>通行密钥 <span class="tag warn">推荐</span></strong>
+              <span>${state.hasPasskey ? "已绑定" : "未绑定"} <span class="chevron"></span></span>
+            </button>
+            <div class="app-row">
+              <strong>Google 验证</strong>
+              <span>已绑定</span>
+            </div>
+          </div>
+        </div>
+      `);
+    }
+
+    function passkeyManage() {
+      if (!state.hasPasskey) {
+        return shell(`
+          <div class="passkey-panel">
+            <div>
+              <div class="passkey-mark"></div>
+              <h2 class="screen-title">尚未创建通行密钥</h2>
+            </div>
+          </div>
+          <div class="bottom-actions">
+            <button class="primary" onclick="openPasskeyVerification('bindPasskey')">创建通行密钥</button>
+          </div>
+        `);
+      }
+      return shell(`
+        <div class="detail-row">
+          <strong>Passkey on Ave</strong>
+          <button class="icon-btn trash-mini" aria-label="删除通行密钥" onclick="state.hasPasskey=false; go('passkeyManage')"></button>
+        </div>
+        <div class="address-card">
+          <span class="row-sub">添加于：2026/6/19 16:28:01</span>
+          <span class="row-sub">上次使用：2026/6/19 16:28:01</span>
+        </div>
+        <div class="bottom-actions">
+          <button class="primary" onclick="openPasskeyVerification('bindPasskey')">创建通行密钥</button>
+        </div>
+      `);
     }
 
     function accountStart() {
       return shell(`
-        <div class="create-wallet-hero">
-          <div class="create-visual"></div>
-          <h2 class="screen-title">创建 AVE 账号</h2>
-          <p class="body-copy muted">登录账号后可以使用无私钥钱包；不登录也可以导入私钥钱包或观察钱包。</p>
+        <div class="auth-page">
+          <div class="auth-hero">
+            <span class="ave-avatar">A</span>
+            <h2 class="auth-title">登录 Ave 账号</h2>
+            <p class="auth-sub">登录后可使用账号下的无私钥钱包、平台云备份和跨设备恢复能力。</p>
+          </div>
+          <div class="auth-form">
+            <div class="auth-field">
+              <label>邮箱 / 手机号</label>
+              <input class="auth-input" value="${state.loginForm.account}" placeholder="请输入邮箱或手机号" autocomplete="username" oninput="updateLoginForm('account', this.value)">
+            </div>
+            <div class="auth-field">
+              <label>登录密码</label>
+              <input class="auth-input" value="${state.loginForm.password}" placeholder="请输入登录密码" type="password" autocomplete="current-password" oninput="updateLoginForm('password', this.value)">
+            </div>
+            <div class="auth-links">
+              <button class="text-link" onclick="showToast('请通过邮箱或手机号找回密码')">忘记密码?</button>
+              <button class="text-link" onclick="fillLoginSample()">填充示例</button>
+            </div>
+            <p class="auth-bottom-note">没有 Ave 账号时，请先注册。注册成功后会继续创建初始无私钥钱包。</p>
+          </div>
         </div>
-        <div class="bullet">登录账号后，将自动创建一个初始无私钥钱包。</div>
-        <div class="bullet">未登录导入私钥钱包时，平台云备份和恢复不可用。</div>
-        <div class="bullet">观察钱包只能查看资产，导入后才可正常使用。</div>
-        <div class="bottom-actions mode-actions">
-          <button class="primary" onclick="enterLoggedInAccount()">登录 / 创建账号</button>
-          <button class="secondary" onclick="enterLoggedInAccount(false)">登录无 Passkey 账号</button>
-          <button class="secondary" onclick="enterGuestPrivateWallet()">暂不登录，导入私钥钱包</button>
-          <button class="secondary" onclick="enterWatchWallet()">观察钱包</button>
+        <div class="bottom-actions">
+          <button class="primary" data-action="login-submit" ${loginFormValid() ? "" : "disabled"} onclick="completeLogin()">登录</button>
+          <button class="text-link" onclick="go('register')">注册 Ave 账号</button>
+        </div>
+      `);
+    }
+
+    function register() {
+      return shell(`
+        <div class="auth-page">
+          <div class="auth-hero">
+            <span class="ave-avatar">A</span>
+            <h2 class="auth-title">注册 Ave 账号</h2>
+            <p class="auth-sub">注册完成后将自动进入初始无私钥钱包创建，并完成平台云备份。</p>
+          </div>
+          <div class="auth-form">
+            <div class="auth-field">
+              <label>邮箱 / 手机号</label>
+              <input class="auth-input" value="${state.registerForm.account}" placeholder="请输入邮箱或手机号" autocomplete="username" oninput="updateRegisterForm('account', this.value)">
+            </div>
+            <div class="auth-field">
+              <label>验证码</label>
+              <div class="auth-code-line">
+                <input class="auth-input" value="${state.registerForm.code}" placeholder="请输入验证码" oninput="updateRegisterForm('code', this.value)">
+                <button class="auth-code-btn" onclick="sendRegisterCode()">${state.registerForm.sent ? "重新发送" : "获取验证码"}</button>
+              </div>
+            </div>
+            <div class="auth-field">
+              <label>登录密码</label>
+              <input class="auth-input" value="${state.registerForm.password}" type="password" placeholder="请输入登录密码" autocomplete="new-password" oninput="updateRegisterForm('password', this.value)">
+            </div>
+            <div class="auth-field">
+              <label>确认密码</label>
+              <input class="auth-input" value="${state.registerForm.confirmPassword}" type="password" placeholder="再次输入登录密码" autocomplete="new-password" oninput="updateRegisterForm('confirmPassword', this.value)">
+            </div>
+            <label class="auth-check">
+              <input type="checkbox" ${state.registerForm.agreed ? "checked" : ""} onchange="toggleRegisterAgreement(this.checked)">
+              <span>我已阅读并同意 Ave 用户协议和隐私政策。</span>
+            </label>
+            <div class="auth-links">
+              <button class="text-link" onclick="go('accountStart')">已有账号，去登录</button>
+              <button class="text-link" onclick="fillRegisterSample()">填充示例</button>
+            </div>
+          </div>
+        </div>
+        <div class="bottom-actions">
+          <button class="primary" data-action="register-submit" ${registerFormValid() ? "" : "disabled"} onclick="completeRegister()">注册并创建钱包</button>
         </div>
       `);
     }
@@ -3117,88 +5800,96 @@
     function accountWalletIntro() {
       return shell(`
         <div class="create-wallet-hero">
-          <div class="safe-visual"></div>
+          <div class="create-visual"></div>
           <h2 class="screen-title">创建初始无私钥钱包</h2>
-          <p class="body-copy muted">账号已创建。接下来为账号生成第一个钱包，并自动完成平台云备份。</p>
         </div>
-        <div class="bullet">这是账号下的初始钱包，不需要从添加钱包入口手动创建。</div>
-        <div class="bullet">普通转账仍由本机完成签名。</div>
+        <div class="risk-notes">
+          <div class="bullet">账号创建完成后，将自动生成第一个无私钥钱包。</div>
+          <div class="bullet">创建时会自动完成平台云备份。</div>
+          <div class="bullet">创建过程中不会展示助记词。</div>
+          <div class="bullet">后续转账仍需您本人确认。</div>
+        </div>
         <div class="bottom-actions">
-          <button class="primary" onclick="enterCreatePasskey('initial')">创建初始钱包</button>
+          <button class="primary" onclick="beginWalletCreation('initial')">开始创建</button>
         </div>
       `);
+    }
+
+    function homeHeader() {
+      return `
+        <div class="ave-topbar">
+          <button class="ave-avatar" onclick="go('accountCenter')">A</button>
+          <div class="search-pill">搜索币种/美股/合约</div>
+          <div class="top-icons"><span class="scan-mini"></span><span class="bell-mini"></span></div>
+        </div>
+      `;
+    }
+
+    function homeTokens() {
+      const tokens = [
+        ["B", "BNB", "$590.10", "0.0357", "$21.7"],
+        ["U", "USDT", "$1.00", "7.673", "$7.673"],
+        ["W", "World Cup", "$0.000748", "748.62", "$0.56"],
+        ["P", "POFG", "$0.282", "0.311", "$0.0879"]
+      ];
+      return `
+        <div class="market-tabs"><span class="active">币种</span><span>NFT</span><span>理财</span><span>动态</span><span>工具</span></div>
+        <div class="token-filter"><span>隐藏小额资产</span><span class="token-search">搜索币种</span><span>筛选</span></div>
+        ${tokens.map(([mark, name, price, balance, value], index) => `
+          <button class="token-row" onclick="showToast('${name}')">
+            <span class="token-icon ${index === 1 ? "green" : ""}">${mark}</span>
+            <span><strong>${name}</strong><small>${price}</small></span>
+            <span class="token-value">${balance}<small>${value}</small></span>
+          </button>
+        `).join("")}
+      `;
     }
 
     function home() {
       const loggedIn = state.sessionMode === "loggedIn";
       const guestPrivate = state.sessionMode === "guestPrivate";
       const watchOnly = state.sessionMode === "watchOnly";
-      const total = guestPrivate ? "$30.93" : watchOnly ? "$30.94" : "$8,342.58";
-      const createdRow = state.createdWallet
-        ? `${walletRow("My Wallet 3", "$0", "red", false, "已自动备份")}`
-        : "";
-      const restoredRow = state.restoredWallet
-        ? `${walletRow("Recovered Wallet", "$0", "blue", false, "已恢复 · 已备份")}`
-        : "";
-      const myWallet2Note = state.initialWalletCreated ? "初始钱包 · 已自动备份" : "";
-      const myWallet2Row = loggedIn && !state.deletedWallet ? `${walletRow("My Wallet 2", "$0", "", true, myWallet2Note)}` : "";
-      const keylessRows = !loggedIn
-        ? `<div class="notice-card">登录账号后可创建和恢复无私钥钱包，并使用平台云备份能力。</div>`
-        : state.converted
-          ? `
-          ${walletRow("Wallet1", "$8,342.58", "blue")}
-          ${walletRow("My Wallet 1", "$0", "red")}
-          ${createdRow}
-          ${restoredRow}
-        `
-          : `
-          ${walletRow("Wallet1", "$8,342.58", "blue")}
-          ${walletRow("My Wallet 1", "$0", "red")}
-          ${myWallet2Row}
-          ${createdRow}
-          ${restoredRow}
-        `;
-
-      const watchRows = `
-        ${walletRow("观察钱包", "$30.94", "", false, "部分功能受限，导入后可正常使用")}
-        <div class="notice-card">观察钱包只能查看资产，导入私钥后才可以转账、授权或备份。</div>
-      `;
-      const privateRows = watchOnly
-        ? watchRows
-        : state.converted || guestPrivate
-        ? derivedWallets.map(privateWalletRow).join("")
-        : `<p class="row-sub">暂无私钥钱包</p>`;
-      const actionButton = loggedIn
-        ? `<button class="primary" onclick="openAddWalletSheet()">添加钱包</button>`
-        : watchOnly
-          ? `<button class="primary" onclick="enterGuestPrivateWallet()">导入私钥钱包</button>`
-          : `<button class="primary" onclick="go('accountStart')">登录账号</button>`;
+      const noWallet = state.sessionMode === "loggedOut";
+      const availableKeyless = remainingKeylessWallets();
+      const displayKeyless = availableKeyless.find((wallet) => wallet.name === state.activeKeylessWallet) || availableKeyless[0];
+      const total = noWallet ? "$0" : guestPrivate ? "$30.93" : watchOnly ? "$30.94" : loggedIn && !state.initialWalletCreated ? "$0" : "$8,342.58";
+      const walletName = noWallet ? "未创建钱包" : watchOnly ? "观察" : guestPrivate ? "qq" : loggedIn && !state.initialWalletCreated ? "未创建钱包" : displayKeyless ? displayKeyless.name : state.convertedWallets[0] || "私钥钱包";
+      const walletTag = noWallet ? "" : watchOnly ? `<span class="status-pill">观察</span>` : guestPrivate || (!displayKeyless && state.convertedWallets.length) ? `<span class="status-pill evm">EVM</span>` : `<span class="status-pill">AI</span>`;
+      const chainCls = guestPrivate || watchOnly ? "bsc" : "";
 
       return shell(`
-        <div class="hero-total">
-          <div class="search">按钱包名称或地址搜索</div>
-          ${accountStatusCard()}
-          <div class="total-label">投资组合</div>
-          <div class="total">${total}</div>
+        ${homeHeader()}
+        <div class="home-wallet-line">
+          <button class="chain-select ${chainCls}" onclick="openChainSheet()" aria-label="选择链"></button>
+          <button class="wallet-switch" onclick="go('manage')"><span>${walletName}</span><i></i></button>
+          ${walletTag}
         </div>
-        <div class="section-title">无私钥钱包</div>
-        ${keylessRows}
-        <div class="section-title">私钥钱包</div>
-        ${privateRows}
-        <div class="bottom-actions">
-          ${actionButton}
+        <div class="asset-hero">
+          <div>
+            <div class="total">${total}</div>
+            <div class="row-sub">当前盈亏 ${guestPrivate || watchOnly ? "-$62.56" : "$0"}</div>
+          </div>
+          <div class="asset-actions">
+            <button class="round-action receive" onclick="showToast('收款')"><i></i><span>收款</span></button>
+            <button class="round-action invite" onclick="showToast('邀请')"><i></i><span>邀请</span></button>
+          </div>
         </div>
+        <div class="market-banner"><strong>Ave Wallet Pro</strong><span>Ave.ai 旗下全新 Web3 交互钱包</span></div>
+        <div class="ticker-strip"><span>BTC <b>$64,115.7</b></span><span>ETH <b>$1,741.1</b></span><span>BNB <b>$590.1</b></span></div>
+        ${noWallet ? `
+          <button class="home-empty-wallet" onclick="go('manage')">
+            <strong>Ave.ai 一站式 Web3 交互钱包</strong>
+            <span>登录账号创建无私钥钱包，或导入已有私钥钱包。</span>
+          </button>
+        ` : ""}
+        ${homeTokens()}
       `, {
-        right: `<button class="right-action" onclick="go('manage')">管理</button>`
+        hideNav: true
       });
     }
 
     function walletRow(name, amount, cls = "", selected = false, note = "") {
-      const clickAction = selected
-        ? "go('settings')"
-        : note
-          ? `showToast('${name} ${note}')`
-          : "showToast('请选择 My Wallet 2 查看完整流程')";
+      const clickAction = selected ? "go('settings')" : note ? `showToast('${name} ${note}')` : "showToast('请选择钱包进入详情')";
       return `
         <button class="wallet-row" onclick="${clickAction}">
           ${walletIcon(cls)}
@@ -3206,7 +5897,7 @@
             <span class="row-title">${name}</span>
             <span class="row-sub">${note || amount}</span>
           </span>
-          ${selected ? `<span class="chevron"></span>` : ""}
+          ${selected ? `<span class="chevron"></span>` : note ? `<span class="wallet-amount">${amount}</span>` : `<span></span>`}
         </button>
       `;
     }
@@ -3224,15 +5915,79 @@
       `;
     }
 
+    function importedPrivateWalletRow() {
+      return `
+        <button class="wallet-row imported-private" onclick="showToast('私钥钱包详情')">
+          ${walletIcon("bsc")}
+          <span>
+            <span class="row-title">qq <span class="status-pill evm">EVM</span></span>
+            <span class="row-sub">0x86fe...ed1f</span>
+          </span>
+          <span class="wallet-amount">$30.93</span>
+        </button>
+      `;
+    }
+
+    function privateWalletSection() {
+      const rows = `
+        ${state.importedPrivateWallet ? importedPrivateWalletRow() : ""}
+        ${state.convertedWallets.length ? convertedPrivateWalletRows() : ""}
+      `;
+      return rows.trim() ? rows : `<div class="empty-line">暂无私钥钱包</div>`;
+    }
+
+    function importWallet() {
+      const valid = importInputValid();
+      const isPrivateKey = state.importFlow.type === "privateKey";
+      return shell(`
+        <div class="import-page">
+          <div class="segmented">
+            <button class="${!isPrivateKey ? "active" : ""}" onclick="setImportType('mnemonic')">助记词</button>
+            <button class="${isPrivateKey ? "active" : ""}" onclick="setImportType('privateKey')">私钥</button>
+          </div>
+          <p class="body-copy">助记词之间用空格隔开，支持 12/24 位助记词或单个私钥导入。</p>
+          <div class="import-box">
+            <textarea placeholder="${isPrivateKey ? "粘贴私钥" : "粘贴助记词"}" oninput="updateImportInput(this.value)">${state.importFlow.input}</textarea>
+            <button class="paste-btn" onclick="pasteImportSample()">粘贴示例</button>
+          </div>
+          <div class="import-warning">
+            <strong>安全提示</strong>
+            <span>不要完整一次性复制私钥或助记词给他人。导入成功后，钱包将在本机使用；未登录时不会启用平台云备份。</span>
+          </div>
+          <div class="bottom-actions">
+            <button class="primary" data-action="import-wallet" ${valid ? "" : "disabled"} onclick="completePrivateImport()">导入钱包</button>
+          </div>
+        </div>
+      `);
+    }
+
+    function importSuccess() {
+      const accountCopy = state.sessionMode === "loggedIn"
+        ? "私钥钱包已添加到当前账号的钱包列表。"
+        : "私钥钱包已添加到本机。登录 Ave 账号后，可以继续创建无私钥钱包并使用平台云恢复能力。";
+      return shell(`
+        <div class="finished">
+          <div class="success-mark"></div>
+          <div class="status-title">导入成功</div>
+          <p class="body-copy muted">${accountCopy}</p>
+        </div>
+        <div class="section-title">私钥钱包</div>
+        ${importedPrivateWalletRow()}
+        <div class="bottom-actions">
+          <button class="primary" onclick="go('manage')">进入钱包管理</button>
+        </div>
+      `);
+    }
+
     function createIntro() {
       return shell(`
         <div class="create-wallet-hero">
           <div class="create-visual"></div>
           <h2 class="screen-title">创建无私钥钱包</h2>
         </div>
-        <div class="bullet">一键创建钱包，并自动完成平台云备份。</div>
+        <div class="bullet">创建时会自动完成平台云备份。</div>
         <div class="bullet">创建过程中不会展示助记词。</div>
-        <div class="bullet">普通转账仍由本机完成签名。</div>
+        <div class="bullet">后续转账仍需您本人确认。</div>
         <div class="bottom-actions">
           <button class="primary" onclick="enterCreatePasskey('add')">创建钱包</button>
         </div>
@@ -3243,14 +5998,17 @@
       const intro = state.creationMode === "initial"
         ? "验证通过后，将继续创建账号下的初始钱包。"
         : "验证通过后，将继续创建新的无私钥钱包。";
+      if (state.passkey.open && state.hasPasskey) {
+        return shell(`
+          <div class="passkey-panel"></div>
+        `);
+      }
       if (!state.hasPasskey) {
-        const count = verificationCountForScreen("createPasskey");
-        const target = verificationTargetCount();
         const complete = verificationCompleteForScreen("createPasskey");
         return shell(`
           <h2 class="screen-title">完成安全验证</h2>
           <p class="body-copy muted">当前账号未设置通行密钥，需要同时完成 Google 验证和邮箱验证。</p>
-          <div class="verify-count">${count}/${target}</div>
+          ${verificationCounter("createPasskey")}
           ${verificationRows("create")}
           <div class="bottom-actions">
             <button class="primary" ${complete ? "" : "disabled"} onclick="beginWalletCreation(state.creationMode)">继续创建</button>
@@ -3306,14 +6064,15 @@
     }
 
     function restoreSource() {
+      const walletName = restoreWalletName();
       return shell(`
-        <h2 class="screen-title">选择恢复方式</h2>
-        <p class="body-copy">请选择一个可用的备份来源。系统会通过该备份将钱包恢复到本设备。</p>
+        <h2 class="screen-title">恢复 ${walletName}</h2>
+        <p class="body-copy">该钱包当前可恢复，请选择一个可用的备份来源，将钱包恢复到本设备。</p>
         <button class="create-option" onclick="startRestoreFlow('cloud')">
           <span class="line-icon"></span>
           <span>
             <span class="row-title">平台云备份 <span class="tag warn">推荐</span></span>
-            <span class="row-sub">账号验证后自动恢复钱包</span>
+            <span class="row-sub">完成账号验证后恢复</span>
           </span>
           <span class="chevron"></span>
         </button>
@@ -3329,18 +6088,16 @@
           <span class="shield-icon"></span>
           <span>
             <span class="row-title">QR Code</span>
-            <span class="row-sub">扫码读取离线备份，并输入 PIN 解锁</span>
+            <span class="row-sub">扫码读取离线备份，并输入恢复密码</span>
           </span>
           <span class="chevron"></span>
         </button>
-        <div class="bullet">恢复不会展示完整助记词。</div>
-        <div class="bullet">恢复过程中不会向任何人展示私钥或助记词。</div>
       `);
     }
 
     function restoreDriveFile() {
       return shell(`
-        <h2 class="screen-title">读取云盘备份</h2>
+        <h2 class="screen-title">选择备份文件</h2>
         <p class="body-copy">从 iCloud / Google Drive 读取已保存的钱包备份文件。</p>
         <div class="restore-read-card">
           <div class="file-mark"></div>
@@ -3348,41 +6105,43 @@
           <span>加密备份文件，需使用备份 PIN 解锁</span>
         </div>
         <div class="bottom-actions">
-          <button class="primary" onclick="go('restorePin')">模拟读取备份文件</button>
+          <button class="primary" onclick="go('restorePin')">选择备份文件</button>
         </div>
       `);
     }
 
     function restoreScan() {
       return shell(`
-        <h2 class="screen-title">扫描 QR Code</h2>
+        <h2 class="screen-title">读取恢复二维码</h2>
         <p class="body-copy">扫描离线保存的恢复二维码，读取其中的加密备份。</p>
         <div class="restore-read-card">
           <div class="scan-frame">
             ${Array.from({ length: 25 }, (_, index) => `<span class="scan-dot ${[0, 1, 5, 6, 8, 12, 16, 18, 20, 21, 23, 24].includes(index) ? "dark" : ""}"></span>`).join("")}
           </div>
           <strong>等待扫码</strong>
-          <span>扫码成功后继续输入备份 PIN</span>
+          <span>扫码成功后继续输入恢复密码</span>
         </div>
         <div class="bottom-actions">
-          <button class="primary" onclick="go('restorePin')">模拟扫码成功</button>
+          <button class="primary" onclick="go('restorePin')">扫码成功</button>
         </div>
       `);
     }
 
     function restorePin() {
       const sourceName = restoreSourceName();
+      const isQr = state.restoreFlow.source === "qr";
+      const credential = isQr ? "恢复密码" : "备份 PIN";
       const copy = state.restoreFlow.source === "qr"
-        ? "已扫码读取二维码备份，请输入备份 PIN 解锁该备份。"
+        ? "已扫码读取二维码备份，请输入恢复密码解锁该备份。"
         : "已读取云盘备份文件，请输入备份 PIN 解锁该备份。";
       return shell(`
         <h2 class="screen-title">${sourceName} 恢复</h2>
         <p class="body-copy">${copy}</p>
         <div class="pin-form">
-          <input class="pin-input" type="password" autocomplete="off" placeholder="输入备份 PIN" value="${state.restoreFlow.pin}" oninput="updateRestorePin(this.value)">
+          <input class="pin-input" type="password" autocomplete="off" placeholder="输入${credential}" value="${state.restoreFlow.pin}" oninput="updateRestorePin(this.value)">
         </div>
-        <div class="bullet">PIN 只在本地用于解密备份。</div>
-        <div class="bullet">忘记 PIN 时，该备份来源不可用。</div>
+        <div class="bullet">${credential}只在本地用于解锁备份。</div>
+        <div class="bullet">忘记${credential}时，该备份来源不可用。</div>
         <div class="bottom-actions">
           <button class="primary" data-action="restore-pin-next" ${restorePinValid() ? "" : "disabled"} onclick="submitRestorePin()">继续</button>
         </div>
@@ -3390,16 +6149,14 @@
     }
 
     function restoreVerify() {
-      const count = verificationCountForScreen("restoreVerify");
-      const target = verificationTargetCount();
       const complete = verificationCompleteForScreen("restoreVerify");
       const isPullStage = state.restoreFlow.source === "cloud" && state.restoreFlow.stage === "pull";
-      const title = isPullStage ? "验证后拉取云备份" : "验证后恢复钱包";
+      const title = isPullStage ? "验证后查找备份" : "验证后恢复钱包";
       const action = isPullStage ? "beginCloudPull()" : "beginRestoreProgress()";
-      const buttonText = isPullStage ? "拉取平台云备份" : "恢复钱包";
+      const buttonText = isPullStage ? "查找平台云备份" : "恢复钱包";
       return shell(`
         <h2 class="screen-title">${title}</h2>
-        <div class="verify-count">${count}/${target}</div>
+        ${verificationCounter("restoreVerify")}
         ${verificationRows("restore")}
         <div class="bottom-actions">
           <button class="primary" ${complete ? "" : "disabled"} onclick="${action}">${buttonText}</button>
@@ -3408,7 +6165,7 @@
     }
 
     function restoreCloudPull() {
-      const labels = ["正在验证备份", "正在拉取备份", "正在确认钱包", "即将完成"];
+      const labels = ["正在验证备份", "正在查找备份", "正在确认钱包", "即将完成"];
       const active = Math.min(state.cloudPull.step, labels.length - 1);
       return shell(`
         <div class="create-progress-wrap">
@@ -3426,7 +6183,7 @@
         <div class="finished">
           <div class="success-mark"></div>
           <div class="status-title">云端备份已找到</div>
-          <p class="body-copy muted">已成功拉取你的平台云备份。为确保是本人恢复钱包，请再次完成安全验证。</p>
+          <p class="body-copy muted">已找到 ${restoreWalletName()} 的平台云备份。为确保是本人恢复钱包，请再次完成安全验证。</p>
         </div>
         <div class="bottom-actions">
           <button class="primary" onclick="continueCloudRestoreVerify()">继续验证</button>
@@ -3453,7 +6210,7 @@
         <div class="finished">
           <div class="success-mark"></div>
           <div class="status-title">钱包恢复完成</div>
-          <p class="body-copy muted">钱包已恢复到本设备，可继续查看多链地址和资产。</p>
+          <p class="body-copy muted">${restoreWalletName()} 已恢复到本设备，可继续查看地址和资产。</p>
         </div>
         <div class="bottom-actions">
           <button class="primary" onclick="go('home')">前往首页</button>
@@ -3484,11 +6241,10 @@
     }
 
     function deleteVerify() {
-      const count = verificationCountForScreen("deleteVerify");
-      const target = verificationTargetCount();
       const complete = verificationCompleteForScreen("deleteVerify");
       return shell(`
-        <div class="verify-count">${count}/${target}</div>
+        <h2 class="screen-title">验证后删除钱包</h2>
+        ${verificationCounter("deleteVerify")}
         ${verificationRows("delete")}
         <div class="bottom-actions">
           <button class="primary" ${complete ? "" : "disabled"} onclick="beginDeleteProgress()">确认删除</button>
@@ -3511,11 +6267,12 @@
     }
 
     function deleteDone() {
+      const walletName = state.lastDeletedWallet || "该钱包";
       return shell(`
         <div class="finished">
           <div class="success-mark"></div>
           <div class="status-title">钱包已删除</div>
-          <p class="body-copy muted">该钱包已从当前设备移除。30 天内可恢复，30 天后将永久删除。</p>
+          <p class="body-copy muted">${walletName} 已从当前设备移除。30 天内可恢复，30 天后将永久删除。</p>
         </div>
         <div class="bottom-actions">
           <button class="primary" onclick="go('home')">返回首页</button>
@@ -3524,69 +6281,136 @@
     }
 
     function manage() {
+      if (state.sessionMode === "loggedOut") {
+        return shell(`
+          <div class="manage-screen empty-manage">
+            <div class="search">搜索钱包名称/地址后四位</div>
+            <div class="section-title">添加钱包</div>
+            <button class="manage-list-row" onclick="go('accountStart')">
+              ${walletIcon("blue")}
+              <span>
+                <span class="row-title">登录 / 创建 Ave 账号</span>
+                <span class="row-sub">创建或恢复无私钥钱包</span>
+              </span>
+              <span class="chevron"></span>
+            </button>
+            <button class="manage-list-row" onclick="openImportWalletSheet()">
+              ${walletIcon("red")}
+              <span>
+                <span class="row-title">导入私钥钱包</span>
+                <span class="row-sub">不登录账号也可以本机使用</span>
+              </span>
+              <span class="chevron"></span>
+            </button>
+            <button class="manage-list-row" onclick="enterWatchWallet()">
+              ${walletIcon()}
+              <span>
+                <span class="row-title">添加观察钱包</span>
+                <span class="row-sub">仅查看地址资产，不能发起交易</span>
+              </span>
+              <span class="chevron"></span>
+            </button>
+          </div>
+        `);
+      }
       if (state.sessionMode === "guestPrivate") {
         return shell(`
-          <div class="section-title">私钥钱包</div>
-          ${derivedWallets.map(privateWalletRow).join("")}
-          <div class="notice-card">当前未登录账号，这些钱包只保存在本机。登录后可创建或恢复无私钥钱包。</div>
+          <div class="manage-screen">
+            <div class="search">搜索钱包名称/地址后四位</div>
+            <div class="section-title">私钥钱包</div>
+            ${importedPrivateWalletRow()}
+          </div>
           <div class="bottom-actions">
-            <button class="primary" onclick="go('accountStart')">登录账号</button>
+            <button class="primary" onclick="go('accountStart')">登录 Ave 账号</button>
           </div>
         `);
       }
       if (state.sessionMode === "watchOnly") {
         return shell(`
-          <div class="section-title">观察钱包</div>
-          ${walletRow("观察钱包", "$30.94", "", false, "部分功能受限，导入后可正常使用")}
-          <div class="notice-card">观察钱包不能转账、备份或恢复。导入私钥后可正常使用。</div>
+          <div class="manage-screen">
+            <div class="search">搜索钱包名称/地址后四位</div>
+            <div class="section-title">观察钱包</div>
+            ${walletRow("观察钱包", "$30.94", "", false, "部分功能受限，导入后可正常使用")}
+          </div>
           <div class="bottom-actions">
-            <button class="primary" onclick="enterGuestPrivateWallet()">导入私钥钱包</button>
+            <button class="primary" onclick="openImportWalletSheet()">导入私钥钱包</button>
           </div>
         `);
       }
-      const wallet2Row = state.deletedWallet
-        ? ""
-        : `
-          <div class="wallet-row manage-row">
-            ${walletIcon()}
-            <span><span class="row-title">My Wallet 2</span><span class="row-sub">${state.initialWalletCreated ? "初始钱包 · 已自动备份" : "$0"}</span></span>
-            <button class="edit" onclick="showToast('编辑名称')"></button>
-            <button class="menu" onclick="go('settings')"></button>
-          </div>
-        `;
-      const action = state.deletedWallet
-        ? ""
-        : `
-          <div class="bottom-actions">
-            <button class="primary" onclick="go('settings')">进入 My Wallet 2 设置</button>
-          </div>
-        `;
+      const showInitialKeyless = state.sessionMode === "loggedIn" && state.initialWalletCreated;
+      const keylessRows = remainingKeylessWallets()
+        .map((wallet) => `
+          <button class="manage-list-row" onclick="selectKeylessWallet('${wallet.name}')">
+            ${walletIcon(wallet.cls)}
+            <span><span class="row-title">${wallet.name} <span class="status-pill">AI</span></span><span class="row-sub">0 BNB | ${wallet.amount}</span></span>
+            ${state.activeKeylessWallet === wallet.name ? `<span class="selected-check"></span>` : `<span class="chevron"></span>`}
+          </button>
+        `)
+        .join("");
+      const recoverableRows = recoverableWallets()
+        .map((wallet, index) => `
+          <button class="manage-list-row recoverable" onclick="beginRecoverableWalletRestore('${wallet.name}')">
+            ${walletIcon(index % 2 ? "red" : "blue")}
+            <span>
+              <span class="row-title">${wallet.name}</span>
+              <span class="row-sub">${wallet.source}</span>
+            </span>
+            <span class="tag recover">可恢复</span>
+          </button>
+        `)
+        .join("");
+      const action = `
+        <div class="bottom-actions">
+          <button class="primary" onclick="openAddWalletSheet()">+ 添加钱包</button>
+        </div>
+      `;
+      const privateRows = `
+        ${state.importedPrivateWallet ? importedPrivateWalletRow() : ""}
+        ${state.convertedWallets.length ? convertedPrivateWalletRows() : ""}
+      `;
+      const privateSection = privateRows.trim()
+        ? `
+          <div class="section-title">私钥钱包</div>
+          ${privateRows}
+        `
+        : "";
+      const createHint = !showInitialKeyless
+        ? `
+          <button class="manage-list-row recoverable" onclick="go('accountWalletIntro')">
+            ${walletIcon("blue")}
+            <span>
+              <span class="row-title">创建初始无私钥钱包</span>
+              <span class="row-sub">登录后自动创建并完成平台云备份</span>
+            </span>
+            <span class="chevron"></span>
+          </button>
+        `
+        : "";
       return shell(`
-        <div class="section-title">无私钥钱包</div>
-        <div class="wallet-row manage-row">
-          ${walletIcon("blue")}
-          <span><span class="row-title">Wallet1</span><span class="row-sub">$8,342.58</span></span>
-          <button class="edit" onclick="showToast('编辑名称')"></button>
-          <button class="menu" onclick="showToast('排序')"></button>
+        <div class="manage-screen">
+          <div class="search">搜索钱包名称/地址后四位</div>
+          <div class="section-title">无私钥钱包</div>
+          ${showInitialKeyless ? `
+            ${keylessRows || `<div class="empty-line">暂无无私钥钱包</div>`}
+          ` : createHint}
+          ${recoverableRows}
+          ${privateSection}
         </div>
-        <div class="wallet-row manage-row">
-          ${walletIcon("red")}
-          <span><span class="row-title">My Wallet 1</span><span class="row-sub">$0</span></span>
-          <button class="edit" onclick="showToast('编辑名称')"></button>
-          <button class="menu" onclick="showToast('排序')"></button>
-        </div>
-        ${wallet2Row}
         ${action}
       `);
     }
 
     function settings() {
-      if (state.deletedWallet) {
+      const wallet = activeKeylessWallet();
+      const walletName = wallet.name;
+      state.backups = backupStatusFor(walletName);
+      state.agentEnabled = isAgentEnabled(walletName);
+      if (walletDeleted(walletName)) {
         return shell(`
           <div class="finished">
             <div class="warning-round">!</div>
             <div class="status-title">钱包已删除</div>
-            <p class="body-copy muted">My Wallet 2 已从当前设备列表中移除。</p>
+            <p class="body-copy muted">${walletName} 已从当前设备列表中移除。</p>
           </div>
           <div class="bottom-actions">
             <button class="primary" onclick="go('home')">返回首页</button>
@@ -3594,65 +6418,112 @@
         `);
       }
       return shell(`
-        <div class="wallet-head">
-          ${walletIcon()}
-          <h2>My Wallet 2</h2>
+        <div class="wallet-detail-head">
+          ${walletIcon(wallet.cls)}
+          <span><h2>${walletName} <span class="status-pill">AI</span></h2></span>
           <button class="edit" onclick="showToast('编辑名称')"></button>
         </div>
-        <button class="setting-row" onclick="go('backup')">
-          <span class="shield-icon"></span>
-          <span class="row-title">备份管理</span>
-          <span class="tag">已备份</span>
-        </button>
-        <button class="setting-row" onclick="go('convertIntro')">
-          <span class="line-icon"></span>
-          <span class="row-title">转换为私钥钱包</span>
-          <span class="chevron"></span>
-        </button>
-        <button class="setting-row danger" onclick="state.deleteFlow = { acknowledged: false, progress: 0, step: 0, verifications: { passkey: false, google: false, email: false } }; go('deleteIntro')">
-          <span class="trash-icon"></span>
-          <span>
-            <span class="row-title">删除钱包</span>
-          </span>
-          <span class="chevron"></span>
-        </button>
+        <div class="detail-address">
+          <span>CEdHBLicCMqCTWSYkhxAM9FNu5bpuR9wUX34cLP4iG5V</span>
+          <button class="copy-mini" onclick="showToast('地址已复制')"></button>
+        </div>
+        <div class="section-label">隐私</div>
+        <button class="detail-row" onclick="go('backup')"><strong>备份管理</strong><span>${Object.values(state.backups).some(Boolean) ? "已备份" : "未备份"} <span class="chevron"></span></span></button>
+        <button class="detail-row" onclick="resetConvertFlow()"><strong>转换为私钥钱包</strong><span class="chevron"></span></button>
+        <button class="detail-row" onclick="go('agentAutoTrade')"><strong>安全自动签名</strong><span>${isAgentEnabled(walletName) ? "已开启" : "未开启"} <span class="chevron"></span></span></button>
+        <div class="section-label">通知</div>
+        <div class="detail-row"><strong>钱包通知</strong><span>开启</span></div>
+        <div class="section-label">危险区域</div>
+        <button class="detail-row danger" onclick="state.deleteFlow = { acknowledged: false, progress: 0, step: 0, verifications: { passkey: false, google: false, email: false } }; go('deleteIntro')"><strong>删除钱包</strong><span class="chevron"></span></button>
+      `);
+    }
+
+    function agentAutoTrade() {
+      const wallet = activeKeylessWallet();
+      const walletName = wallet.name;
+      const enabled = isAgentEnabled(walletName);
+      return shell(`
+        <div class="create-wallet-hero">
+          <div class="notice-icon"></div>
+          <h2 class="screen-title">安全自动签名</h2>
+          <p class="body-copy muted">开启后，可在授权范围内自动完成指定交易确认。您可以随时关闭。</p>
+        </div>
+        <div class="risk-notes">
+          <div class="bullet">仅对您选择的钱包生效。</div>
+          <div class="bullet">单笔转账限额：$50,000。</div>
+          <div class="bullet">连续 7 天无交易后自动关闭。</div>
+        </div>
+        <div class="section-title">启用钱包</div>
+        <div class="backup-row">
+          ${walletIcon(wallet.cls)}
+          <span><span class="row-title">${walletName} <span class="tag warn">无私钥</span></span><span class="row-sub">${wallet.amount}</span></span>
+          <span class="tag ${enabled ? "" : "warn"}">${enabled ? "已开启" : "未开启"}</span>
+        </div>
+        <div class="bottom-actions two">
+          <button class="secondary" onclick="${enabled ? "requestAgentDisable()" : "go('settings')"}">${enabled ? "关闭" : "取消"}</button>
+          <button class="primary" ${enabled ? "disabled" : ""} onclick="beginAgentEnable()">启用</button>
+        </div>
+      `);
+    }
+
+    function agentVerify() {
+      const complete = verificationCompleteForScreen("agentVerify");
+      const enabling = state.agentFlow.action === "enable";
+      return shell(`
+        <h2 class="screen-title">${enabling ? "验证后启用自动签名" : "验证后关闭自动签名"}</h2>
+        ${verificationCounter("agentVerify")}
+        ${verificationRows("agent")}
+        <div class="bottom-actions">
+          <button class="primary" ${complete ? "" : "disabled"} onclick="completeAgentAuth()">${enabling ? "确认启用" : "确认关闭"}</button>
+        </div>
+      `);
+    }
+
+    function agentDone() {
+      const enabled = state.agentFlow.action === "enable";
+      const walletName = state.agentFlow.walletName || activeKeylessWalletName();
+      return shell(`
+        <div class="finished">
+          <div class="success-mark"></div>
+          <div class="status-title">${enabled ? "已启用安全自动签名" : "已关闭安全自动签名"}</div>
+          <p class="body-copy muted">${enabled ? `${walletName} 已开启授权范围内的自动交易确认。` : `${walletName} 已关闭自动交易确认，后续交易需您手动确认。`}</p>
+        </div>
+        <div class="bottom-actions">
+          <button class="primary" onclick="go('settings')">返回钱包详情</button>
+        </div>
       `);
     }
 
     function backup() {
-      const driveDone = state.backups.drive;
-      const qrDone = state.backups.qr;
+      const backups = backupStatusFor();
+      const cloudDone = backups.cloud;
+      const driveDone = backups.drive;
+      const qrDone = backups.qr;
       return shell(`
         <div class="backup-hero">
-          <div class="safe-visual"></div>
-          <div class="status-title">已开启备份</div>
-        </div>
-        <div class="backup-summary">
-          <span class="row-title">My Wallet 2</span>
-          <span class="row-sub">已启用平台云备份，可继续添加额外恢复渠道。</span>
-          <div class="backup-meta">
-            <span>${1 + Number(driveDone) + Number(qrDone)}/3 个备份渠道已完成</span>
-            <span class="tag">安全</span>
-          </div>
+          ${cloudDone || driveDone || qrDone ? `<div class="safe-visual"></div>` : `<div class="warning-round">!</div>`}
+          <div class="status-title">${cloudDone || driveDone || qrDone ? "已备份" : "未备份"}</div>
         </div>
         <div class="backup-row">
           <span class="line-icon"></span>
-          <span><span class="row-title">快捷备份 <span class="tag warn">推荐</span></span><span class="row-sub">平台云备份 · 2026-06-15</span></span>
-          <span class="tag">已完成</span>
+          <span><span class="row-title">平台云备份 <span class="tag warn">推荐</span></span><span class="row-sub">${cloudDone ? "2026-06-15" : "未备份"}</span></span>
+          ${cloudDone ? `<span class="backup-status-check">✓</span>` : `<button class="small-btn" onclick="startCloudBackupFlow()">备份</button>`}
         </div>
         <div class="backup-row">
           <span class="wallet-icon blue"></span>
-          <span><span class="row-title">iCloud / Google Drive</span><span class="row-sub">${driveDone ? "已备份 · 2026-06-16" : "未备份 · 需设置 PIN"}</span></span>
-          ${driveDone ? `<span class="tag">已完成</span>` : `<button class="small-btn" onclick="startBackupFlow('drive')">备份</button>`}
+          <span><span class="row-title">iCloud / Google Drive</span><span class="row-sub">${driveDone ? "2026-06-16" : "未备份"}</span></span>
+          ${driveDone ? `<span class="backup-status-check">✓</span>` : `<button class="small-btn" onclick="startBackupFlow('drive')">备份</button>`}
         </div>
         <div class="backup-row">
           <span class="shield-icon"></span>
-          <span><span class="row-title">QR Code</span><span class="row-sub">${qrDone ? "已生成 · 离线保存" : "未备份 · 需设置 PIN"}</span></span>
-          ${qrDone ? `<span class="tag">已完成</span>` : `<button class="small-btn" onclick="startBackupFlow('qr')">生成</button>`}
+          <span><span class="row-title">QR Code</span><span class="row-sub">${qrDone ? "2026-06-20" : "未备份"}</span></span>
+          ${qrDone ? `<span class="backup-status-check">✓</span>` : `<button class="small-btn" onclick="startBackupFlow('qr')">备份</button>`}
         </div>
-        <h2 class="screen-title">提示</h2>
-        <div class="bullet">平台云备份建议保持开启。</div>
-        <div class="bullet">其他渠道用于增加恢复冗余。</div>
+        <div class="backup-tips">
+          <h2 class="screen-title">提示</h2>
+          <div class="bullet">通过多渠道备份提高钱包安全性。</div>
+          <div class="bullet">平台云备份支持跨设备恢复钱包。</div>
+        </div>
       `);
     }
 
@@ -3667,13 +6538,15 @@
       const credential = isQr ? "恢复密码" : "备份 PIN";
       const credentialOnly = isQr ? `${credential}仅` : `${credential} 仅`;
       const forgotCredential = isQr ? `忘记${credential}时` : `忘记${credential} 时`;
+      const mismatch = false;
       return shell(`
         <h2 class="screen-title">${methodName} 备份</h2>
         <p class="body-copy">请设置一个${credential}。${isQr ? "保存二维码后，需要用它确认二维码可正常恢复。" : "恢复时需要用它解密该渠道保存的备份。"}</p>
         <div class="pin-form">
-          <input class="pin-input" type="password" autocomplete="off" placeholder="设置${credential}，至少 6 位" value="${state.backupFlow.pin}" oninput="updateBackupPin('pin', this.value)">
+          <input class="pin-input" type="password" autocomplete="off" placeholder="设置${credential}" value="${state.backupFlow.pin}" oninput="updateBackupPin('pin', this.value)">
           <input class="pin-input" type="password" autocomplete="off" placeholder="再次输入${credential}" value="${state.backupFlow.confirmPin}" oninput="updateBackupPin('confirmPin', this.value)">
         </div>
+        ${mismatch ? `<div class="pin-hint">两次输入不一致，请重新确认。</div>` : ""}
         <div class="bullet">${credentialOnly}用于保护该备份，平台不保存。</div>
         <div class="bullet">${forgotCredential}，该备份渠道不可用。</div>
         <div class="bottom-actions">
@@ -3684,11 +6557,17 @@
 
     function backupProgress() {
       const progress = state.backupFlow.progress;
-      const label = progress < 35
-        ? "正在加密备份"
-        : progress < 80
-          ? "正在上传到 iCloud / Google Drive"
-          : "正在确认备份";
+      const label = state.backupFlow.method === "cloud"
+        ? progress < 35
+          ? "正在准备平台云备份"
+          : progress < 80
+            ? "正在更新平台云备份"
+            : "正在确认备份状态"
+        : progress < 35
+          ? "正在加密备份"
+          : progress < 80
+            ? "正在上传到 iCloud / Google Drive"
+            : "正在确认备份";
       return shell(`
         <div class="backup-progress">
           <div>
@@ -3710,7 +6589,7 @@
         <h2 class="screen-title">保存 QR Code</h2>
         <p class="body-copy">请将二维码保存到安全的离线位置。恢复时需要扫码并输入刚才设置的恢复密码。</p>
         <div class="qr-card">
-          <div class="qr-grid" aria-label="模拟二维码">${qrCells()}</div>
+          <div class="qr-grid" aria-label="备份二维码">${qrCells()}</div>
         </div>
         <div class="bullet">不要把二维码发送到聊天或在线笔记。</div>
         <div class="bullet">保存后需要扫码验证一次，确认备份可用。</div>
@@ -3732,19 +6611,21 @@
           <span>扫码成功后输入恢复密码</span>
         </div>
         <div class="bottom-actions">
-          <button class="primary" onclick="go('backupQrVerify')">模拟扫码成功</button>
+          <button class="primary" onclick="go('backupQrVerify')">扫码成功</button>
         </div>
       `);
     }
 
     function backupQrVerify() {
       const valid = backupVerifyPinValid();
+      const mismatch = false;
       return shell(`
         <h2 class="screen-title">输入恢复密码</h2>
         <p class="body-copy">请输入刚才设置的恢复密码，确认该二维码可用于恢复钱包。</p>
         <div class="pin-form">
           <input class="pin-input" type="password" autocomplete="off" placeholder="输入恢复密码" value="${state.backupFlow.verifyPin}" oninput="updateBackupVerifyPin(this.value)">
         </div>
+        ${mismatch ? `<div class="pin-hint">恢复密码不正确，二维码暂不能标记为已备份。</div>` : ""}
         <div class="bullet">验证通过后，QR Code 才会标记为已备份。</div>
         <div class="bottom-actions">
           <button class="primary" data-action="backup-verify-pin-next" ${valid ? "" : "disabled"} onclick="completeQrBackup()">完成备份</button>
@@ -3753,11 +6634,12 @@
     }
 
     function backupDone() {
+      const methodName = backupMethodName();
       return shell(`
         <div class="finished">
           <div class="safe-visual"></div>
-          <div class="status-title">备份完成</div>
-          <p class="body-copy muted">${backupMethodName()} 已添加为恢复备份渠道。</p>
+          <div class="status-title">${methodName} 已备份</div>
+          <p class="body-copy muted">该渠道已添加为恢复备份渠道。</p>
         </div>
         <div class="bottom-actions">
           <button class="primary" onclick="go('backup')">返回备份管理</button>
@@ -3766,25 +6648,36 @@
     }
 
     function convertIntro() {
+      const allRiskChecked = Object.values(state.riskChecks).every(Boolean);
+      const walletName = activeKeylessWalletName();
       return shell(`
         ${stepper(0)}
         <h2 class="screen-title">转换前确认</h2>
-        <p class="body-copy">转换为私钥钱包意味着从具有安全恢复模型的无私钥钱包，转变为由您自行保管助记词的钱包。</p>
+        <p class="body-copy">您将把 ${walletName} 转换为私钥钱包。转换后，仅该钱包会从无私钥钱包列表移除，并在私钥钱包列表中生成多链地址。</p>
+        <div class="risk-checks">
+          <label class="confirm-line risk-commit">
+            <input type="checkbox" ${state.riskChecks.recovery ? "checked" : ""} onchange="setRiskCheck('recovery', this.checked)">
+            <span class="box"></span>
+            <span>我了解转换后，钱包恢复功能（包括跨设备恢复）将不再可用。</span>
+          </label>
+          <label class="confirm-line risk-commit">
+            <input type="checkbox" ${state.riskChecks.custody ? "checked" : ""} onchange="setRiskCheck('custody', this.checked)">
+            <span class="box"></span>
+            <span>我了解 AVE 不保存助记词，丢失后无法通过平台找回。</span>
+          </label>
+          <label class="confirm-line risk-commit">
+            <input type="checkbox" ${state.riskChecks.irreversible ? "checked" : ""} onchange="setRiskCheck('irreversible', this.checked)">
+            <span class="box"></span>
+            <span>我了解一旦转换为私钥钱包，就无法恢复为无私钥钱包。</span>
+          </label>
+        </div>
         <div class="risk-notes">
-          <div class="bullet">钱包恢复功能（包括跨设备恢复）将不再可用。</div>
-          <div class="bullet">AVE 不保存您的助记词，丢失后无法通过平台找回。</div>
           <div class="bullet">请确认屏幕只有自己可见，不要截图、录屏或拍摄。</div>
           <div class="bullet">请尽快将助记词备份到安全的离线位置。</div>
           <div class="bullet">本次仅导出 1 组助记词，可用于恢复不同链的钱包地址。</div>
-          <div class="bullet">一旦转换为私钥钱包，就无法恢复为无私钥钱包。</div>
         </div>
-        <label class="confirm-line risk-commit">
-          <input type="checkbox" ${state.riskAccepted ? "checked" : ""} onchange="state.riskAccepted = this.checked; render();">
-          <span class="box"></span>
-          <span>我了解此操作无法撤销，且已准备好自行保管助记词。</span>
-        </label>
         <div class="bottom-actions">
-          <button class="primary" ${state.riskAccepted ? "" : "disabled"} onclick="go('verify')">确认转换</button>
+          <button class="primary" ${allRiskChecked ? "" : "disabled"} onclick="go('verify')">确认转换</button>
         </div>
       `);
     }
@@ -3794,12 +6687,10 @@
     }
 
     function verify() {
-      const count = verificationCountForScreen("verify");
-      const target = verificationTargetCount();
       const complete = verificationCompleteForScreen("verify");
       return shell(`
         ${stepper(1)}
-        <div class="verify-count">${count}/${target}</div>
+        ${verificationCounter("verify")}
         ${verificationRows("convert")}
         <div class="bottom-actions">
           <button class="primary" ${complete ? "" : "disabled"} onclick="enterMnemonicScreen()">继续</button>
@@ -3829,7 +6720,7 @@
         </label>
         <div class="bottom-actions two">
           <button class="secondary" onclick="copyMnemonic()">复制助记词</button>
-          <button class="primary" data-action="complete-conversion" ${state.savedMnemonic ? "" : "disabled"} onclick="state.converted=true; go('complete');">完成转换</button>
+          <button class="primary" data-action="complete-conversion" ${state.savedMnemonic ? "" : "disabled"} onclick="completeConversion()">完成转换</button>
         </div>
       `);
     }
@@ -3839,16 +6730,17 @@
     }
 
     function complete() {
+      const walletName = state.lastConvertedWallet || activeKeylessWalletName();
       return shell(`
         <div class="finished">
           <div class="safe-visual"></div>
           <div class="status-title">转换完成</div>
-          <p class="body-copy muted">My Wallet 2 已成为普通私钥钱包。无私钥恢复能力已关闭。</p>
+          <p class="body-copy muted">${walletName} 已成为普通私钥钱包。其他无私钥钱包不受影响。</p>
         </div>
         <div class="section-title">私钥钱包</div>
-        ${derivedWallets.map(privateWalletRow).join("")}
+        ${derivedWalletsFor(walletName).map(privateWalletRow).join("")}
         <div class="bottom-actions">
-          <button class="primary" onclick="go('home')">前往首页</button>
+          <button class="primary" onclick="go('manage')">前往钱包列表</button>
         </div>
       `);
     }
@@ -3866,6 +6758,65 @@
     }
 
     function renderOverlay() {
+      if (state.overlay === "flowException") {
+        const exception = state.exception;
+        return `
+          <div class="overlay">
+            <div class="dialog error-dialog">
+              <div class="warning-round">!</div>
+              <h2>${exception.title}</h2>
+              <p>${exception.message}</p>
+              <button class="primary" onclick="runExceptionAction('${exception.primaryAction.replace(/'/g, "\\'")}')">${exception.primaryText}</button>
+              <button class="secondary" onclick="runExceptionAction('${exception.secondaryAction.replace(/'/g, "\\'")}')">${exception.secondaryText}</button>
+            </div>
+          </div>
+        `;
+      }
+      if (state.overlay === "agentDisableConfirm") {
+        return `
+          <div class="overlay">
+            <div class="dialog">
+              <p>关闭后，未执行的自动交易将无法继续执行。</p>
+              <button class="primary" onclick="confirmAgentDisable()">确认关闭</button>
+              <button class="secondary" onclick="closeAgentDisableConfirm()">取消</button>
+            </div>
+          </div>
+        `;
+      }
+      if (state.overlay === "chainSelect") {
+        return `
+          <div class="overlay" onclick="closeAddWalletSheet()">
+            <div class="sheet" onclick="event.stopPropagation()">
+              <div class="grab"></div>
+              <h2>选择链</h2>
+              <button class="create-option" onclick="selectChain('Solana')">
+                <span class="chain-select"></span>
+                <span>
+                  <span class="row-title">Solana</span>
+                  <span class="row-sub">切换当前钱包的 Solana 地址</span>
+                </span>
+                <span class="chevron"></span>
+              </button>
+              <button class="create-option" onclick="selectChain('BSC')">
+                <span class="chain-select bsc"></span>
+                <span>
+                  <span class="row-title">BSC</span>
+                  <span class="row-sub">切换当前钱包的 BSC 地址</span>
+                </span>
+                <span class="chevron"></span>
+              </button>
+              <button class="create-option" onclick="selectChain('Ethereum')">
+                <span class="wallet-icon blue"></span>
+                <span>
+                  <span class="row-title">Ethereum</span>
+                  <span class="row-sub">切换当前钱包的 Ethereum 地址</span>
+                </span>
+                <span class="chevron"></span>
+              </button>
+            </div>
+          </div>
+        `;
+      }
       if (state.overlay === "addWallet") {
         return `
           <div class="overlay" onclick="closeAddWalletSheet()">
@@ -3876,25 +6827,25 @@
                 <span class="shield-icon"></span>
                 <span>
                   <span class="row-title">创建无私钥钱包</span>
-                  <span class="row-sub">一键创建钱包，快捷备份全程护航</span>
+                  <span class="row-sub">一键创建钱包、快捷备份安全护航</span>
                 </span>
                 <span class="chevron"></span>
               </button>
-              <button class="create-option" onclick="go('restoreSource')">
-                <span class="line-icon"></span>
-                <span>
-                  <span class="row-title">恢复无私钥钱包</span>
-                  <span class="row-sub">通过已有备份恢复钱包</span>
-                </span>
-                <span class="chevron"></span>
-              </button>
-              <button class="create-option disabled" onclick="showToast('导入钱包已达到上限')">
+              <button class="create-option" onclick="openImportWalletSheet()">
                 <span class="line-icon"></span>
                 <span>
                   <span class="row-title">导入钱包</span>
-                  <span class="row-sub">使用助记词或私钥导入钱包</span>
+                  <span class="row-sub">助记词或私钥导入，本机即可使用</span>
                 </span>
-                <span class="limit-tag">已达到上限</span>
+                <span class="chevron"></span>
+              </button>
+              <button class="create-option" onclick="enterWatchWallet()">
+                <span class="line-icon"></span>
+                <span>
+                  <span class="row-title">添加观察钱包</span>
+                  <span class="row-sub">支持 190+ 网络钱包地址导入</span>
+                </span>
+                <span class="chevron"></span>
               </button>
             </div>
           </div>
@@ -3909,40 +6860,40 @@
               <h2>通过通行密钥验证</h2>
               <p>${createFlow ? "设备将提示您通过指纹、人脸或锁屏密码进行验证，验证通过后继续创建钱包。" : "设备将提示您通过指纹、人脸或锁屏密码进行验证，验证通过后继续当前操作。"}</p>
               <div class="otp-panel">
-                <strong>系统安全弹窗</strong>
-                <span>模拟系统 Passkey / Face ID / Touch ID 验证结果。</span>
+                <strong>等待设备验证</strong>
+                <span>请按设备提示完成指纹、人脸或锁屏密码验证。</span>
               </div>
               <div class="sheet-actions">
                 <button class="secondary" onclick="closePasskeyVerification()">取消</button>
-                <button class="primary" onclick="completePasskeyPrompt()">模拟验证通过</button>
+                <button class="primary" onclick="completePasskeyPrompt()">验证通过</button>
               </div>
             </div>
           </div>
         `;
       }
-      if (["createPasskey", "verify", "backupVerify", "restoreVerify", "deleteVerify"].includes(state.screen) && state.otp.open) {
+      if (["createPasskey", "verify", "backupVerify", "restoreVerify", "deleteVerify", "agentVerify"].includes(state.screen) && state.otp.open) {
         const emailActive = state.otp.method === "email";
         return `
           <div class="overlay">
             <div class="sheet">
               <div class="grab"></div>
               <h2>${emailActive ? "邮箱验证" : "Google 验证"}</h2>
-              <p>${emailActive ? "输入账号绑定邮箱收到的 6 位验证码。" : "输入 Google Authenticator 当前显示的 6 位动态验证码。"}</p>
+              <p>${emailActive ? "输入账号绑定邮箱收到的验证码。" : "输入 Google Authenticator 当前显示的动态验证码。"}</p>
               <div class="otp-panel">
                 ${
                   emailActive
-                    ? `<strong>et***@ave.ai</strong><span>${state.otp.sent ? "验证码已发送，10 分钟内有效。" : "向账号绑定邮箱发送 6 位验证码。"}</span>`
-                    : `<strong>Google 验证器</strong><span>打开 Google Authenticator，输入当前 6 位动态验证码。</span>`
+                    ? `<strong>et***@ave.ai</strong><span>${state.otp.sent ? "验证码已发送，10 分钟内有效。" : "向账号绑定邮箱发送验证码。"}</span>`
+                    : `<strong>Google 验证器</strong><span>打开 Google Authenticator，输入当前动态验证码。</span>`
                 }
               </div>
               ${
                 emailActive && !state.otp.sent
                   ? `<button class="primary" onclick="sendEmailCode()">发送验证码</button>`
                   : `
-                    <input class="otp-input" data-otp-code inputmode="numeric" maxlength="6" placeholder="输入 6 位验证码" value="${state.otp.code}" oninput="updateOtpCode(this.value)">
+                    <input class="otp-input" data-otp-code placeholder="输入验证码" value="${state.otp.code}" oninput="updateOtpCode(this.value)">
                     <div class="sheet-actions">
                       <button class="secondary" onclick="${emailActive ? "sendEmailCode()" : "closeOtpVerification()"}">${emailActive ? "重新发送" : "取消"}</button>
-                      <button class="primary" data-otp-confirm ${state.otp.code.length === 6 ? "" : "disabled"} onclick="completeOtpVerification()">验证</button>
+                      <button class="primary" data-otp-confirm onclick="completeOtpVerification()">验证</button>
                     </div>
                   `
               }
@@ -3956,6 +6907,42 @@
         `;
       }
       return "";
+    }
+
+    function noteExceptionKinds() {
+      const map = {
+        accountWalletIntro: [["createCancelled", "验证取消"], ["createFailed", "创建失败"]],
+        createIntro: [["createCancelled", "验证取消"], ["createFailed", "创建失败"]],
+        createPasskey: [["createCancelled", "验证取消"], ["createFailed", "创建失败"]],
+        createProgress: [["createFailed", "创建失败"]],
+        backup: [["backupFailed", "备份失败"]],
+        backupPin: [["backupFailed", "备份失败"]],
+        backupProgress: [["backupFailed", "上传失败"]],
+        backupQr: [["backupFailed", "保存失败"]],
+        backupQrScan: [["backupQrFailed", "扫码失败"]],
+        backupQrVerify: [["backupQrFailed", "密码错误"]],
+        restoreSource: [["restoreCloudFailed", "云备份不可用"]],
+        restoreDriveFile: [["restoreCloudFailed", "文件不可用"]],
+        restoreScan: [["restorePinFailed", "二维码不可用"]],
+        restorePin: [["restorePinFailed", "解锁失败"]],
+        restoreVerify: [["restoreCloudFailed", "验证中断"]],
+        restoreCloudPull: [["restoreCloudFailed", "拉取失败"]],
+        restoreProgress: [["restoreFailed", "恢复失败"]],
+        deleteIntro: [["deleteFailed", "删除失败"]],
+        deleteVerify: [["deleteFailed", "验证中断"]],
+        deleteProgress: [["deleteFailed", "删除失败"]],
+        convertIntro: [["convertInterrupted", "中断转换"]],
+        verify: [["convertInterrupted", "验证中断"]],
+        mnemonic: [["mnemonicNotSaved", "未保存助记词"]],
+        importWallet: [["importFailed", "导入失败"]],
+        importSuccess: [["importFailed", "导入失败"]],
+        agentAutoTrade: [["agentFailed", "启用失败"]],
+        agentVerify: [["agentFailed", "验证中断"]],
+        accountInfo: [["otpExpired", "验证码失效"]],
+        passkeyManage: [["createCancelled", "创建取消"]],
+        manage: [["restoreCloudFailed", "恢复不可用"], ["importFailed", "导入失败"]]
+      };
+      return map[state.screen] || [];
     }
 
     function renderNotes() {
@@ -3973,6 +6960,11 @@
           <ul>
             ${note.points.map((point) => `<li>${point}</li>`).join("")}
           </ul>
+          ${noteExceptionKinds().length ? `
+            <div class="note-actions">
+              ${noteExceptionKinds().map(([kind, label]) => `<button class="note-action" onclick="openFlowException('${kind}')">预览：${label}</button>`).join("")}
+            </div>
+          ` : ""}
         </div>
       `;
     }
@@ -3980,10 +6972,17 @@
     function render() {
       const view = {
         accountStart,
+        register,
+        accountCenter,
+        accountInfo,
+        passkeyManage,
         accountWalletIntro,
         home,
         manage,
         settings,
+        agentAutoTrade,
+        agentVerify,
+        agentDone,
         backup,
         backupVerify,
         backupPin,
@@ -3997,6 +6996,8 @@
         mnemonic: mnemonicScreen,
         complete,
         createIntro,
+        importWallet,
+        importSuccess,
         createPasskey,
         createProgress,
         createDone,
