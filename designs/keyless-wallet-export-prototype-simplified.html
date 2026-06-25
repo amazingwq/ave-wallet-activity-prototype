@@ -52,6 +52,11 @@
       gap: 24px;
     }
 
+    .stage.has-preview {
+      width: min(1180px, 100%);
+      grid-template-columns: minmax(250px, 300px) minmax(320px, 390px) minmax(250px, 340px);
+    }
+
     button {
       border: 0;
       font: inherit;
@@ -633,6 +638,30 @@
       text-align: right;
       font-size: 14px;
       font-weight: 760;
+    }
+
+    .trade-shortcuts {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin: 8px 0 14px;
+    }
+
+    .trade-shortcut {
+      min-height: 38px;
+      border-radius: 9px;
+      background: #f4f6fa;
+      color: #303640;
+      font-size: 12px;
+      font-weight: 780;
+      display: grid;
+      place-items: center;
+      text-align: center;
+    }
+
+    .trade-shortcut:active {
+      background: #eaf1ff;
+      color: var(--accent-strong);
     }
 
     .token-value small {
@@ -1665,6 +1694,13 @@
       text-align: center;
     }
 
+    .dialog h2 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.35;
+      font-weight: 820;
+    }
+
     .dialog p {
       margin: 0 0 4px;
       font-size: 15px;
@@ -2260,6 +2296,103 @@
       align-self: center;
       padding: 8px 0;
       color: #1d2534;
+    }
+
+    .side-preview {
+      display: none;
+      align-self: center;
+    }
+
+    .stage.has-preview .side-preview {
+      display: block;
+    }
+
+    .scenario-card {
+      background: rgba(255, 255, 255, 0.76);
+      border: 1px solid rgba(255, 255, 255, 0.72);
+      border-radius: 20px;
+      padding: 16px;
+      box-shadow: 0 20px 55px rgba(32, 45, 70, 0.1);
+      backdrop-filter: blur(14px);
+    }
+
+    .scenario-card h3 {
+      margin: 0 0 8px;
+      font-size: 16px;
+      font-weight: 900;
+    }
+
+    .scenario-card p {
+      margin: 0 0 12px;
+      color: #657084;
+      font-size: 12px;
+      line-height: 1.6;
+      font-weight: 650;
+    }
+
+    .scenario-phone {
+      min-height: 340px;
+      border-radius: 22px;
+      background: #fff;
+      border: 1px solid #edf0f5;
+      box-shadow: inset 0 0 0 1px rgba(17, 19, 24, 0.02);
+      padding: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scenario-trade-title {
+      font-size: 15px;
+      font-weight: 850;
+      margin-bottom: 10px;
+    }
+
+    .scenario-order {
+      border-radius: 12px;
+      background: #f6f7fa;
+      padding: 12px;
+      display: grid;
+      gap: 8px;
+      color: #4f5867;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .scenario-mask {
+      position: absolute;
+      inset: 0;
+      background: rgba(17, 19, 24, 0.52);
+      display: grid;
+      place-items: center;
+      padding: 18px;
+    }
+
+    .scenario-dialog {
+      width: 100%;
+      border-radius: 16px;
+      background: #fff;
+      padding: 18px;
+      text-align: center;
+      display: grid;
+      gap: 10px;
+    }
+
+    .scenario-dialog strong {
+      font-size: 17px;
+      line-height: 1.35;
+    }
+
+    .scenario-dialog span {
+      color: #5f6876;
+      font-size: 12px;
+      line-height: 1.55;
+      font-weight: 650;
+    }
+
+    .scenario-dialog .primary,
+    .scenario-dialog .secondary {
+      min-height: 38px;
+      font-size: 13px;
     }
 
     .note-box {
@@ -3609,6 +3742,10 @@
         display: none;
       }
 
+      .side-preview {
+        display: none !important;
+      }
+
       .create-flow-section {
         display: none;
       }
@@ -3622,6 +3759,14 @@
       .stage {
         grid-template-columns: minmax(300px, 1fr) minmax(210px, 0.7fr);
         gap: 18px;
+      }
+
+      .stage.has-preview {
+        grid-template-columns: minmax(300px, 1fr) minmax(210px, 0.7fr);
+      }
+
+      .side-preview {
+        display: none !important;
       }
 
       .create-flow-section {
@@ -3643,6 +3788,7 @@
 </head>
 <body>
   <div class="stage">
+    <aside id="leftPreview" class="side-preview" aria-label="场景弹窗预览"></aside>
     <main class="phone" aria-label="Keyless wallet export flow">
       <div id="app" class="app"></div>
     </main>
@@ -3654,10 +3800,10 @@
       <span class="section-kicker">KEYLESS WALLET FLOW</span>
       <h2>分片钱包总业务流程</h2>
       <p class="flow-summary">
-        结论：未登录用户可以直接导入私钥钱包或添加观察钱包；登录/创建账号后，若账号下还没有无私钥钱包，则自动创建一个初始无私钥钱包并完成平台云备份。导入的私钥钱包不会被登录流程覆盖，登录后仍展示在私钥钱包分区。
+        结论：未登录用户可以直接导入私钥钱包或添加观察钱包；注册账号后自动创建一个初始钱包，并完成平台云备份。该初始钱包产品上归入无私钥钱包，导入的私钥钱包不会被登录流程覆盖，登录后仍展示在私钥钱包分区。
       </p>
       <div class="doc-callout">
-        安全规则：有通行密钥时，高风险操作只验证通行密钥；没有通行密钥时，必须完成 Google 验证和邮箱验证。平台云恢复需要两次验证；iCloud / QR 恢复输入 PIN 或恢复密码后直接恢复。
+        安全规则：创建分片钱包和自动交易不触发安全验证；有通行密钥时，高风险操作只验证通行密钥；没有通行密钥时，必须完成 Google 验证和邮箱验证。平台云恢复需要两次验证；iCloud / QR 恢复输入恢复密码后直接恢复。
       </div>
 
       <ol class="flow-diagram">
@@ -3686,7 +3832,7 @@
           <span class="flow-index">4</span>
           <div class="flow-content">
             <strong>账号登录 / 创建</strong>
-            <span>账号已存在且有无私钥钱包时进入钱包首页；首次创建账号或账号下没有钱包时，自动进入初始无私钥钱包创建。</span>
+            <span>账号已存在且有无私钥钱包时进入钱包首页；首次创建账号时，自动进入初始钱包创建。</span>
             <div class="share-grid">
               <span class="share-chip secure">本机私钥钱包<br>可并存</span>
               <span class="share-chip cloud">无私钥钱包<br>账号管理</span>
@@ -3697,8 +3843,8 @@
         <li class="flow-step">
           <span class="flow-index">5</span>
           <div class="flow-content">
-            <strong>初始无私钥钱包创建</strong>
-            <span>创建时完成本人验证、本机生成钱包材料、平台云自动备份和多链地址生成；用户不需要看到助记词。</span>
+            <strong>初始钱包创建</strong>
+            <span>创建时完成钱包生成、平台云自动备份和多链地址生成；用户不需要看到助记词，也不感知底层钱包类型差异。</span>
           </div>
         </li>
         <li class="flow-step">
@@ -3712,7 +3858,7 @@
           <span class="flow-index">7</span>
           <div class="flow-content">
             <strong>钱包详情与第一批主流程</strong>
-            <span>备份管理、转私钥钱包、删除钱包、恢复钱包和安全自动签名都从钱包管理或钱包详情进入，并补齐取消、失败、重试、完成状态。</span>
+            <span>后续手动创建的分片钱包支持备份管理、导出助记词并转换为私钥钱包；初始钱包不展示备份管理、导出助记词和转私钥入口。删除钱包、恢复钱包和自动交易从钱包管理或钱包详情进入，并补齐取消、失败、重试、完成状态。</span>
           </div>
         </li>
       </ol>
@@ -3738,7 +3884,7 @@
       <h2>设计重点</h2>
       <p>这个原型不是单个功能页，而是把登录态、钱包类型和高风险验证串成一条业务主线，方便拆分交付时开发仍能理解全局范围。</p>
       <ul>
-        <li>第一批可先交付恢复、删除、备份管理、转私钥钱包和自动签名入口。</li>
+        <li>第一批可先交付恢复、删除、后续分片钱包导出助记词/转私钥、备份管理和自动交易入口。</li>
         <li>恢复入口不在添加钱包里单独展示，而是在钱包列表中展示可恢复项。</li>
         <li>私钥导入是未登录也可用的本机路径，登录后不能丢失。</li>
         <li>所有高风险流程统一复用安全验证规则，减少重复设计和开发歧义。</li>
@@ -3795,6 +3941,7 @@
       watchWalletAdded: false,
       createdWallet: false,
       accountCreated: false,
+      newRegisteredAccount: false,
       initialWalletCreated: false,
       recoverableWalletRestored: false,
       creationMode: "add",
@@ -3816,6 +3963,7 @@
       agentEnabled: false,
       agentEnabledWallets: [],
       agentFlow: { action: "enable", walletName: "", verifications: { passkey: false, google: false, email: false } },
+      pendingAutoTradeType: "限价交易",
       importFlow: { input: "", type: "mnemonic" },
       exception: { title: "", message: "", primaryText: "", primaryAction: "", secondaryText: "", secondaryAction: "" },
       toast: ""
@@ -3839,11 +3987,11 @@
       createIntro: "创建钱包",
       importWallet: "导入钱包",
       importSuccess: "导入完成",
-      createPasskey: "通过通行密钥验证",
+      createPasskey: "安全验证",
       createProgress: "创建钱包",
       createDone: "创建完成",
       backupVerify: "设置备份",
-      backupPin: "设置备份 PIN",
+      backupPin: "设置恢复密码",
       backupProgress: "备份中",
       backupQr: "QR Code 备份",
       backupQrScan: "扫描备份二维码",
@@ -3852,7 +4000,7 @@
       restoreSource: "恢复钱包",
       restoreDriveFile: "读取云盘备份",
       restoreScan: "扫描 QR Code",
-      restorePin: "解锁备份",
+      restorePin: "输入恢复密码",
       restoreVerify: "安全验证",
       restoreCloudPull: "查找云备份",
       restoreCloudSuccess: "备份拉取成功",
@@ -3862,8 +4010,8 @@
       deleteVerify: "安全验证",
       deleteProgress: "删除中",
       deleteDone: "删除完成",
-      agentAutoTrade: "安全自动签名",
-      agentVerify: "安全验证",
+      agentAutoTrade: "自动交易",
+      agentVerify: "自动交易",
       agentDone: "设置完成"
     };
 
@@ -3871,7 +4019,7 @@
       accountStart: {
         pill: "LOGIN",
         title: "账号登录入口",
-        copy: "登录页用于区分已有账号登录和新账号注册。已有账号登录后进入当前账号钱包首页；新账号注册后才进入初始无私钥钱包创建流程。",
+        copy: "登录页用于区分已有账号登录和新账号注册。已有账号登录后进入当前账号钱包首页；新账号注册后进入初始钱包创建流程。",
         points: [
           "登录需要邮箱/手机号和登录密码。",
           "登录按钮为底部大按钮，注册入口为小按钮，避免和主路径抢层级。",
@@ -3882,11 +4030,11 @@
       register: {
         pill: "REGISTER",
         title: "注册后的连续创建",
-        copy: "注册成功后，应立即进入初始无私钥钱包创建。用户感知是一条连续路径：注册账号、验证本人、创建钱包、自动完成平台云备份。",
+        copy: "注册成功后，应立即进入初始钱包创建。用户感知是一条连续路径：注册账号、创建钱包、自动完成平台云备份。",
         points: [
           "注册需要邮箱/手机号、验证码、登录密码和确认密码。",
           "注册页按钮强调“注册并创建钱包”，让用户理解下一步不是空首页。",
-          "注册成功后进入初始无私钥钱包创建页，沿用现有创建与自动备份流程。",
+          "注册成功后进入初始钱包创建页，沿用现有创建与自动备份流程。",
           "创建完成后进入首页，钱包已在无私钥钱包分区可见。"
         ]
       },
@@ -3904,9 +4052,9 @@
       accountCenter: {
         pill: "ACCOUNT",
         title: "登录态入口",
-        copy: "个人中心用于表达用户是否已创建 Ave 账号，以及从账号信息进入安全能力设置。首次创建账号后，会自动进入初始无私钥钱包创建流程。",
+        copy: "个人中心用于表达用户是否已创建 Ave 账号，以及从账号信息进入安全能力设置。首次创建账号后，会自动进入初始钱包创建流程。",
         points: [
-          "未创建账号时展示创建/登录账号，账号创建成功后自动生成初始无私钥钱包。",
+          "未创建账号时展示创建/登录账号，账号创建成功后自动生成初始钱包。",
           "已登录时展示邮箱账号和退出登录。",
           "账号信息页承载通行密钥状态，不混入钱包级操作。"
         ]
@@ -3949,7 +4097,7 @@
         points: [
           "未登录：展示登录/创建账号、导入私钥钱包、添加观察钱包三个入口。",
           "已导入私钥但未登录：只展示本机私钥钱包，底部引导登录账号。",
-          "登录后首次使用：自动进入初始无私钥钱包创建，不让用户停在空钱包列表。",
+          "注册后首次使用：自动进入初始钱包创建，不让用户停在空钱包列表。",
           "可恢复钱包并入无私钥钱包列表，不再单独分区。",
           "导入私钥钱包与无私钥钱包是两个分区，登录后可以并存。",
           "转私钥钱包是钱包级操作：只移除被转换的钱包，并在私钥钱包区新增对应多链地址。"
@@ -3982,7 +4130,7 @@
         title: "钱包设置入口",
         copy: "备份、转换、删除都属于低频但关键的钱包级操作，集中放在设置页更符合用户心智，也能和日常交易路径隔离开。",
         points: [
-          "转换前仍保留 Keyless 备份管理能力。",
+          "后续手动创建的钱包转换前仍保留备份管理能力。",
           "转换后将导出 1 组助记词，由用户自行保管。",
           "删除应单独作为危险操作放在底部，不与普通功能混排。"
         ]
@@ -4000,28 +4148,28 @@
       },
       agentAutoTrade: {
         pill: "AGENT",
-        title: "安全自动签名",
-        copy: "技术文档支持 Agent 自动交易：启用后在授权范围内由安全环境完成签名。产品上应把它当高风险授权处理，入口放在钱包详情。",
+        title: "自动交易",
+        copy: "技术文档支持 Agent 自动交易：启用后在授权范围内自动完成指定交易确认。产品上不再追加安全验证，入口放在钱包详情。",
         points: [
-          "启用时按统一安全规则验证：有通行密钥只验证通行密钥；无通行密钥验证 Google + 邮箱。",
+          "启用时由用户主动确认授权范围，不再进入安全验证。",
           "页面展示限额、有效期和可随时关闭，不展示内部密钥材料。",
-          "关闭前先做确认弹窗，再按同一安全规则完成本人验证。",
-          "单私钥钱包暂不展示该入口，避免误导开发。"
+          "关闭前先做确认弹窗，确认后直接关闭。",
+          "限价交易、自动交易、跟单交易触发时先判断是否已开启；未开启先弹窗提示，再进入本页。"
         ]
       },
       agentVerify: {
         pill: "VERIFY",
-        title: "启用自动签名验证",
-        copy: "启用自动签名会改变交易授权边界，因此需要高风险级别的本人验证。",
+        title: "自动交易确认",
+        copy: "自动交易不再追加安全验证，仅通过授权确认和关闭确认控制。",
         points: [
-          "有通行密钥时不展示 0/1 计数。",
-          "没有通行密钥时展示 0/2，并要求 Google 与邮箱都通过。",
-          "验证通过后才可进入启用完成态。"
+          "启用后直接进入完成态。",
+          "关闭时先展示确认弹窗。",
+          "异常时提示状态未变更，用户可回到自动交易页重试。"
         ]
       },
       agentDone: {
         pill: "DONE",
-        title: "自动签名完成态",
+        title: "自动交易完成态",
         copy: "完成态只反馈结果，并回到钱包详情继续查看状态。",
         points: [
           "完成后钱包详情中的状态变为已开启。",
@@ -4031,19 +4179,19 @@
       backupVerify: {
         pill: "BACKUP",
         title: "备份入口精简",
-        copy: "iCloud / Google Drive 和 QR Code 作为额外备份渠道，点击后直接设置 PIN 或恢复密码，不再追加安全验证。",
+        copy: "iCloud / Google Drive 和 QR Code 作为额外备份渠道，点击后直接设置恢复密码，不再追加安全验证。",
         points: [
-          "iCloud / Google Drive 进入备份 PIN 设置。",
+          "iCloud / Google Drive 进入恢复密码设置。",
           "QR Code 进入恢复密码设置。",
           "降低低频备份操作的流程负担。"
         ]
       },
       backupPin: {
-        pill: "PIN",
+        pill: "PASSWORD",
         title: "用户自管恢复凭证",
-        copy: "iCloud/Google Drive 使用备份 PIN；QR Code 使用恢复密码。两者都由用户自己保管，用于保护对应备份。",
+        copy: "iCloud/Google Drive 和 QR Code 都使用恢复密码。恢复密码由用户自己保管，用于保护对应备份。",
         points: [
-          "PIN / 恢复密码不上传平台，平台无法找回。",
+          "恢复密码不上传平台，平台无法找回。",
           "原型演示不限制输入格式，实际开发可按安全策略校验。",
           "忘记后，该备份渠道不可用，只能依赖其他备份渠道恢复。"
         ]
@@ -4054,7 +4202,7 @@
         copy: "云盘备份会把加密后的钱包备份文件上传到用户私有空间。",
         points: [
           "上传内容是密文，不会暴露助记词或私钥。",
-          "恢复时需要用户下载备份并输入 PIN 解密。",
+          "恢复时需要用户下载备份并输入恢复密码解密。",
           "这里可以按系统展示 iCloud 或 Google Drive。"
         ]
       },
@@ -4105,37 +4253,37 @@
         points: [
           "入口位置：钱包管理列表中的灰色可恢复钱包。",
           "平台云备份是推荐默认路径，但需要两段验证：先拉取云备份，再恢复钱包。",
-          "iCloud / Google Drive 和 QR Code 输入 PIN 后直接进入恢复中。",
+          "iCloud / Google Drive 和 QR Code 输入恢复密码后直接进入恢复中。",
           "恢复过程中不会向用户展示私钥或助记词。"
         ]
       },
       restorePin: {
         pill: "UNLOCK",
         title: "本地解锁备份",
-        copy: "云盘和二维码备份都是加密内容，恢复时需要用户输入 PIN 在本地解锁。",
+        copy: "云盘和二维码备份都是加密内容，恢复时需要用户输入恢复密码在本地解锁。",
         points: [
-          "PIN 只在本地用于解锁备份。",
-          "平台无法找回 PIN，忘记则该备份渠道不可用。",
+          "恢复密码只在本地用于解锁备份。",
+          "平台无法找回恢复密码，忘记则该备份渠道不可用。",
           "输入正确后直接进入钱包恢复，不再追加安全验证。"
         ]
       },
       restoreDriveFile: {
         pill: "DRIVE",
         title: "读取云盘备份文件",
-        copy: "iCloud / Google Drive 恢复会先读取用户云盘里的加密备份文件，再用 PIN 在本地解锁。",
+        copy: "iCloud / Google Drive 恢复会先读取用户云盘里的加密备份文件，再用恢复密码在本地解锁。",
         points: [
           "备份文件是密文，不会暴露助记词或私钥。",
-          "读取完成后进入 PIN 解锁页。",
-          "如果云盘文件丢失或 PIN 忘记，该备份渠道不可用。"
+          "读取完成后进入恢复密码解锁页。",
+          "如果云盘文件丢失或恢复密码忘记，该备份渠道不可用。"
         ]
       },
       restoreScan: {
         pill: "SCAN",
         title: "扫码读取离线备份",
-        copy: "QR Code 恢复应先通过扫码读取离线备份，再输入 PIN 本地解锁，不是手动复制二维码内容。",
+        copy: "QR Code 恢复应先通过扫码读取离线备份，再输入恢复密码本地解锁，不是手动复制二维码内容。",
         points: [
           "二维码里承载的是加密备份，不是助记词。",
-          "扫码成功后进入 PIN 解锁页。",
+          "扫码成功后进入恢复密码解锁页。",
           "离线二维码适合作为云备份之外的冗余。"
         ]
       },
@@ -4192,7 +4340,7 @@
       deleteIntro: {
         pill: "DELETE",
         title: "主动删除钱包",
-        copy: "删除页只保留用户真正关心的结果信息，不解释底层实现。核心是说清三件事：资产先转出、30 天内可恢复、30 天后永久删除。",
+        copy: "删除页只保留用户真正关心的结果信息，不解释底层实现。核心是说清两件事：资产先转出，删除后不可恢复。",
         points: [
           "删除入口不需要副文案，避免把设置页做得太重。",
           "确认页不再重复展示钱包名、类型等中间信息卡。",
@@ -4216,16 +4364,16 @@
         points: [
           "进度标签不要出现内部处理步骤。",
           "用户只需要知道删除正在进行，并很快完成。",
-          "删除完成页再明确给出 30 天恢复窗口。"
+          "删除完成页只反馈删除成功，不提供恢复入口。"
         ]
       },
       deleteDone: {
         pill: "DONE",
         title: "删除完成",
-        copy: "删除完成后只反馈结果：钱包已移除，30 天内可恢复，30 天后永久删除。",
+        copy: "删除完成后只反馈结果：钱包已移除，且不可恢复。",
         points: [
           "首页和管理页中不再展示该钱包。",
-          "结果页用恢复窗口替代内部删除机制说明。",
+          "结果页不再展示恢复入口。",
           "紧急冻结和安全处置依然是另一条独立流程。"
         ]
       },
@@ -4286,18 +4434,18 @@
         copy: "创建流程默认走平台云备份，让用户获得 Keyless 钱包的恢复能力，而不需要在首次创建时理解底层安全模型。",
         points: [
           "首页底部直接给“添加钱包”入口，和 Binance 的钱包列表结构一致。",
-          "创建钱包只展示产品结果：无私钥钱包、自动备份、可开始使用。",
+          "创建钱包只展示产品结果：无私钥钱包、自动备份。",
           "导入入口可以按业务上限置灰，不打断创建主路径。"
         ]
       },
       createPasskey: {
-        pill: "AUTH",
-        title: "创建前验证",
-        copy: "创建前按账号安全能力进行本人验证，确保账号本人触发创建与云备份写入。",
+        pill: "CREATE RULE",
+        title: "创建无需安全验证",
+        copy: "创建分片钱包不需要额外安全验证。点击创建后直接进入钱包生成与平台云备份进度。",
         points: [
-          "有通行密钥：只验证通行密钥。",
-          "无通行密钥：必须同时完成 Google 验证和邮箱验证。",
-          "验证通过后才生成钱包材料并发起平台云备份。"
+          "账号注册后的初始钱包直接创建。",
+          "后续手动创建的分片钱包也直接创建。",
+          "安全验证仍用于恢复、删除、导出助记词等高风险操作。"
         ]
       },
       createProgress: {
@@ -4313,7 +4461,7 @@
       initialCreateProgress: {
         pill: "INITIAL BACKUP",
         title: "初始钱包创建中",
-        copy: "首次账号创建后的钱包创建不需要额外入口。账号完成后直接进入初始钱包创建、自动备份和多链地址生成。",
+        copy: "首次账号创建后的钱包创建不需要额外入口。账号完成后只生成一个初始钱包，并自动完成平台云备份。",
         points: [
           "初始钱包创建是账号注册链路的一部分。",
           "用户只感知“正在创建钱包”，不需要知道分片细节。",
@@ -4324,9 +4472,9 @@
       createDone: {
         pill: "READY",
         title: "创建完成",
-        copy: "完成页告诉用户钱包已准备就绪，并已完成平台云备份；后续额外备份可以去备份管理补充。",
+        copy: "完成页告诉用户钱包已创建，并已完成平台云备份。初始钱包不展示备份管理入口。",
         points: [
-          "完成后返回首页，新增钱包显示为已自动备份。",
+          "完成后返回首页，新增钱包进入无私钥钱包分区。",
           "不展示助记词，避免和私钥钱包创建混淆。",
           "首次创建链路到这里闭环。"
         ]
@@ -4334,10 +4482,10 @@
       initialCreateDone: {
         pill: "READY",
         title: "初始钱包完成",
-        copy: "完成页只告诉用户初始钱包已准备就绪，避免把账号创建后的钱包生成解释成额外新增钱包。",
+        copy: "完成页只告诉用户钱包已创建，并已完成平台云备份。",
         points: [
           "进入首页后，该初始钱包就是用户默认可用的钱包。",
-          "状态直接显示已完成平台云备份。",
+          "不向用户暴露底层钱包类型差异。",
           "后续新增钱包仍从添加钱包入口进入。"
         ]
       }
@@ -4436,13 +4584,13 @@
     }
 
     function exceptionConfig(kind) {
-      const retryCreate = state.creationMode === "initial" ? "beginWalletCreation('initial')" : "enterCreatePasskey('add')";
+      const retryCreate = state.creationMode === "initial" ? "beginWalletCreation('initial')" : "beginWalletCreation('add')";
       const backCreate = state.creationMode === "initial" ? "go('accountWalletIntro')" : "go('createIntro')";
       const map = {
         createCancelled: {
-          title: "验证已取消",
-          message: "钱包尚未创建，平台云备份也不会开始。请重新完成验证后继续。",
-          primaryText: "重新验证",
+          title: "创建已取消",
+          message: "钱包尚未创建，平台云备份也不会开始。请重新发起创建。",
+          primaryText: "重新创建",
           primaryAction: retryCreate,
           secondaryText: "返回",
           secondaryAction: backCreate
@@ -4481,7 +4629,7 @@
         },
         restorePinFailed: {
           title: "解锁失败",
-          message: "PIN 或恢复密码不正确，该备份暂时无法用于恢复。请重新输入或更换恢复方式。",
+          message: "恢复密码不正确，该备份暂时无法用于恢复。请重新输入或更换恢复方式。",
           primaryText: "重新输入",
           primaryAction: "go('restorePin')",
           secondaryText: "更换恢复方式",
@@ -4497,7 +4645,7 @@
         },
         deleteFailed: {
           title: "删除未完成",
-          message: "钱包仍保留在当前设备，30 天恢复期不会开始。请重新验证后再试。",
+          message: "钱包仍保留在当前设备，删除状态不会生效。请重新验证后再试。",
           primaryText: "重新删除",
           primaryAction: "retryDeleteProgress()",
           secondaryText: "返回钱包详情",
@@ -4529,9 +4677,9 @@
         },
         agentFailed: {
           title: "设置未生效",
-          message: "自动签名状态没有变化，请重新完成安全验证后再试。",
-          primaryText: "重新验证",
-          primaryAction: "go('agentVerify')",
+          message: "自动交易状态没有变化，请回到自动交易页重新设置。",
+          primaryText: "重新设置",
+          primaryAction: "go('agentAutoTrade')",
           secondaryText: "返回钱包详情",
           secondaryAction: "go('settings')"
         },
@@ -5049,11 +5197,11 @@
       state.agentFlow.action = "enable";
       state.agentFlow.walletName = activeKeylessWalletName();
       state.agentFlow.verifications = { passkey: false, google: false, email: false };
-      go("agentVerify");
+      setAgentEnabledForWallet(state.agentFlow.walletName, true);
+      go("agentDone");
     }
 
     function completeAgentAuth() {
-      if (!verificationCompleteForScreen("agentVerify")) return;
       const walletName = state.agentFlow.walletName || activeKeylessWalletName();
       setAgentEnabledForWallet(walletName, state.agentFlow.action === "enable");
       go("agentDone");
@@ -5075,7 +5223,8 @@
       state.agentFlow.walletName = activeKeylessWalletName();
       state.agentFlow.verifications = { passkey: false, google: false, email: false };
       state.overlay = null;
-      go("agentVerify");
+      setAgentEnabledForWallet(state.agentFlow.walletName, false);
+      go("agentDone");
     }
 
     function completeDeleteAuth(type) {
@@ -5179,8 +5328,10 @@
             state.sessionMode = "loggedIn";
             state.accountCreated = true;
             state.initialWalletCreated = true;
+            state.activeKeylessWallet = "Wallet1";
           } else {
             state.createdWallet = true;
+            state.activeKeylessWallet = state.newRegisteredAccount ? "My Wallet 1" : "My Wallet 2";
           }
           state.screen = "createDone";
           render();
@@ -5254,7 +5405,7 @@
       state.otp.open = false;
       state.otp.code = "";
       render();
-      if (["createPasskey", "verify", "restoreVerify", "deleteVerify", "agentVerify"].includes(activeScreen)) {
+      if (["createPasskey", "verify", "restoreVerify", "deleteVerify"].includes(activeScreen)) {
         showToast("验证已取消，当前操作未继续。");
       }
     }
@@ -5286,14 +5437,7 @@
     function enterCreatePasskey(mode = "add") {
       state.creationMode = mode;
       state.creationVerifications = { passkey: false, google: false, email: false };
-      if (mode === "initial") {
-        beginWalletCreation("initial");
-        return;
-      }
-      go("createPasskey");
-      if (state.hasPasskey) {
-        setTimeout(() => openPasskeyVerification(mode === "initial" ? "initialCreate" : "create"), 80);
-      }
+      beginWalletCreation(mode);
     }
 
     function enterMnemonicScreen() {
@@ -5304,7 +5448,7 @@
     function shell(content, options = {}) {
       const canBack = !["accountStart", "home", "complete", "createProgress", "createDone", "backupProgress", "restoreCloudPull", "restoreCloudSuccess", "restoreProgress", "restoreDone", "deleteProgress", "deleteDone"].includes(state.screen);
       const right = options.right || "";
-      const title = state.screen === "backupPin" && state.backupFlow.method === "qr"
+      const title = state.screen === "backupPin"
         ? "设置恢复密码"
         : state.screen === "backup"
           ? activeKeylessWalletName()
@@ -5361,7 +5505,12 @@
     }
 
     function allKeylessWallets() {
-      return [...keylessWalletsBase, ...restoredKeylessWalletObjects()];
+      let baseWallets = keylessWalletsBase;
+      if (state.sessionMode === "loggedIn" && state.newRegisteredAccount) {
+        baseWallets = state.initialWalletCreated ? [keylessWalletsBase[0]] : [];
+        if (state.createdWallet) baseWallets = [...baseWallets, keylessWalletsBase[1]];
+      }
+      return [...baseWallets, ...restoredKeylessWalletObjects()];
     }
 
     function activeKeylessWallet() {
@@ -5378,14 +5527,17 @@
       return activeKeylessWallet().name;
     }
 
+    function isInitialAutoWallet(walletName = activeKeylessWalletName()) {
+      return walletName === "Wallet1";
+    }
+
     function remainingKeylessWallets() {
       return allKeylessWallets().filter((wallet) => !walletConverted(wallet.name) && !walletDeleted(wallet.name));
     }
 
     function recoverableWallets() {
       const preset = state.recoverableWalletRestored ? [] : [{ name: "Wallet 1407", source: "平台云备份可用" }];
-      const deleted = state.deletedWallets.map((name) => ({ name, source: "剩余 30 天" }));
-      return [...deleted, ...preset];
+      return preset;
     }
 
     function backupStatusFor(walletName = activeKeylessWalletName()) {
@@ -5410,6 +5562,43 @@
         ? Array.from(new Set([...state.agentEnabledWallets, walletName]))
         : state.agentEnabledWallets.filter((name) => name !== walletName);
       state.agentEnabled = isAgentEnabled(walletName);
+    }
+
+    function autoTradeEnabledFor(walletName = activeKeylessWalletName()) {
+      return isInitialAutoWallet(walletName) || isAgentEnabled(walletName);
+    }
+
+    function triggerAutoTrade(type) {
+      state.pendingAutoTradeType = type;
+      if (state.sessionMode === "loggedOut") {
+        showToast("请先创建或导入钱包");
+        return;
+      }
+      if (state.sessionMode !== "loggedIn" || !remainingKeylessWallets().length) {
+        showToast("当前钱包暂不支持自动交易");
+        return;
+      }
+      const walletName = activeKeylessWalletName();
+      if (autoTradeEnabledFor(walletName)) {
+        showToast(`${type}已进入交易确认`);
+        return;
+      }
+      state.overlay = "autoTradeEnablePrompt";
+      render();
+    }
+
+    function closeAutoTradeEnablePrompt() {
+      state.overlay = "";
+      render();
+    }
+
+    function goAutoTradeEnableFromPrompt() {
+      const walletName = activeKeylessWalletName();
+      state.overlay = "";
+      state.agentFlow.action = "enable";
+      state.agentFlow.walletName = walletName;
+      state.agentFlow.verifications = { passkey: false, google: false, email: false };
+      go("agentAutoTrade");
     }
 
     function selectNextAvailableKeyless() {
@@ -5483,6 +5672,7 @@
       state.accountCreated = true;
       state.hasPasskey = true;
       state.initialWalletCreated = true;
+      state.newRegisteredAccount = false;
       if (!remainingKeylessWallets().length) {
         state.convertedWallets = [];
         state.deletedWallets = [];
@@ -5527,9 +5717,10 @@
       if (!registerFormValid()) return;
       state.sessionMode = "loggedIn";
       state.accountCreated = true;
+      state.newRegisteredAccount = true;
       state.hasPasskey = false;
       state.initialWalletCreated = false;
-      state.activeKeylessWallet = "My Wallet 2";
+      state.activeKeylessWallet = "Wallet1";
       state.creationMode = "initial";
       state.creationVerifications = { passkey: false, google: false, email: false };
       go("accountWalletIntro");
@@ -5540,6 +5731,7 @@
       state.sessionMode = "loggedIn";
       state.hasPasskey = hasPasskey;
       state.accountCreated = true;
+      state.newRegisteredAccount = false;
       state.initialWalletCreated = true;
       selectNextAvailableKeyless();
       go("home");
@@ -5547,6 +5739,7 @@
 
     function enterGuestPrivateWallet() {
       state.sessionMode = "guestPrivate";
+      state.newRegisteredAccount = false;
       state.importedPrivateWallet = true;
       state.converted = false;
       state.convertedWallets = [];
@@ -5562,6 +5755,7 @@
 
     function enterWatchWallet() {
       state.sessionMode = "watchOnly";
+      state.newRegisteredAccount = false;
       state.watchWalletAdded = true;
       state.converted = false;
       state.convertedWallets = [];
@@ -5743,7 +5937,7 @@
               <button class="text-link" onclick="showToast('请通过邮箱或手机号找回密码')">忘记密码?</button>
               <button class="text-link" onclick="fillLoginSample()">填充示例</button>
             </div>
-            <p class="auth-bottom-note">没有 Ave 账号时，请先注册。注册成功后会继续创建初始无私钥钱包。</p>
+            <p class="auth-bottom-note">没有 Ave 账号时，请先注册。注册成功后会继续创建初始钱包。</p>
           </div>
         </div>
         <div class="bottom-actions">
@@ -5759,7 +5953,7 @@
           <div class="auth-hero">
             <span class="ave-avatar">A</span>
             <h2 class="auth-title">注册 Ave 账号</h2>
-            <p class="auth-sub">注册完成后将自动进入初始无私钥钱包创建，并完成平台云备份。</p>
+            <p class="auth-sub">注册完成后将自动进入初始钱包创建，并完成平台云备份。</p>
           </div>
           <div class="auth-form">
             <div class="auth-field">
@@ -5801,10 +5995,10 @@
       return shell(`
         <div class="create-wallet-hero">
           <div class="create-visual"></div>
-          <h2 class="screen-title">创建初始无私钥钱包</h2>
+          <h2 class="screen-title">创建初始钱包</h2>
         </div>
         <div class="risk-notes">
-          <div class="bullet">账号创建完成后，将自动生成第一个无私钥钱包。</div>
+          <div class="bullet">账号创建完成后，将自动生成第一个钱包。</div>
           <div class="bullet">创建时会自动完成平台云备份。</div>
           <div class="bullet">创建过程中不会展示助记词。</div>
           <div class="bullet">后续转账仍需您本人确认。</div>
@@ -5834,6 +6028,11 @@
       ];
       return `
         <div class="market-tabs"><span class="active">币种</span><span>NFT</span><span>理财</span><span>动态</span><span>工具</span></div>
+        <div class="trade-shortcuts">
+          <button class="trade-shortcut" onclick="triggerAutoTrade('限价交易')">限价交易</button>
+          <button class="trade-shortcut" onclick="triggerAutoTrade('自动交易')">自动交易</button>
+          <button class="trade-shortcut" onclick="triggerAutoTrade('跟单交易')">跟单交易</button>
+        </div>
         <div class="token-filter"><span>隐藏小额资产</span><span class="token-search">搜索币种</span><span>筛选</span></div>
         ${tokens.map(([mark, name, price, balance, value], index) => `
           <button class="token-row" onclick="showToast('${name}')">
@@ -5854,7 +6053,7 @@
       const displayKeyless = availableKeyless.find((wallet) => wallet.name === state.activeKeylessWallet) || availableKeyless[0];
       const total = noWallet ? "$0" : guestPrivate ? "$30.93" : watchOnly ? "$30.94" : loggedIn && !state.initialWalletCreated ? "$0" : "$8,342.58";
       const walletName = noWallet ? "未创建钱包" : watchOnly ? "观察" : guestPrivate ? "qq" : loggedIn && !state.initialWalletCreated ? "未创建钱包" : displayKeyless ? displayKeyless.name : state.convertedWallets[0] || "私钥钱包";
-      const walletTag = noWallet ? "" : watchOnly ? `<span class="status-pill">观察</span>` : guestPrivate || (!displayKeyless && state.convertedWallets.length) ? `<span class="status-pill evm">EVM</span>` : `<span class="status-pill">AI</span>`;
+      const walletTag = noWallet ? "" : watchOnly ? `<span class="status-pill">观察</span>` : guestPrivate || (!displayKeyless && state.convertedWallets.length) ? `<span class="status-pill evm">EVM</span>` : "";
       const chainCls = guestPrivate || watchOnly ? "bsc" : "";
 
       return shell(`
@@ -5989,7 +6188,7 @@
         <div class="bullet">创建过程中不会展示助记词。</div>
         <div class="bullet">后续转账仍需您本人确认。</div>
         <div class="bottom-actions">
-          <button class="primary" onclick="enterCreatePasskey('add')">创建钱包</button>
+          <button class="primary" onclick="beginWalletCreation('add')">创建钱包</button>
         </div>
       `);
     }
@@ -6046,9 +6245,9 @@
     }
 
     function createDone() {
-      const title = state.creationMode === "initial" ? "初始钱包已准备就绪！" : "您的钱包已准备就绪！";
+      const title = state.creationMode === "initial" ? "钱包已创建" : "您的钱包已准备就绪！";
       const copy = state.creationMode === "initial"
-        ? "初始无私钥钱包已安全创建，并已完成平台云备份。"
+        ? "已自动备份至平台云。"
         : "钱包已安全创建，并已完成平台云备份。";
       const button = state.creationMode === "initial" ? "进入我的钱包" : "开始探索";
       return shell(`
@@ -6080,7 +6279,7 @@
           <span class="wallet-icon blue"></span>
           <span>
             <span class="row-title">iCloud / Google Drive</span>
-            <span class="row-sub">下载备份文件，并输入 PIN 解锁</span>
+            <span class="row-sub">下载备份文件，并输入恢复密码解锁</span>
           </span>
           <span class="chevron"></span>
         </button>
@@ -6102,7 +6301,7 @@
         <div class="restore-read-card">
           <div class="file-mark"></div>
           <strong>wallet-backup-file</strong>
-          <span>加密备份文件，需使用备份 PIN 解锁</span>
+          <span>加密备份文件，需使用恢复密码解锁</span>
         </div>
         <div class="bottom-actions">
           <button class="primary" onclick="go('restorePin')">选择备份文件</button>
@@ -6129,11 +6328,10 @@
 
     function restorePin() {
       const sourceName = restoreSourceName();
-      const isQr = state.restoreFlow.source === "qr";
-      const credential = isQr ? "恢复密码" : "备份 PIN";
+      const credential = "恢复密码";
       const copy = state.restoreFlow.source === "qr"
         ? "已扫码读取二维码备份，请输入恢复密码解锁该备份。"
-        : "已读取云盘备份文件，请输入备份 PIN 解锁该备份。";
+        : "已读取云盘备份文件，请输入恢复密码解锁该备份。";
       return shell(`
         <h2 class="screen-title">${sourceName} 恢复</h2>
         <p class="body-copy">${copy}</p>
@@ -6223,16 +6421,16 @@
         <div class="create-wallet-hero">
           <div class="warning-round">!</div>
           <h2 class="screen-title">删除前确认</h2>
-          <p class="body-copy muted">删除后，该钱包将从当前 App 移除。</p>
+          <p class="body-copy muted">删除后，该钱包将从当前 App 移除，且不可恢复。</p>
         </div>
         <div class="risk-notes">
           <div class="bullet">删除前请先确认资产已全部转出。</div>
-          <div class="bullet">如需继续保留钱包控制权，请先导出助记词。</div>
+          <div class="bullet">如需继续保留钱包控制权，请先转换为私钥钱包并导出助记词。</div>
         </div>
         <label class="confirm-line">
           <input type="checkbox" ${state.deleteFlow.acknowledged ? "checked" : ""} onchange="toggleDeleteAcknowledge(this.checked)">
           <span class="box"></span>
-          <span>我已确认资产已转出，并知悉删除后 30 天内可恢复，30 天后将永久删除。</span>
+          <span>我已确认资产已转出，并知悉删除后不可恢复。</span>
         </label>
         <div class="bottom-actions">
           <button class="primary" data-action="delete-next" ${state.deleteFlow.acknowledged ? "" : "disabled"} onclick="go('deleteVerify')">继续验证</button>
@@ -6272,7 +6470,7 @@
         <div class="finished">
           <div class="success-mark"></div>
           <div class="status-title">钱包已删除</div>
-          <p class="body-copy muted">${walletName} 已从当前设备移除。30 天内可恢复，30 天后将永久删除。</p>
+          <p class="body-copy muted">${walletName} 已从当前设备移除，且不可恢复。</p>
         </div>
         <div class="bottom-actions">
           <button class="primary" onclick="go('home')">返回首页</button>
@@ -6342,7 +6540,7 @@
         .map((wallet) => `
           <button class="manage-list-row" onclick="selectKeylessWallet('${wallet.name}')">
             ${walletIcon(wallet.cls)}
-            <span><span class="row-title">${wallet.name} <span class="status-pill">AI</span></span><span class="row-sub">0 BNB | ${wallet.amount}</span></span>
+            <span><span class="row-title">${wallet.name}</span><span class="row-sub">0 BNB | ${wallet.amount}</span></span>
             ${state.activeKeylessWallet === wallet.name ? `<span class="selected-check"></span>` : `<span class="chevron"></span>`}
           </button>
         `)
@@ -6379,7 +6577,7 @@
           <button class="manage-list-row recoverable" onclick="go('accountWalletIntro')">
             ${walletIcon("blue")}
             <span>
-              <span class="row-title">创建初始无私钥钱包</span>
+              <span class="row-title">创建初始钱包</span>
               <span class="row-sub">登录后自动创建并完成平台云备份</span>
             </span>
             <span class="chevron"></span>
@@ -6405,6 +6603,16 @@
       const walletName = wallet.name;
       state.backups = backupStatusFor(walletName);
       state.agentEnabled = isAgentEnabled(walletName);
+      const initialAutoWallet = isInitialAutoWallet(walletName);
+      const backupRow = initialAutoWallet
+        ? ""
+        : `<button class="detail-row" onclick="go('backup')"><strong>备份管理</strong><span>${Object.values(state.backups).some(Boolean) ? "已备份" : "未备份"} <span class="chevron"></span></span></button>`;
+      const agentRow = initialAutoWallet
+        ? ""
+        : `<button class="detail-row" onclick="go('agentAutoTrade')"><strong>自动交易</strong><span>${isAgentEnabled(walletName) ? "已开启" : "未开启"} <span class="chevron"></span></span></button>`;
+      const convertRow = initialAutoWallet
+        ? ""
+        : `<button class="detail-row" onclick="resetConvertFlow()"><strong>转换为私钥钱包</strong><span class="chevron"></span></button>`;
       if (walletDeleted(walletName)) {
         return shell(`
           <div class="finished">
@@ -6420,7 +6628,7 @@
       return shell(`
         <div class="wallet-detail-head">
           ${walletIcon(wallet.cls)}
-          <span><h2>${walletName} <span class="status-pill">AI</span></h2></span>
+          <span><h2>${walletName}</h2></span>
           <button class="edit" onclick="showToast('编辑名称')"></button>
         </div>
         <div class="detail-address">
@@ -6428,9 +6636,9 @@
           <button class="copy-mini" onclick="showToast('地址已复制')"></button>
         </div>
         <div class="section-label">隐私</div>
-        <button class="detail-row" onclick="go('backup')"><strong>备份管理</strong><span>${Object.values(state.backups).some(Boolean) ? "已备份" : "未备份"} <span class="chevron"></span></span></button>
-        <button class="detail-row" onclick="resetConvertFlow()"><strong>转换为私钥钱包</strong><span class="chevron"></span></button>
-        <button class="detail-row" onclick="go('agentAutoTrade')"><strong>安全自动签名</strong><span>${isAgentEnabled(walletName) ? "已开启" : "未开启"} <span class="chevron"></span></span></button>
+        ${backupRow}
+        ${convertRow}
+        ${agentRow}
         <div class="section-label">通知</div>
         <div class="detail-row"><strong>钱包通知</strong><span>开启</span></div>
         <div class="section-label">危险区域</div>
@@ -6445,8 +6653,8 @@
       return shell(`
         <div class="create-wallet-hero">
           <div class="notice-icon"></div>
-          <h2 class="screen-title">安全自动签名</h2>
-          <p class="body-copy muted">开启后，可在授权范围内自动完成指定交易确认。您可以随时关闭。</p>
+          <h2 class="screen-title">自动交易</h2>
+          <p class="body-copy muted">开启后，可在授权范围内自动完成限价交易、自动交易、跟单交易等确认。您可以随时关闭。</p>
         </div>
         <div class="risk-notes">
           <div class="bullet">仅对您选择的钱包生效。</div>
@@ -6467,16 +6675,7 @@
     }
 
     function agentVerify() {
-      const complete = verificationCompleteForScreen("agentVerify");
-      const enabling = state.agentFlow.action === "enable";
-      return shell(`
-        <h2 class="screen-title">${enabling ? "验证后启用自动签名" : "验证后关闭自动签名"}</h2>
-        ${verificationCounter("agentVerify")}
-        ${verificationRows("agent")}
-        <div class="bottom-actions">
-          <button class="primary" ${complete ? "" : "disabled"} onclick="completeAgentAuth()">${enabling ? "确认启用" : "确认关闭"}</button>
-        </div>
-      `);
+      return agentAutoTrade();
     }
 
     function agentDone() {
@@ -6485,7 +6684,7 @@
       return shell(`
         <div class="finished">
           <div class="success-mark"></div>
-          <div class="status-title">${enabled ? "已启用安全自动签名" : "已关闭安全自动签名"}</div>
+          <div class="status-title">${enabled ? "已开启自动交易" : "已关闭自动交易"}</div>
           <p class="body-copy muted">${enabled ? `${walletName} 已开启授权范围内的自动交易确认。` : `${walletName} 已关闭自动交易确认，后续交易需您手动确认。`}</p>
         </div>
         <div class="bottom-actions">
@@ -6535,9 +6734,7 @@
       const methodName = backupMethodName();
       const valid = backupPinValid();
       const isQr = state.backupFlow.method === "qr";
-      const credential = isQr ? "恢复密码" : "备份 PIN";
-      const credentialOnly = isQr ? `${credential}仅` : `${credential} 仅`;
-      const forgotCredential = isQr ? `忘记${credential}时` : `忘记${credential} 时`;
+      const credential = "恢复密码";
       const mismatch = false;
       return shell(`
         <h2 class="screen-title">${methodName} 备份</h2>
@@ -6547,8 +6744,8 @@
           <input class="pin-input" type="password" autocomplete="off" placeholder="再次输入${credential}" value="${state.backupFlow.confirmPin}" oninput="updateBackupPin('confirmPin', this.value)">
         </div>
         ${mismatch ? `<div class="pin-hint">两次输入不一致，请重新确认。</div>` : ""}
-        <div class="bullet">${credentialOnly}用于保护该备份，平台不保存。</div>
-        <div class="bullet">${forgotCredential}，该备份渠道不可用。</div>
+        <div class="bullet">${credential}仅用于保护该备份，平台不保存。</div>
+        <div class="bullet">忘记${credential}时，该备份渠道不可用。</div>
         <div class="bottom-actions">
           <button class="primary" data-action="backup-pin-next" ${valid ? "" : "disabled"} onclick="submitBackupPin()">继续</button>
         </div>
@@ -6652,8 +6849,8 @@
       const walletName = activeKeylessWalletName();
       return shell(`
         ${stepper(0)}
-        <h2 class="screen-title">转换前确认</h2>
-        <p class="body-copy">您将把 ${walletName} 转换为私钥钱包。转换后，仅该钱包会从无私钥钱包列表移除，并在私钥钱包列表中生成多链地址。</p>
+        <h2 class="screen-title">导出前确认</h2>
+        <p class="body-copy">您将导出 ${walletName} 的助记词，并将该钱包转换为私钥钱包。转换后，仅该钱包会从无私钥钱包列表移除，并在私钥钱包列表中生成多链地址。</p>
         <div class="risk-checks">
           <label class="confirm-line risk-commit">
             <input type="checkbox" ${state.riskChecks.recovery ? "checked" : ""} onchange="setRiskCheck('recovery', this.checked)">
@@ -6677,7 +6874,7 @@
           <div class="bullet">本次仅导出 1 组助记词，可用于恢复不同链的钱包地址。</div>
         </div>
         <div class="bottom-actions">
-          <button class="primary" ${allRiskChecked ? "" : "disabled"} onclick="go('verify')">确认转换</button>
+          <button class="primary" ${allRiskChecked ? "" : "disabled"} onclick="go('verify')">确认导出</button>
         </div>
       `);
     }
@@ -6783,6 +6980,18 @@
           </div>
         `;
       }
+      if (state.overlay === "autoTradeEnablePrompt") {
+        return `
+          <div class="overlay">
+            <div class="dialog">
+              <h2>需要开启自动交易</h2>
+              <p>当前钱包尚未开启自动交易，暂无法使用${state.pendingAutoTradeType}。开启后，可在授权范围内自动完成指定交易确认。</p>
+              <button class="primary" onclick="goAutoTradeEnableFromPrompt()">去开启</button>
+              <button class="secondary" onclick="closeAutoTradeEnablePrompt()">取消</button>
+            </div>
+          </div>
+        `;
+      }
       if (state.overlay === "chainSelect") {
         return `
           <div class="overlay" onclick="closeAddWalletSheet()">
@@ -6852,13 +7061,12 @@
         `;
       }
       if (state.passkey.open) {
-        const createFlow = state.passkey.flow === "create" || state.passkey.flow === "initialCreate";
         return `
           <div class="overlay">
             <div class="sheet">
               <div class="grab"></div>
               <h2>通过通行密钥验证</h2>
-              <p>${createFlow ? "设备将提示您通过指纹、人脸或锁屏密码进行验证，验证通过后继续创建钱包。" : "设备将提示您通过指纹、人脸或锁屏密码进行验证，验证通过后继续当前操作。"}</p>
+              <p>设备将提示您通过指纹、人脸或锁屏密码进行验证，验证通过后继续当前操作。</p>
               <div class="otp-panel">
                 <strong>等待设备验证</strong>
                 <span>请按设备提示完成指纹、人脸或锁屏密码验证。</span>
@@ -6871,7 +7079,7 @@
           </div>
         `;
       }
-      if (["createPasskey", "verify", "backupVerify", "restoreVerify", "deleteVerify", "agentVerify"].includes(state.screen) && state.otp.open) {
+      if (["createPasskey", "verify", "backupVerify", "restoreVerify", "deleteVerify"].includes(state.screen) && state.otp.open) {
         const emailActive = state.otp.method === "email";
         return `
           <div class="overlay">
@@ -6911,9 +7119,9 @@
 
     function noteExceptionKinds() {
       const map = {
-        accountWalletIntro: [["createCancelled", "验证取消"], ["createFailed", "创建失败"]],
-        createIntro: [["createCancelled", "验证取消"], ["createFailed", "创建失败"]],
-        createPasskey: [["createCancelled", "验证取消"], ["createFailed", "创建失败"]],
+        accountWalletIntro: [["createCancelled", "创建取消"], ["createFailed", "创建失败"]],
+        createIntro: [["createCancelled", "创建取消"], ["createFailed", "创建失败"]],
+        createPasskey: [["createCancelled", "创建取消"], ["createFailed", "创建失败"]],
         createProgress: [["createFailed", "创建失败"]],
         backup: [["backupFailed", "备份失败"]],
         backupPin: [["backupFailed", "备份失败"]],
@@ -6937,7 +7145,6 @@
         importWallet: [["importFailed", "导入失败"]],
         importSuccess: [["importFailed", "导入失败"]],
         agentAutoTrade: [["agentFailed", "启用失败"]],
-        agentVerify: [["agentFailed", "验证中断"]],
         accountInfo: [["otpExpired", "验证码失效"]],
         passkeyManage: [["createCancelled", "创建取消"]],
         manage: [["restoreCloudFailed", "恢复不可用"], ["importFailed", "导入失败"]]
@@ -6965,6 +7172,40 @@
               ${noteExceptionKinds().map(([kind, label]) => `<button class="note-action" onclick="openFlowException('${kind}')">预览：${label}</button>`).join("")}
             </div>
           ` : ""}
+        </div>
+      `;
+    }
+
+    function renderLeftPreview() {
+      const stage = document.querySelector(".stage");
+      const panel = document.getElementById("leftPreview");
+      const visible = state.screen === "agentAutoTrade";
+      stage.classList.toggle("has-preview", visible);
+      if (!visible) {
+        panel.innerHTML = "";
+        return;
+      }
+      panel.innerHTML = `
+        <div class="scenario-card">
+          <h3>交易触发弹窗</h3>
+          <p>限价交易、自动交易、跟单交易等场景触发前，先判断当前钱包是否已开启自动交易。</p>
+          <div class="scenario-phone">
+            <div class="scenario-trade-title">限价交易</div>
+            <div class="scenario-order">
+              <span>买入：BNB</span>
+              <span>价格：$590.10</span>
+              <span>有效期：24 小时</span>
+              <span>钱包：${activeKeylessWalletName()}</span>
+            </div>
+            <div class="scenario-mask">
+              <div class="scenario-dialog">
+                <strong>需要开启自动交易</strong>
+                <span>当前钱包尚未开启自动交易，暂无法提交该交易。</span>
+                <button class="primary">去开启</button>
+                <button class="secondary">取消</button>
+              </div>
+            </div>
+          </div>
         </div>
       `;
     }
@@ -7017,6 +7258,7 @@
       }[state.screen];
       document.getElementById("app").innerHTML = view();
       renderNotes();
+      renderLeftPreview();
     }
 
     render();
